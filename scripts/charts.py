@@ -17,7 +17,7 @@ def tfmt(ax):
     ax.xaxis.set_major_formatter(md.DateFormatter("%a %H:%M")); ax.xaxis.set_major_locator(md.HourLocator(byhour=range(0, 24, 3)))
     plt.setp(ax.get_xticklabels(), rotation=0, fontsize=8)
 os.makedirs(f"{H}/charts", exist_ok=True)
-SRC = "Source: stp's desk, TN10 storm 1-3 Oct 2026. "
+SRC = "Source: TN10 ops (stp's TN10 setup), TN10 storm 1-3 Oct 2026. "
 
 # 1. submitted vs accepted over the whole storm
 R = D("oct_box_submitted_vs_accepted_1min.csv"); t = [T(r["minute_cest"]) for r in R]
@@ -102,7 +102,7 @@ for ax, ph, title in ((axs[0], "P1-overload", "Step A: 21:48-22:46, storm paid 1
     ax.set_yscale("log"); ax.set_ylim(0.25, 300); ax.grid(alpha=0.3, axis="y"); ax.set_title(title, fontsize=9)
 axs[0].set_ylabel("submit -> accepted on virtual chain, seconds (log)")
 fig.suptitle("Confirmation time by fee tier under load (TN10 storm 25 Sep 2026, one probe per tier every 30 s; no 1.5x tier was run)", fontsize=10)
-fig.text(0.01, 0.01, "Source: stp's desk. data/sep_fee_tier_probes.csv (logs/overload/probes.jsonl), data/sep_network_processed_tx_s_1min.csv. Whiskers = min/max.", fontsize=7, color="#555")
+fig.text(0.01, 0.01, "Source: TN10 ops (stp's TN10 setup). data/sep_fee_tier_probes.csv (logs/overload/probes.jsonl), data/sep_network_processed_tx_s_1min.csv. Whiskers = min/max.", fontsize=7, color="#555")
 fig.tight_layout(rect=(0, 0.03, 1, 0.95)); fig.savefig(f"{H}/charts/2-confirmation-time-by-fee-tier.png", dpi=110); plt.close(fig)
 
 # 2b. Sept probes over time with mempool backlog
@@ -118,6 +118,6 @@ ax2.set_ylim(0, 120000); ax2.set_ylabel("n0 mempool (grey area)")
 ax.axvline(T("2026-09-25 22:47:00"), color="k", lw=0.8, ls="--"); ax.text(T("2026-09-25 22:48:00"), 200, "storm fee 1.2x -> 2x", fontsize=8)
 ax.xaxis.set_major_formatter(md.DateFormatter("%H:%M")); ax.legend(loc="upper left", fontsize=8)
 ax.set_title("Fee-tier probes over time, 25 Sep 2026 (CEST): cheap tiers wait when the mempool is deep", fontsize=10)
-fig.text(0.01, 0.01, "Source: stp's desk. data/sep_fee_tier_probes.csv (logs/overload/probes.jsonl)", fontsize=7, color="#555")
+fig.text(0.01, 0.01, "Source: TN10 ops (stp's TN10 setup). data/sep_fee_tier_probes.csv (logs/overload/probes.jsonl)", fontsize=7, color="#555")
 fig.tight_layout(rect=(0, 0.03, 1, 1)); fig.savefig(f"{H}/charts/2b-fee-tier-probes-over-time.png", dpi=110); plt.close(fig)
 print("ok")

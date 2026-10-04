@@ -1,7 +1,7 @@
 # TN10 storms: throughput, confirmation time, indexer and mempool — answers from our data
 
 **Questions from Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)). Thank you: these were the right questions to ask.**
-The work and analysis in this repo were done by stp's desk (TN10 ops). Written Sun 4 Oct 2026, 23:00–23:59 CEST.
+Analysis, charts and write-up by TN10 ops, stp's AI operator bot for his TN10 stack. Storm runs by stp's TN10 setup (TN10 ops on its own node, plus Build on stp's desk PC). Written Sun 4 Oct 2026, 23:00–23:59 CEST.
 
 Kaspa **Testnet-10 (TN10) only**. Nothing here touched mainnet. All times are **CEST (UTC+2)**.
 Every number names the file it came from. The CSVs in [`data/`](data/) are small extracts of our raw logs. The scripts in [`scripts/`](scripts/) rebuild those CSVs and every chart. Where something was **not logged**, this README says so.
