@@ -64,7 +64,24 @@ The sections below are the **Method**: Kaspa Pulse's six process points (§1–�
 - **Steady rate:** last storm Build's runners did not run at 100% of their target (stp's observation). Build fixes that before the storm. Its runners hold the step target for the whole step, and the shortfall, if any, is visible per second.
 - **Ordered stream (desk):** during the steps (not B0/B1), Build also sends a small ordered stream under the §4a rules (independent self-transfers, 2 per second per tier at 1× and 1.5×, from a pre-split coin pool), inside its share. That way order is also measured for transactions sent through public nodes.
 - **Logging (desk):** per second (UTC): **target and achieved send rate**, submit-OK and rejects by reason; per transaction: txid, send sequence number, UTC submit start and submit-OK times, submit result, fee tier, fee rate, step and stream. Once per run: script names with SHA-256 and versions, node URLs, F1 per step. The desk clock's offset from UTC is recorded at T0.
-- **Dry run first:** before the storm, Build sends a small ordered, fee-split stream from the desk and holds one fixed target for 5 min. The box checks the per-transaction log, txid matching against n0, the UTC timetable, and that achieved stays at ≥ 95% of target. Build's storm cap is what it held there.
+- **Process setup (live storm):** Build runs a **fixed number N of sender processes** for the whole storm. There is no auto-scaling, no fleet relaunch and no mempool pause within a step.
+  - Each process has its own disjoint coin set and its own log files, merged by UTC.
+  - Each process has 3–4 connections to public nodes and gets target ÷ N.
+  - The ordered stream runs in a separate process.
+  - The desk miner count is fixed and logged.
+  - N is picked in the dry run.
+- **Go/no-go gate: no storm until Build's dry run passes.** Before the storm, Build:
+  - sends a small ordered, fee-split stream;
+  - compares N = 1, 2 and 4 (and 6 if needed) at its top planned share;
+  - then runs short steps at each planned Build target with the chosen N.
+
+  It passes only if:
+  - at every step, mean achieved is ≥ 95% of target (default margin; agreed before the lock), with no zero seconds;
+  - the per-transaction and per-second logs are complete;
+  - its txids are matched against n0's accepted ids;
+  - starts and stops follow the UTC timetable.
+
+  If it fails or isn't done in time for 9 Oct, the storm waits for 13 Oct. Build's storm cap is the rate it held.
 - **Prompt:** [`GROK-BUILD-PROMPT.md`](GROK-BUILD-PROMPT.md).
 - **Acceptance:** Build's txids are matched against the transaction ids n0 sees accepted on the chain. n0 sees every accepted transaction, whichever node it was sent to. So Build's accepted count and confirmation times are measured on the same clock as the box's, and they count in the network-wide unique total.
 - No keys or wallet files leave the desk. Only public txids and timestamps are shared.

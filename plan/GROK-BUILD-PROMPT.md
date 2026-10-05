@@ -4,13 +4,17 @@
 
 **Storm date:** early run no earlier than **Fri 9 Oct 2026, 20:00 CEST**. If the 9th isn't ready, **13 Oct** (evening CEST). Exact step times come from stp at T0.
 
+**Hard gate: no storm until your dry run passes** (see "Dry run" below). If it hasn't passed in time for the 9th, the storm waits for the 13th.
+
 ## Why this time is different
 
 In the last storm your part wasn't measured well:
 - your logs had only submit-OK counts, with no inclusion on chain;
 - there was no timing per transaction;
 - nobody knows which script versions ran;
-- your runners did not run at 100% of their target (stp's observation).
+- your runners did not run at 100% of their target (stp's observation);
+- several sender paths ran, partly at the same time;
+- the v2 sender was built to add or remove a worker every 90 s and to relaunch the whole fleet with a 10 s gap on each change. Its workers paused whenever the node's mempool was above 80k.
 
 So we could not say how much of your load actually landed, or how fast. This time, follow the plan exactly, hold your target rate, and log what is listed below. If you can't do something, say so before the run. Don't improvise during it.
 
@@ -20,9 +24,46 @@ So we could not say how much of your load actually landed, or how fast. This tim
 2. **Public TN10 nodes only.** Never send to stp's node n0 (or `bore.pub`, `127.0.0.1`, `localhost`).
 3. **Keys stay on the desk.** Never print, paste, log, upload or commit a key, seed or wallet file. Don't open the key file. Pass only its path to the script.
 4. **No public posting.** Don't post or publish anything (X, GitHub, chats). Logs go to stp only.
-5. **One sender.** Never run a second sender from the same wallet.
+5. **One sender setup.** Run only the N sender processes and the ordered stream process from this prompt. No other sender from the same wallet. Stop an old one only if stp says so.
 6. **No real transactions without stp's GO.** One GO for the dry run, a separate GO for the storm.
 7. If anything doesn't match this prompt, **stop and ask stp**.
+
+## Process setup for the live storm (settle and test before the storm)
+
+How many processes / PowerShell windows you run **during the storm** is decided in the dry run and then **fixed for the whole storm**.
+
+**Rules:**
+- **Fixed N sender processes.** No auto-scaling, no fleet relaunch, no mempool pause during a step. One PowerShell window per process is fine.
+- **Separate coins per process:**
+  - before the run, pre-split the wallet's coins and give each process its own disjoint set (`--part i/N` style);
+  - two processes must never spend the same coin.
+- **Split the target evenly:** each process gets the step target ÷ N.
+  - Each process reads the same `steps-utc.json` and starts and stops by the UTC clock, not by hand.
+- **Connections:** each process keeps 3–4 wRPC connections to public TN10 nodes, and each lane stays pinned to one connection.
+  - Spread the processes over different public nodes where the resolver offers them.
+  - Log the node per transaction.
+- **Ordered stream:** runs in its **own separate process** with its own coin pool. It is never mixed into the lane processes.
+- **Logs:**
+  - each process writes its own files, with `-p<i>` in the name;
+  - `seq` is monotonic per process;
+  - the box merges all files by UTC time.
+  - All processes are on one PC, so they share one clock.
+- **CPU:** the desk also runs CPU miners. A miner keeper adds or removes miners to hold ~75% total CPU, which would change the miner count during a step.
+  - For the dry run and the storm, use **one fixed desk miner count** (stp decides), log it, and leave cores for the senders.
+  - The keeper must not add or remove miners mid-step.
+
+**Why (labels as in the README):**
+- **Claim (measured on the box, as quoted in our v2 Build prompt, 2 Oct):** one Node process with 1 connection gave ~380 accepted tx/s. With 3–4 connections it gave ~1,046.
+  - So one process is near its limit at about 1,000 tx/s.
+  - Your top planned share is about 725–750 tx/s: 25% of +2,900 tx/s at 30× if the baseline is ~100 tx/s, or of 3,000 in the fallback. One process would have little headroom to hold that steadily.
+- **Claim (from our prompts and logs):** your last-storm v2 sender was already multi-process: a coordinator with child workers, each with 4 connections and 250 lanes. One status line showed 24 workers alive.
+- **Not sure (inference, not measured):** the shortfall more likely came from the changing worker count, the fleet relaunches and the mempool pauses than from one process vs many. Hence a **fixed** N.
+- **Not sure:** how much a desk-to-public-node path sustains per process. That figure (~1,046) is box-to-own-node.
+  - Public nodes may rate-limit or lag, so spreading over several nodes may help or may not.
+  - Also not sure whether the CPU miners starve the senders.
+- **Needs testing:** the best N. The dry run compares **1 vs 2 vs 4 processes**, plus 6 if 4 still falls short, at your top planned share. **Recommendation:** pick the smallest N that holds the target. We expect 2–4.
+
+**Desk setup:** **confirm on the desk** which script you will use, how it splits coins per process, and that it has a fixed-N mode with auto-scaling and mempool-pause off.
 
 ## What to send
 
@@ -53,7 +94,7 @@ So we could not say how much of your load actually landed, or how fast. This tim
 
 All times are **UTC, ISO 8601 with milliseconds and `Z`** (e.g. `2026-10-09T18:15:00.123Z`).
 
-**Per transaction**, one JSON line each, in `build-tx-<date>.jsonl`:
+**Per transaction**, one JSON line each, in `build-tx-<date>-p<i>.jsonl` (one file per process; the ordered stream process uses `-order`):
 
 | Field | Meaning |
 |---|---|
@@ -70,7 +111,7 @@ All times are **UTC, ISO 8601 with milliseconds and `Z`** (e.g. `2026-10-09T18:1
 | `worker` | Worker / process id |
 | `node` | Public node URL used |
 
-**Per second**, one JSON line each, in `build-sec-<date>.jsonl`:
+**Per second**, one JSON line each, in `build-sec-<date>-p<i>.jsonl`:
 - `t`, `step`, `tier`;
 - **`target`** (tx/s you were told to send) and **`achieved`** (submit-OK that second), so any shortfall shows up second by second;
 - `submit_ok`, rejects by reason, and the number of active workers and lanes.
@@ -81,6 +122,8 @@ All times are **UTC, ISO 8601 with milliseconds and `Z`** (e.g. `2026-10-09T18:1
 - the node URLs used;
 - the F1 per step;
 - the desk clock's offset from UTC at T0 (`w32tm /stripchart` or equivalent; exact command **confirm on the desk**);
+- the number of sender processes N, and each process's coin set (count of coins, no keys);
+- the fixed desk miner count;
 - the wallet address (public address only).
 
 **Where:**
@@ -91,22 +134,29 @@ All times are **UTC, ISO 8601 with milliseconds and `Z`** (e.g. `2026-10-09T18:1
 
 We match your txids against the transactions n0 sees accepted on the chain. So you don't need to check inclusion yourself, but every txid must be in the log.
 
-## Dry run first (before the storm, after stp's GO)
+## Dry run first: the go/no-go gate (before the storm, after stp's GO)
 
-1. **Fee split and order:** send a small ordered, fee-split stream from the desk for **5 min**: 2 per second at F1 and 2 per second at F1.5, through public nodes only.
-2. **Mini-timetable:** follow a short `steps-utc.json` from stp, with UTC starts and stops (for example 2 min on, 1 min off, 2 min on).
-3. **Held rate:** hold one fixed target (stp gives it, e.g. your step-1 share) for **5 min**, so we see what you can really sustain.
-4. Hand over the three log files. The box then checks:
-   - every field is present, `seq` is monotonic and all times are UTC `Z`;
-   - your txids match n0's accepted ids;
-   - your starts and stops line up with the UTC timetable (clock offset recorded);
-   - both fee tiers are present, with the logged F1;
-   - **`achieved` stays at ≥ 95% of `target`** through the held-rate test, with no dips to 0. If not, fix it and repeat the dry run.
-5. Your cap for the storm is what you held in step 3.
+**No storm until this passes.** If it fails or can't be done in time for Fri 9 Oct, the storm waits for **13 Oct**, and the dry run is repeated before then.
+
+Use the same script, wallet path, miner count and process setup you will use in the storm.
+
+1. **Fee split and order:** run the ordered stream process for **5 min**: 2 per second at F1 and 2 per second at F1.5, through public nodes only.
+2. **Mini-timetable:** follow a short `steps-utc.json` from stp, with UTC starts and stops (for example 2 min on, 1 min off, 2 min on). All processes must start and stop on the UTC times.
+3. **Process count:** at your top planned share (stp gives the number, ~750 tx/s unless told otherwise), run **3 min each with N = 1, 2 and 4 processes**, and 6 if 4 is still short.
+   - Report achieved vs target per second for each N.
+   - Pick the smallest N that passes rule 5.
+4. **Steps:** with that N, run short steps (2 min each) at each planned Build step target (stp gives the list), plus 1 min at 0 between steps.
+5. **Pass criteria.** The box checks all of these:
+   - **rate:** at every step, mean `achieved` ≥ **95% of `target`** (the plan's sender-limited line; stp can set another margin before the plan lock), and no seconds at 0;
+   - **logs:** every field present, `seq` monotonic per process, all times UTC `Z`, one file set per process;
+   - **txid matching:** your txids are found in n0's accepted ids;
+   - **timetable:** your starts and stops are within a few seconds of the UTC times (clock offset recorded);
+   - **fees:** both tiers present, with F1 logged.
+6. If any check fails, fix it and repeat the dry run. Your storm cap is the rate held in step 4, with the N chosen in step 3.
 
 ## Stop rules
 
-- **stp says STOP, or a box STOP is relayed:** stop at once (Ctrl+C, or the script's STOP file). Write out the txids still pending.
+- **stp says STOP, or a box STOP is relayed:** stop at once (Ctrl+C, or the script's STOP file; all processes watch the same STOP file). Write out the txids still pending.
 - **Step end:** go to 0 for the drain. Don't carry load over.
 - **B0 and B1:** off.
 - A node reports a network other than `testnet-10` → stop.

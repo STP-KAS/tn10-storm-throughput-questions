@@ -12,13 +12,14 @@ Every number names the file it came from. The CSVs in [`data/`](data/) are small
 
 ## Tasks for stp (before the storm)
 
-1. **Test with Grok Build first (dry run from the desk).** Build sends a small ordered, fee-split stream (1× and 1.5×), then holds one fixed target rate for 5 min. We check that:
-   - its per-transaction log is complete;
-   - its txids match what n0 sees accepted;
-   - it follows the UTC timetable;
-   - **it holds its target rate.** Last storm Build's runners did not run at 100% (stp's observation). Build has to fix that before the storm and log achieved vs target send rate every second, so any shortfall is visible.
-
-   Prompt: [`plan/GROK-BUILD-PROMPT.md`](plan/GROK-BUILD-PROMPT.md).
+1. **Hard go/no-go gate: the Grok Build dry run must pass. No storm until it does.** If it hasn't passed in time for Fri 9 Oct, the storm waits for 13 Oct.
+   - **Settle Build's process setup first:** how many sender processes / PowerShell windows it runs **during the storm**. The count is fixed for the whole run (no auto-scaling), each process has its own coins, the miner count is fixed, and Build's runners hold 100% of target.
+   - **Dry run from the desk:** Build sends a small ordered, fee-split stream (1× and 1.5×), compares 1 vs 2 vs 4 processes at its top planned share, then runs short steps at its planned targets with the chosen count. It passes when:
+     - **at every step, achieved is ≥ 95% of target** (default margin; agree it before the plan lock). Last storm Build's runners did not run at 100% (stp's observation). Build logs achieved vs target every second, so any shortfall is visible;
+     - its per-transaction logs are complete;
+     - its txids match what n0 sees accepted;
+     - it follows the UTC timetable.
+   - Prompt: [`plan/GROK-BUILD-PROMPT.md`](plan/GROK-BUILD-PROMPT.md).
 2. **Enough tKAS** in Build's wallet and on the box for the full schedule (amounts to confirm).
 3. **Usage resets** for the bots and Build before the run.
 4. **Box dry run passes** (plan checklist), and **≥ 35 GB free disk** at T0.
@@ -90,7 +91,9 @@ The next storm is built to answer all five directly, with both senders counted.
 
 #### Method: how Build takes part
 - Build sends from the desk through public TN10 nodes, alongside the box runners, on the **same UTC step timetable**. In B0 and B1 it is off. Its instructions: [`plan/GROK-BUILD-PROMPT.md`](plan/GROK-BUILD-PROMPT.md).
-- **Steady rate:** last storm Build's runners did not run at 100% (stp's observation). This time they must hold the step target for the whole step, and Build logs achieved vs target send rate every second. A dry run checks this first.
+- **Steady rate:** last storm Build's runners did not run at 100% (stp's observation). This time they must hold the step target for the whole step, and Build logs achieved vs target send rate every second.
+- **Process setup:** a fixed number of sender processes for the whole storm (no auto-scaling or fleet restarts). Each process has its own coins and log files, merged by UTC. A separate process runs the ordered stream. The count is picked in the dry run (1 vs 2 vs 4).
+- **Go/no-go gate:** no storm until Build's dry run passes (achieved ≥ 95% of target at each step, logs complete, txids matched, UTC timetable followed). If it fails, the storm waits for 13 Oct.
 - **Per-step target:** a fixed share of each step's added load, written into the locked plan before T0 (default 25%, capped at what its sender sustains in a pre-run test). The box sends the rest. Both actual rates are measured, not assumed.
 - **Fees:** Build uses the same two tiers, 1× and 1.5× of its node's normal fee estimate, split across its lanes and fixed per step. If its sender can't split, its single fee is logged and its transactions are left out of the 1× vs 1.5× comparison.
 - **Logging:** Build logs per second (UTC) target and achieved send rate, submit-OK and rejects by reason, plus per transaction the txid, a send sequence number, its UTC submit time and its fee tier. The desk clock's offset from UTC is recorded at T0.
@@ -105,7 +108,7 @@ The next storm is built to answer all five directly, with both senders counted.
 
 ## Short plan list (for Kaspa Pulse)
 
-Next TN10 storm: early run no earlier than Fri 9 Oct, 20:00 CEST (waiting on usage resets for the bots and Build, and enough tKAS). If the 9th isn't ready, 13 Oct stays the target. The 6 Oct early run is cancelled. The load comes from two places, and both are measured:
+Next TN10 storm: early run no earlier than Fri 9 Oct, 20:00 CEST (waiting on usage resets for the bots and Build, and enough tKAS). If the 9th isn't ready, 13 Oct stays the target. The 6 Oct early run is cancelled. Go/no-go: the storm runs only after Build's dry run passes (it holds its target rate, logs complete, txids matched); otherwise it waits for 13 Oct. The load comes from two places, and both are measured:
 - **TN10 ops**: stp's AI operator bot, sending from stp's box through his own TN10 node (n0).
 - **Grok Build**: sending from stp's desk PC through public TN10 nodes.
 
