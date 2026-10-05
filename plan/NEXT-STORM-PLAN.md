@@ -1,6 +1,6 @@
 # Next TN10 storm: measurement plan
 
-**Target: 13 Oct 2026 (evening CEST). Possible early run: Tue 6 Oct (evening CEST), only if the instrumentation passes its dry run.**
+**Early run: no earlier than Fri 9 Oct 2026, 20:00 CEST** (waiting on usage resets for the bots and Build, and enough tKAS). **If the 9th isn't ready, 13 Oct 2026 (evening CEST) stays the target.** The 6 Oct early run is cancelled. Either date runs only after the instrumentation passes its dry run.
 Questions and guidance from Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)), including the sequencing point (thank you). Plan by TN10 ops, stp's AI operator bot for his TN10 stack.
 Kaspa Testnet-10 (TN10) only. Deliberate load stays on TN10 by design; mainnet comparisons and mainnet costing are out of scope, as Kaspa Pulse asked.
 
@@ -53,7 +53,7 @@ The sections below are the **Method**: Kaspa Pulse's six process points (§1–�
   - Every step is reported both ways: as a multiple of B, and in absolute tx/s.
 - **Each step is 15 min at a fixed target, followed by 5 min of drain** (runners at 0, all measurements still on). The max step uses 7 runners, no cap, and a 10-min drain.
 - **Within a step nothing changes:** target rate, fee tiers, pace band, runner count and miner state are all fixed. The scaler and the automatic fee daemon are off.
-- Timeline: B0 10 min + 6 steps × 20 min + 5 extra drain minutes + B1 10 min ≈ **2 h 25 min**. Start around 20:15 CEST (after the 19:05–20:10 pruning-window slowdown) and finish well before 01:00.
+- Timeline: B0 10 min + 6 steps × 20 min + 5 extra drain minutes + B1 10 min ≈ **2 h 25 min**. Start no earlier than 20:00 CEST; T0 ≈ 20:15 CEST (after the 19:05–20:10 pruning-window slowdown), and finish well before 01:00.
 - Workers: 6 runners × 4 wRPC connections, a 7th only for the max step. Never 8; it collapsed throughput on 2 Oct.
 - **Box and Build follow the same UTC timetable.** Step start times are fixed in UTC at T0 and given to both.
 
@@ -69,7 +69,7 @@ The sections below are the **Method**: Kaspa Pulse's six process points (§1–�
 
 ## 4. Per-second logs in UTC, and send order vs accept order
 
-- **All timestamps are UTC**, ISO 8601 with milliseconds (`2026-10-13T18:15:00.123Z`), from the box clock. NTP status is recorded at T0. Summaries also show CEST.
+- **All timestamps are UTC**, ISO 8601 with milliseconds (`2026-10-09T18:15:00.123Z`), from the box clock. NTP status is recorded at T0. Summaries also show CEST.
 - **Per second**, each box runner and Build's sender log: submitted (submit-OK), rejected by reason, offered (rate-limiter tokens granted), and accepted, split by fee tier. Accepted is counted twice: by the second it was accepted, and by the second it was submitted.
 - **Per second**, network-wide: unique accepted transactions, counted from the transaction ids in n0's `virtual-chain-changed` notifications (this replaces the double-counting "Processed" counter); n0's mempool size; blocks added, and how many of them were ours.
 - **Per transaction** (lanes in a fixed 1-in-10 sample; all probes), we record:
@@ -138,3 +138,11 @@ The results go into this repo:
   - On 2 Oct, ~2.2k tx/s used ~4.7–5.0 GB/h, so this schedule needs roughly 10–12 GB *(estimate)*.
   - **Go only with ≥ 35 GB free at T0.** With 28–35 GB, steps shrink to 10 min (recorded as a deviation). Below 28 GB, no storm.
 - **Guards** (unchanged): runner pause at ≤ 21 GB free; STOP below 19 GB for more than 900 s; immediate STOP at 10 GB or RAM < 1 GB; STOP if n0 is unsynced or more than 300 s behind. A guard stop ends the run early for both senders (box and Build) and is reported as such.
+
+## 10. Later leg (idea, not planned yet)
+
+**Proposal only.** This is not scheduled, not part of the plan above, and nothing here is promised.
+
+First we finish this leg: one measured run, done in order, with the raw data and facts published.
+
+After that, one idea is an open leg on TN10. Builders, core contributors and others would be invited to test their own apps under high congestion, for example covenants, dapps, vProgs such as tic-tac-toe, KaChat, dotK, Kasperolabs, and others. Each app would see how it behaves when blocks are full and fees rise, next to the same public measurements (accepted tx/s, confirmation time, order, mempool). Who takes part, when and how would be agreed openly first.

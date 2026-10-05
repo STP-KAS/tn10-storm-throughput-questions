@@ -19,8 +19,9 @@ Every number names the file it came from. The CSVs in [`data/`](data/) are small
 | **Needs more testing** | We don't know. The test that would settle it is named. |
 
 ## Contents
-- [Next storm (target 13 Oct; possible early run 6 Oct if ready)](#next-storm-target-13-oct-possible-early-run-6-oct-if-ready): What / Why / Method
+- [Next storm (early run Fri 9 Oct at the earliest; target 13 Oct if not ready)](#next-storm-early-run-fri-9-oct-at-the-earliest-target-13-oct-if-not-ready): What / Why / Method
 - [Short plan list (for Kaspa Pulse)](#short-plan-list-for-kaspa-pulse)
+- [Later leg (idea, not planned yet)](#later-leg-idea-not-planned-yet)
 - [Past storms: what our existing data shows](#past-storms-what-our-existing-data-shows)
   - [Short answer](#short-answer)
   - [Did our earlier storm repos already cover this?](#did-our-earlier-storm-repos-already-cover-this)
@@ -34,9 +35,9 @@ Every number names the file it came from. The CSVs in [`data/`](data/) are small
 
 ---
 
-## Next storm (target 13 Oct; possible early run 6 Oct if ready)
+## Next storm (early run Fri 9 Oct at the earliest; target 13 Oct if not ready)
 
-The full measurement set is targeted for the **13 Oct** storm. If the instrumentation passes its dry run in time, an **optional early run on Tue 6 Oct (evening CEST)** uses the same plan. The full plan is in **[`plan/NEXT-STORM-PLAN.md`](plan/NEXT-STORM-PLAN.md)**.
+The early run is **no earlier than Fri 9 Oct, 20:00 CEST**. It waits on usage resets for the bots and Build, and on enough tKAS. If the 9th isn't ready, **13 Oct (evening CEST)** stays the target. The 6 Oct early run is **cancelled**. Either date uses the same plan, and only after the instrumentation passes its dry run. The full plan is in **[`plan/NEXT-STORM-PLAN.md`](plan/NEXT-STORM-PLAN.md)**.
 
 **Who sends load.** Two participants, both measured:
 - **TN10 ops** (stp's AI operator bot), on stp's box through its own node n0;
@@ -88,12 +89,12 @@ The next storm is built to answer all five directly, with both senders counted.
 - **Runners:** 6 runners × 4 connections on the box, a 7th only at max, never 8.
 - **Disk:** keep ~19 GB free for n0's pruning.
   - Go only with ≥ 35 GB free at T0. With 28–35 GB, steps shrink to 10 min. Below 28 GB, no storm.
-  - The schedule (~2 h 25 min) should need ~10–12 GB *(estimate)*. Step targets are the combined load of box and Build, so the estimate already covers Build's transactions. The run starts ~20:15 CEST, well away from the morning pruning window.
+  - The schedule (~2 h 25 min) should need ~10–12 GB *(estimate)*. Step targets are the combined load of box and Build, so the estimate already covers Build's transactions. The run starts no earlier than 20:00 CEST (T0 ≈ 20:15 CEST, after the evening pruning slowdown), well away from the morning pruning window.
 - **Guards:** unchanged; a guard stop ends the run early (box and Build both stop) and is reported.
 
 ## Short plan list (for Kaspa Pulse)
 
-Next TN10 storm: target 13 Oct (possible early test run 6 Oct if the logging is ready). The load comes from two places, and both are measured:
+Next TN10 storm: early run no earlier than Fri 9 Oct, 20:00 CEST (waiting on usage resets for the bots and Build, and enough tKAS). If the 9th isn't ready, 13 Oct stays the target. The 6 Oct early run is cancelled. The load comes from two places, and both are measured:
 - **TN10 ops**: stp's AI operator bot, sending from stp's box through his own TN10 node (n0).
 - **Grok Build**: sending from stp's desk PC through public TN10 nodes.
 
@@ -135,6 +136,14 @@ The load stays on TN10 by design. No mainnet comparisons or costing.
 
 Full plan: [`plan/NEXT-STORM-PLAN.md`](plan/NEXT-STORM-PLAN.md)
 
+## Later leg (idea, not planned yet)
+
+**Proposal only.** This is not scheduled, not part of the plan above, and nothing here is promised.
+
+First we finish this leg: one measured run, done in order, with the raw data and facts published.
+
+After that, one idea is an open leg on TN10. Builders, core contributors and others would be invited to test their own apps under high congestion, for example covenants, dapps, vProgs such as tic-tac-toe, KaChat, dotK, Kasperolabs, and others. Each app would see how it behaves when blocks are full and fees rise, next to the same public measurements (accepted tx/s, confirmation time, order, mempool). Who takes part, when and how would be agreed openly first.
+
 ---
 
 ## Past storms: what our existing data shows
@@ -151,7 +160,7 @@ The sections below answer the same questions from the 25 Sep storm (storm 1) and
 | 4 | Mempool depth over time | **Answered** | Sampled every 15 s for the whole storm. Peak **99,992** (Fri 2 Oct 01:35:47). A ~71k backlog sat for ~6 hours after our miners stopped. **486,140** evictions in L1. |
 | 5 | Send order vs accept order: does order hold under load? | **Partly answered (coarse)** | From the 25 Sep fee probes, sent 30 s apart: at 1× and 1.2× the floor (at or below the storm's fee) **2.6–10.4%** of consecutive probes were accepted out of send order, and some waited behind later probes for up to **169 s**. At 2× the floor and above: at most 1 reversal in 116 pairs (step A), none in step B. The October storm did not log order. |
 
-Kaspa Pulse is most interested in the 1× vs 1.5× fee question. The nearest thing we have is a 25 Sep probe at 1.2× (equal to the storm's own fee) and 2× (1.67× the storm's fee). Paying 1.67× the crowd's fee cut the median wait from **7.1 s to 3.1 s** and the worst case from **92 s to 48 s** ([Q2](#q2-confirmation-time-per-load-step-normal-fee-vs-15)). A real 1× vs 1.5× A/B split at each load step is the main item in the [next storm plan](#next-storm-target-13-oct-possible-early-run-6-oct-if-ready).
+Kaspa Pulse is most interested in the 1× vs 1.5× fee question. The nearest thing we have is a 25 Sep probe at 1.2× (equal to the storm's own fee) and 2× (1.67× the storm's fee). Paying 1.67× the crowd's fee cut the median wait from **7.1 s to 3.1 s** and the worst case from **92 s to 48 s** ([Q2](#q2-confirmation-time-per-load-step-normal-fee-vs-15)). A real 1× vs 1.5× A/B split at each load step is the main item in the [next storm plan](#next-storm-early-run-fri-9-oct-at-the-earliest-target-13-oct-if-not-ready).
 
 ## Did our earlier storm repos already cover this?
 
@@ -338,7 +347,7 @@ All 1,458 probes in the two steps were accepted. None was rejected or lost.
 - **Claim (measured on TN10):** **at 2× the floor or above, order held** in these probes: one reversal of 1.4 s in step A, none in step B.
 - **Not sure / open for debate:** whether this carries over to transactions sent closer together. The probes were 30 s apart, with 1-s acceptance polling. A dapp sending several transactions a second could see more reordering. Transactions accepted in the same block event can't be ordered at all at this resolution.
 - **Not logged:** order in the October storm. The runners' lanes are chained (each hop spends the previous one), so order inside a lane is forced, and no cross-lane send/accept order was recorded.
-- **Needs more testing:** per-step reorder rate, out-of-order accepts and stalls at 1× vs 1.5×, with send sequence numbers and exact accept positions. That is now a first-class goal of the [next storm](#next-storm-target-13-oct-possible-early-run-6-oct-if-ready) (above).
+- **Needs more testing:** per-step reorder rate, out-of-order accepts and stalls at 1× vs 1.5×, with send sequence numbers and exact accept positions. That is now a first-class goal of the [next storm](#next-storm-early-run-fri-9-oct-at-the-earliest-target-13-oct-if-not-ready) (above).
 
 ---
 
