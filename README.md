@@ -10,18 +10,28 @@ Kaspa **Testnet-10 (TN10) only**. All times are **CEST (UTC+2)**.
 **Up front:** in our storms, our own miners made **50–63% of TN10 blocks** while they ran (storm 2 public report, `block_share_legs.csv`). Everything here describes **TN10 with our miners on it**, through one node on one small box.
 Every number names the file it came from. The CSVs in [`data/`](data/) are small extracts of our raw logs. The scripts in [`scripts/`](scripts/) rebuild those CSVs and every chart. Where something was **not logged**, this README says so.
 
-## Labels used in this README
+## Tasks for stp (before the storm)
 
-| Label | Meaning |
-|---|---|
-| **Claim (measured on TN10)** | We measured it on TN10. The number and its source file are given. It holds for the conditions stated. |
-| **Not sure / open for debate** | Reasonable, but we're not sure. The reason it might be wrong or might not carry over is given. |
-| **Needs more testing** | We don't know. The test that would settle it is named. |
+1. **Test with Grok Build first (dry run from the desk).** Build sends a small ordered, fee-split stream (1× and 1.5×), then holds one fixed target rate for 5 min. We check that:
+   - its per-transaction log is complete;
+   - its txids match what n0 sees accepted;
+   - it follows the UTC timetable;
+   - **it holds its target rate.** Last storm Build's runners did not run at 100% (stp's observation). Build has to fix that before the storm and log achieved vs target send rate every second, so any shortfall is visible.
+
+   Prompt: [`plan/GROK-BUILD-PROMPT.md`](plan/GROK-BUILD-PROMPT.md).
+2. **Enough tKAS** in Build's wallet and on the box for the full schedule (amounts to confirm).
+3. **Usage resets** for the bots and Build before the run.
+4. **Box dry run passes** (plan checklist), and **≥ 35 GB free disk** at T0.
+5. **Set Build's share** (default 25%, capped at what it held in its dry run), then **lock the plan by commit SHA** before T0.
+6. **Final OK on the start time:** Fri 9 Oct, 20:00 CEST at the earliest, otherwise 13 Oct.
 
 ## Contents
+- [Tasks for stp (before the storm)](#tasks-for-stp-before-the-storm)
 - [Next storm (early run Fri 9 Oct at the earliest; target 13 Oct if not ready)](#next-storm-early-run-fri-9-oct-at-the-earliest-target-13-oct-if-not-ready): What / Why / Method
 - [Short plan list (for Kaspa Pulse)](#short-plan-list-for-kaspa-pulse)
 - [Later leg (idea, not planned yet)](#later-leg-idea-not-planned-yet)
+- [Prompt for Grok Build (`plan/GROK-BUILD-PROMPT.md`)](plan/GROK-BUILD-PROMPT.md)
+- [Labels used in this README](#labels-used-in-this-readme)
 - [Past storms: what our existing data shows](#past-storms-what-our-existing-data-shows)
   - [Short answer](#short-answer)
   - [Did our earlier storm repos already cover this?](#did-our-earlier-storm-repos-already-cover-this)
@@ -79,10 +89,11 @@ The next storm is built to answer all five directly, with both senders counted.
 | 6 | Publish raw data next to the summary | Per-second CSV, per-step summary, every probe, per-transaction samples (box and Build), mempool, indexer and mining-share files in `data/` (plan §8) |
 
 #### Method: how Build takes part
-- Build sends from the desk through public TN10 nodes, alongside the box runners, on the **same UTC step timetable**. In B0 and B1 it is off.
+- Build sends from the desk through public TN10 nodes, alongside the box runners, on the **same UTC step timetable**. In B0 and B1 it is off. Its instructions: [`plan/GROK-BUILD-PROMPT.md`](plan/GROK-BUILD-PROMPT.md).
+- **Steady rate:** last storm Build's runners did not run at 100% (stp's observation). This time they must hold the step target for the whole step, and Build logs achieved vs target send rate every second. A dry run checks this first.
 - **Per-step target:** a fixed share of each step's added load, written into the locked plan before T0 (default 25%, capped at what its sender sustains in a pre-run test). The box sends the rest. Both actual rates are measured, not assumed.
 - **Fees:** Build uses the same two tiers, 1× and 1.5× of its node's normal fee estimate, split across its lanes and fixed per step. If its sender can't split, its single fee is logged and its transactions are left out of the 1× vs 1.5× comparison.
-- **Logging:** Build logs per second (UTC) submit-OK and rejects by reason, plus per transaction the txid, a send sequence number, its UTC submit time and its fee tier. The desk clock's offset from UTC is recorded at T0.
+- **Logging:** Build logs per second (UTC) target and achieved send rate, submit-OK and rejects by reason, plus per transaction the txid, a send sequence number, its UTC submit time and its fee tier. The desk clock's offset from UTC is recorded at T0.
 - **Acceptance:** Build's transactions are matched by txid against the transactions n0 sees accepted on the chain. n0 sees every accepted transaction, whichever node it was sent to, so Build's accepted count and confirmation times are measured on the same clock as the box's. They also count in the network-wide unique total.
 
 ### Box limits
@@ -145,6 +156,14 @@ First we finish this leg: one measured run, done in order, with the raw data and
 After that, one idea is an open leg on TN10. Builders, core contributors and others would be invited to test their own apps under high congestion, for example covenants, dapps, vProgs such as tic-tac-toe, KaChat, dotK, Kasperolabs, and others. Each app would see how it behaves when blocks are full and fees rise, next to the same public measurements (accepted tx/s, confirmation time, order, mempool). Who takes part, when and how would be agreed openly first.
 
 ---
+
+## Labels used in this README
+
+| Label | Meaning |
+|---|---|
+| **Claim (measured on TN10)** | We measured it on TN10. The number and its source file are given. It holds for the conditions stated. |
+| **Not sure / open for debate** | Reasonable, but we're not sure. The reason it might be wrong or might not carry over is given. |
+| **Needs more testing** | We don't know. The test that would settle it is named. |
 
 ## Past storms: what our existing data shows
 
@@ -420,6 +439,7 @@ Sources: our prompts to Build (`grok-build-tx-sender-2026-10-02.md`, `grok-build
 | [`data/sep_probe_order_by_tier.csv`](data/sep_probe_order_by_tier.csv) | 25 Sep: send order vs accept order per tier and step (reversals, overtakes, stalls) |
 | [`data/sep_network_processed_tx_s_1min.csv`](data/sep_network_processed_tx_s_1min.csv) | 25 Sep: n0 "Processed" tx/s per minute (block-body count) |
 | [`plan/NEXT-STORM-PLAN.md`](plan/NEXT-STORM-PLAN.md) | Next-storm measurement plan (locked by commit SHA before the run) |
+| [`plan/GROK-BUILD-PROMPT.md`](plan/GROK-BUILD-PROMPT.md) | Paste-in prompt for Grok Build (desk sender): what to send, what to log, dry run, stop rules |
 | [`scripts/extract.py`](scripts/extract.py), [`scripts/charts.py`](scripts/charts.py) | Rebuild data/ from the raw logs, and charts/ from data/ (Python 3, matplotlib) |
 
 ## Sources
