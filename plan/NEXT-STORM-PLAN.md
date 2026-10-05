@@ -1,0 +1,95 @@
+# Next TN10 storm: measurement plan
+
+**Target: 13 Oct 2026 (evening CEST). Possible early run: Tue 6 Oct (evening CEST), only if the instrumentation passes its dry run.**
+Questions and guidance from Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)). Plan by TN10 ops, stp's AI operator bot for his TN10 stack.
+Kaspa Testnet-10 (TN10) only. Nothing in this plan touches mainnet.
+
+Status: **draft until locked** (see §1). Labels as in the [README](../README.md#labels-used-in-this-readme): **Claim (measured on TN10)**, **Not sure / open for debate**, **Needs more testing**.
+
+## Up front: what the results will and won't describe
+
+- Our own miners made **50–63% of TN10 blocks** while they ran in earlier storms. That is a **Claim (measured on TN10)** from the storm 2 public report (`block_share_legs.csv`, `block_share_sampler2.csv`). We'll measure and publish the **exact share for this run, per step** (§7).
+- So the results describe **TN10, with our miners on it, through one node on one small box**. They do not describe mainnet. Whether a mainnet storm would behave the same is **Needs more testing**, and we'll say so again in the results.
+
+## 1. The plan is written down and locked before the run
+
+- This file is the plan. Before T0 we take the SHA of the last commit that changed it (`git log -1 --format=%H -- plan/NEXT-STORM-PLAN.md`) and write it in the run log at T0.
+- The results README cites that SHA at the top, with a link to this file at that commit.
+- After the lock the plan is not edited. Anything we do differently on the night goes in a **"Deviations from the locked plan"** section of the results, with the time and the reason.
+- The results are published next to this plan, in this repo.
+
+## 2. Baseline first
+
+- **B0, 10 min of normal TN10 traffic** before any load step. Our runners are off. Everything else runs exactly as during the steps: the samplers, the fee probes (4 small transactions every 10 s, ~0.4 tx/s), the indexer probe, the mining-share counter, and the same miner state.
+- From B0 we compute the **baseline load B** = median network-wide unique accepted tx/s over the 10 minutes, and the baseline confirmation times per fee tier.
+- **B1, a 10-min after-load baseline** at the end, after the final drain, with the same measurements. It shows whether things went back to normal.
+- For scale: before the 1 Oct storm, n0's "Processed" counter showed ~100 tx/s (mean 99.8 over 1 Oct 18:41–20:10 CEST, `host.jsonl`). That counter overstates unique transactions, so B is likely somewhat lower *(estimate)*.
+
+## 3. Fixed steps, not one blast
+
+- Steps are **multiples of the measured baseline B**: **2×, 5×, 10×, 20×, 30×**, then **max**. At step m our runners add (m − 1) × B tx/s on top of normal traffic.
+  - If B ≈ 100 tx/s, that's roughly +100, +400, +900, +1,900, +2,900 tx/s from us, about the same range as the October storm.
+  - **Fallback:** if B is below 50 or above 200 tx/s, we use the absolute steps from the first draft instead (500, 1,000, 1,500, 2,000, 2,500, 3,000 tx/s, then max) and report each one as a multiple of B.
+  - Every step is reported both ways: as a multiple of B, and in absolute tx/s.
+- **Each step is 15 min at a fixed target, followed by 5 min of drain** (runners at 0, all measurements still on). The max step uses 7 runners, no cap, and a 10-min drain.
+- **Within a step nothing changes:** target rate, fee tiers, pace band, runner count and miner state are all fixed. The scaler and the automatic fee daemon are off.
+- Timeline: B0 10 min + 6 steps × 20 min + 5 extra drain minutes + B1 10 min ≈ **2 h 25 min**. Start around 20:15 CEST (after the 19:05–20:10 pruning-window slowdown) and finish well before 01:00.
+- Workers: 6 runners × 4 wRPC connections, a 7th only for the max step. Never 8; it collapsed throughput on 2 Oct.
+- A step counts as **sender-limited** if our submit-OK rate stays below 95% of its target. We report that separately from "the network stopped accepting".
+
+## 4. Per-second logs in UTC, and send order vs accept order
+
+- **All timestamps are UTC**, ISO 8601 with milliseconds (`2026-10-13T18:15:00.123Z`), from the box clock. NTP status is recorded at T0. Summaries also show CEST.
+- **Per second**, each runner logs: submitted (submit-OK), rejected by reason, offered (rate-limiter tokens granted), and accepted, split by fee tier. Accepted is counted twice: by the second it was accepted, and by the second it was submitted.
+- **Per second**, network-wide: unique accepted transactions, counted from the transaction ids in n0's `virtual-chain-changed` notifications (this replaces the double-counting "Processed" counter); n0's mempool size; blocks added, and how many of them were ours.
+- **Per transaction** (lanes in a fixed 1-in-10 sample; all probes), we record:
+  - a **send sequence number** `seq`, monotonic per runner and assigned when the submit starts;
+  - `t_submit_start`, `t_submit_ok` and `t_accept`;
+  - the acceptance position: the index of the `virtual-chain-changed` event, plus the transaction's position inside it;
+  - the fee tier, step, runner and lane.
+- **Ordering question:** per step and tier we report the share of transaction pairs that were sent at least 1 s apart and accepted in the opposite order. We also report how often a 1.5× transaction overtakes a 1× transaction sent earlier. Transactions accepted in the same event count as ties, reported separately. Lane hops are chained (a child can't be accepted before its parent), so the cross-lane comparison and the probes carry this analysis.
+- **Pending at stop:** anything not accepted when the run stops is listed with its tier and step. Runners are not restarted mid-step; if one is, that is logged.
+
+## 5. Fee tiers (the 1× vs 1.5× question)
+
+- At each step start we read n0's normal fee estimate → **F1** (floor 100 sompi/gram) and set **F1.5 = 1.5 × F1**. Both are frozen for the step.
+- In every runner, even lanes pay F1 and odd lanes pay F1.5: same runner, connections, transaction shape (643-gram hops) and moment. A lane keeps its tier for the whole step.
+- **Probes:** a separate process sends one small, non-chained, signed self-transfer per tier (**1×, 1.2×, 1.5×, 2×** of F1) every 10 s, from its own wallets. That's ~90 probes per tier per 15-min step. 1.2× and 2× link back to the 25 Sep probes.
+- Reported per step and tier: count, p50, p95, p99 and worst submit → first-acceptance time, and the share over 30 s and over 60 s.
+
+## 6. Indexer and mempool
+
+- **Indexer (api-tn10.kaspa.org):**
+  - `GET /info/health?nc=<ms>` every 30 s (cache bypass), logging the HTTP status, `acceptedTxBlockTimeDiff`, `blueScoreDiff` and `isSynced`;
+  - once a minute, one already-accepted probe transaction is polled with `GET /transactions/<txid>` every 5 s until it shows up (give up after 30 min). At most ~0.3 requests/s in total.
+  - **Freeze rule:** 3 consecutive samples (90 s) with 503 or timeout, or a lag above 120 s and rising, or a visibility delay above 300 s. We report the step, the minutes into the step, our tx/s and network tx/s at that point, the freeze length and the recovery time.
+  - A second public indexer is used only if we can confirm one exists beforehand.
+- **Mempool:** n0 `mempoolSize` every 1 s and the fee estimate every 10 s. Optionally, a fee-band snapshot every 5 min while the mempool is under 50k.
+
+## 7. Mining share
+
+- For every block n0 adds, the coinbase payout script is compared with stp's mining addresses (box and desk miners). Logged per second and summarised per step: blocks total, blocks ours, **our share in %**.
+- The box miners' on/off state is fixed for the whole run and printed in the results. The desk (Build) sender is off, or logs its transaction ids.
+- Optional, if disk allows after B1: one extra 15-min max step with our box miners off, to show how much our hashrate mattered. It runs after the main plan and is marked as an extra.
+
+## 8. Publication: raw data next to the summary
+
+The results go into this repo:
+- **`data/`, raw and per-second files** (CSV / JSONL, UTC):
+  - `steps.jsonl`: step boundaries, targets, B, F1/F1.5, runner count, miner state;
+  - `per_second.csv`: submitted, accepted and offered per tier, network unique accepted, mempool, blocks and our blocks;
+  - `probes.csv`: every probe, with txid;
+  - `tx_sample.csv.gz`: per-transaction sample with `seq` and timestamps (1-in-100 lanes in the repo; the 1-in-10 file on request if too large for GitHub);
+  - `mempool_1s.csv`, `indexer.jsonl`, `fee_estimates.jsonl`, `mining_share_per_step.csv`, and a per-step summary CSV.
+- Txids of the P2W lanes are published **after the lane coins have been swept**: those lanes are anyone-can-spend on TN10.
+- **Charts** (PNG): submitted vs accepted per second and per step; confirmation time per step and tier (1× vs 1.5×); send vs accept order; mempool per second; indexer lag; mining share per step.
+- No keys or recovery phrases, and no private paths.
+- Each file stays under 50 MB.
+
+## 9. Box limits (our setup, not protocol limits)
+
+- One node (n0, kaspad 2.1.0, `--ram-scale=0.1`, mempool cap ~100k) on an 8-vCPU / 16 GB / 126 GB box.
+- **Disk:** keep ~19 GB free for n0's pruning at all times. The morning pruning window (~07:15–08:30 CEST) needs 11–15 GB of temporary disk; a pruning disk-full crashed n0 on 3 Oct.
+  - On 2 Oct, ~2.2k tx/s used ~4.7–5.0 GB/h, so this schedule needs roughly 10–12 GB *(estimate)*.
+  - **Go only with ≥ 35 GB free at T0.** With 28–35 GB, steps shrink to 10 min (recorded as a deviation). Below 28 GB, no storm.
+- **Guards** (unchanged): runner pause at ≤ 21 GB free; STOP below 19 GB for more than 900 s; immediate STOP at 10 GB or RAM < 1 GB; STOP if n0 is unsynced or more than 300 s behind. A guard stop ends the run early and is reported as such.
