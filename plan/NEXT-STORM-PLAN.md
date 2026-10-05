@@ -21,7 +21,7 @@ The 1× vs 1.5× comparison is the main question. Mainnet congestion costing is 
 - **TN10 ops** (stp's AI operator bot), sending from stp's box through its own node n0;
 - **Grok Build**, sending from stp's desk PC through public TN10 nodes (§3a).
 
-The sections below are the **how**: Kaspa Pulse's six process points (§1–§4, §7, §8), plus fee tiers (§5), indexer and mempool (§6) and box limits (§9).
+The sections below are the **Method**: Kaspa Pulse's six process points (§1–§4, §7, §8), plus fee tiers (§5), indexer and mempool (§6) and box limits (§9).
 
 ## Up front: what the results will and won't describe
 

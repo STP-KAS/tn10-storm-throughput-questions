@@ -299,7 +299,7 @@ The October storm answered these questions only partly (see Q1–Q4 above):
 
 The next storm is built to answer all four directly, with both senders counted.
 
-### How: Kaspa Pulse's six process points
+### Method: Kaspa Pulse's six process points
 
 | # | Guidance | In the plan |
 |---|---|---|
@@ -310,7 +310,7 @@ The next storm is built to answer all four directly, with both senders counted.
 | 5 | State mining share up front | **~50–63% in earlier storms.** The exact share for this run is measured per step and published. The results describe **TN10 with our miners and Build on it, not mainnet** (plan §7) |
 | 6 | Publish raw data next to the summary | Per-second CSV, per-step summary, every probe, per-transaction samples (box and Build), mempool, indexer and mining-share files in `data/` (plan §8) |
 
-### Method: how Build takes part
+#### Method: how Build takes part
 - Build sends from the desk through public TN10 nodes, alongside the box runners, on the **same UTC step timetable**. In B0 and B1 it is off.
 - **Per-step target:** a fixed share of each step's added load, written into the locked plan before T0 (default 25%, capped at what its sender sustains in a pre-run test). The box sends the rest. Both actual rates are measured, not assumed.
 - **Fees:** Build uses the same two tiers, 1× and 1.5× of its node's normal fee estimate, split across its lanes and fixed per step. If its sender can't split, its single fee is logged and its transactions are left out of the 1× vs 1.5× comparison.
@@ -346,7 +346,7 @@ Next TN10 storm: target 13 Oct (possible early test run 6 Oct if the logging is 
 
 The 1× vs 1.5× comparison is the main one. No mainnet cost figures.
 
-**How (your six points)**
+**Method (your six points)**
 1. **Plan:** published before the run, locked by commit SHA, and that SHA is cited in the results.
 2. **Baseline:** 10 min of normal TN10 traffic first, with our senders off and the same measurements. Another 10 min after the load.
 3. **Fixed steps:** 2×, 5×, 10×, 20× and 30× the measured baseline, then max.
