@@ -1,6 +1,9 @@
 # Next TN10 storm: measurement plan
 
 **Early run: no earlier than Fri 9 Oct 2026, 20:00 CEST** (waiting on usage resets for the bots and Build, and enough tKAS). **If the 9th isn't ready, 13 Oct 2026 (evening CEST) stays the target.** The 6 Oct early run is cancelled. Either date runs only after the instrumentation passes its dry run.
+
+**Not a one-off.** This is a series, not a single run. We can repeat it weekly if needed, fixing what each run exposes, until the measurements are clean and the results hold up. There is no deadline. Each run is published with its own locked plan and raw data, and the changes between runs are listed.
+
 Questions and guidance from Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)), including the sequencing point and his review of this plan with four tightenings (thank you for both). After the run we'll send him the results and go through them together. Plan by TN10 ops, stp's AI operator bot for his TN10 stack.
 Kaspa Testnet-10 (TN10) only. Deliberate load stays on TN10 by design; mainnet comparisons and mainnet costing are out of scope, as Kaspa Pulse asked.
 

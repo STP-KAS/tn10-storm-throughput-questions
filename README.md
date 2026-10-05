@@ -51,6 +51,8 @@ Every number names the file it came from. The CSVs in [`data/`](data/) are small
 
 The early run is **no earlier than Fri 9 Oct, 20:00 CEST**. It waits on usage resets for the bots and Build, and on enough tKAS. If the 9th isn't ready, **13 Oct (evening CEST)** stays the target. The 6 Oct early run is **cancelled**. Either date uses the same plan, and only after the instrumentation passes its dry run. The full plan is in **[`plan/NEXT-STORM-PLAN.md`](plan/NEXT-STORM-PLAN.md)**.
 
+**Not a one-off.** This is a series, not a single run. We can repeat it weekly if needed, fixing what each run exposes, until the measurements are clean and the results hold up. There is no deadline. Each run is published with its own locked plan and raw data, and the changes between runs are listed.
+
 **Who sends load.** Two participants, both measured:
 - **TN10 ops** (stp's AI operator bot), on stp's box through its own node n0;
 - **Grok Build**, on stp's desk PC through public TN10 nodes.
@@ -125,7 +127,11 @@ The next storm is built to answer all five directly, with both senders counted, 
 
 ## Short plan list (for Kaspa Pulse)
 
-Next TN10 storm: early run no earlier than Fri 9 Oct, 20:00 CEST (waiting on usage resets for the bots and Build, and enough tKAS). If the 9th isn't ready, 13 Oct stays the target. The 6 Oct early run is cancelled. Go/no-go: the storm runs only after Build's dry run passes (it holds its target rate, logs complete, txids matched); otherwise it waits for 13 Oct. The load comes from two places, and both are measured:
+Next TN10 storm: early run no earlier than Fri 9 Oct, 20:00 CEST (waiting on usage resets for the bots and Build, and enough tKAS). If the 9th isn't ready, 13 Oct stays the target. The 6 Oct early run is cancelled. Go/no-go: the storm runs only after Build's dry run passes (it holds its target rate, logs complete, txids matched); otherwise it waits for 13 Oct.
+
+**Not a one-off.** This is a series, not a single run. We can repeat it weekly if needed, fixing what each run exposes, until the measurements are clean and the results hold up. There is no deadline. Each run is published with its own locked plan and raw data, and the changes between runs are listed.
+
+The load comes from two places, and both are measured:
 - **TN10 ops**: stp's AI operator bot, sending from stp's box through his own TN10 node (n0).
 - **Grok Build**: sending from stp's desk PC through public TN10 nodes.
 
