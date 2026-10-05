@@ -49,7 +49,7 @@ How many processes / PowerShell windows you run **during the storm** is decided 
   - the box merges all files by UTC time.
   - All processes are on one PC, so they share one clock.
 - **CPU:** the desk also runs CPU miners. A miner keeper adds or removes miners to hold ~75% total CPU, which would change the miner count during a step.
-  - For the dry run and the storm, use **one fixed desk miner count** (stp decides), log it, and leave cores for the senders.
+  - For the dry run and the storm, use **one fixed desk miner count** (stp decides), log it, and leave cores for the senders. The one exception is the miners-off control step, when stp turns them off.
   - The keeper must not add or remove miners mid-step.
 
 **Why (labels as in the README):**
@@ -68,7 +68,9 @@ How many processes / PowerShell windows you run **during the storm** is decided 
 ## What to send
 
 - **Timetable:** at T0 stp gives you `steps-utc.json`. It holds each step's start and end in UTC, your target per step and the fee rule. Use those UTC times exactly.
-- **Baselines:** **off** in B0 (the first 10 min) and B1 (the last 10 min). Send nothing at all.
+- **Baselines and settles:** **off** in B0 (the first 10 min), B1 (the last 10 min) and the two 5-min settle phases around the miners-off control. Send nothing at all.
+- **Phases** (all in `steps-utc.json`): B0 → 2× → settle (miners off) → **2× miners-off control** → settle (miners on) → 5× → 10× → 20× → 30× → max → B1. 2 h 55 min in total.
+- **Miners-off control:** in that step you send **exactly the same as in the 2× step** (same target, fees and ordered stream). The only change is that all of stp's miners are off, box and desk. stp switches the desk miners off and on at the UTC times; you don't touch them. Log the desk miner count at each phase start.
 - **Your share:** a fixed share of each step's *added* load, **default 25%**. The exact numbers are in `steps-utc.json`, capped at what you held in the dry run. The max step is uncapped for both senders.
 - **Hold the target rate for the whole step.** Every step runs **15 min at a fixed target**, then **5 min of drain** at 0 (the max step drains for 10 min). Within a step, nothing changes:
   - same rate;
@@ -114,17 +116,27 @@ All times are **UTC, ISO 8601 with milliseconds and `Z`** (e.g. `2026-10-09T18:1
 **Per second**, one JSON line each, in `build-sec-<date>-p<i>.jsonl`:
 - `t`, `step`, `tier`;
 - **`target`** (tx/s you were told to send) and **`achieved`** (submit-OK that second), so any shortfall shows up second by second;
-- `submit_ok`, rejects by reason, and the number of active workers and lanes.
+- `submit_ok`, rejects by reason, and the number of active workers and lanes;
+- `cpu_pct` of this process, so a desk-side limit shows up next to any shortfall.
 
 **Once per run**, in `build-run-meta-<date>.json`:
 - the script file names and their **SHA-256**, plus the version string;
 - Node and SDK versions;
 - the node URLs used;
 - the F1 per step;
-- the desk clock's offset from UTC at T0 (`w32tm /stripchart` or equivalent; exact command **confirm on the desk**);
+- the desk clock's NTP offset **at the start and at the end** (see "Clock" below);
 - the number of sender processes N, and each process's coin set (count of coins, no keys);
 - the fixed desk miner count;
 - the wallet address (public address only).
+
+**Clock (NTP), at the start and at the end** (**confirm on the desk**: exact commands, and whether the time service is running):
+```powershell
+w32tm /query /status
+w32tm /stripchart /computer:time.windows.com /samples:5 /dataonly
+```
+- Save both outputs, with the UTC time you ran them, into `build-run-meta-<date>.json`: once before your first transaction, and again after your last.
+- If the offset is above 100 ms, tell stp before the run. A resync (`w32tm /resync`, needs admin) is done only if stp says so.
+- Your confirmation times are corrected by this offset on the box. If the start or end offset is missing, they are flagged as uncorrected.
 
 **Where:**
 - save everything in the sender's `logs` folder (earlier prompts used `%USERPROFILE%\kaspa-tn10\build-storm\logs\`; **confirm on the desk**);
@@ -151,7 +163,8 @@ Use the same script, wallet path, miner count and process setup you will use in 
    - **logs:** every field present, `seq` monotonic per process, all times UTC `Z`, one file set per process;
    - **txid matching:** your txids are found in n0's accepted ids;
    - **timetable:** your starts and stops are within a few seconds of the UTC times (clock offset recorded);
-   - **fees:** both tiers present, with F1 logged.
+   - **fees:** both tiers present, with F1 logged;
+   - **clock:** start and end offsets present in the meta file.
 6. If any check fails, fix it and repeat the dry run. Your storm cap is the rate held in step 4, with the N chosen in step 3.
 
 ## Stop rules
