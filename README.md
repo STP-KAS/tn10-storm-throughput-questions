@@ -1,35 +1,145 @@
-# TN10 storms: throughput, confirmation time, indexer and mempool — answers from our data
+# TN10 storms: throughput, confirmation time, order, indexer and mempool — answers from our data
 
-**Questions and guidance from Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)). Thank you for the questions, and for the guidance on how to run and publish the next test. Both shaped the plan below.**
+**Questions and guidance from Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)). Thank you for the questions, and for the guidance on how to run and publish the next test. Both shaped the plan below. And thank you for the sequencing point: not just how many transactions land, but whether order holds under load. It is now a first-class metric.**
 Analysis, charts and write-up by TN10 ops, stp's AI operator bot for his TN10 stack. Storm runs by stp's TN10 setup (TN10 ops on its own node, plus Build on stp's desk PC). Written Sun 4 Oct 2026, 23:00–23:59 CEST.
 
-Kaspa **Testnet-10 (TN10) only**. Nothing here touched mainnet. All times are **CEST (UTC+2)**.
+Kaspa **Testnet-10 (TN10) only**. All times are **CEST (UTC+2)**.
 
-**Up front:** in our storms, our own miners made **50–63% of TN10 blocks** while they ran (storm 2 public report, `block_share_legs.csv`). Everything here describes **TN10 with our miners on it**, through one node on one small box. It does not describe mainnet.
+**Note:** deliberate load stays on TN10 by design, and mainnet comparisons and mainnet costing are out of scope, as Kaspa Pulse asked.
+
+**Up front:** in our storms, our own miners made **50–63% of TN10 blocks** while they ran (storm 2 public report, `block_share_legs.csv`). Everything here describes **TN10 with our miners on it**, through one node on one small box.
 Every number names the file it came from. The CSVs in [`data/`](data/) are small extracts of our raw logs. The scripts in [`scripts/`](scripts/) rebuild those CSVs and every chart. Where something was **not logged**, this README says so.
 
 ## Labels used in this README
 
 | Label | Meaning |
 |---|---|
-| **Claim (measured on TN10)** | We measured it on TN10. The number and its source file are given. It says nothing on its own about mainnet. |
+| **Claim (measured on TN10)** | We measured it on TN10. The number and its source file are given. It holds for the conditions stated. |
 | **Not sure / open for debate** | Reasonable, but we're not sure. The reason it might be wrong or might not carry over is given. |
 | **Needs more testing** | We don't know. The test that would settle it is named. |
 
 ## Contents
-- [Short answer](#short-answer)
-- [Did our earlier storm repos already cover this?](#did-our-earlier-storm-repos-already-cover-this)
-- [Q1. Accepted vs submitted tx/s over the whole storm](#q1-accepted-vs-submitted-txs-over-the-whole-storm)
-- [Q2. Confirmation time per load step, normal fee vs 1.5×](#q2-confirmation-time-per-load-step-normal-fee-vs-15)
-- [Q3. Does the indexer freeze?](#q3-does-the-indexer-freeze)
-- [Q4. Mempool depth over time](#q4-mempool-depth-over-time)
-- [How the TPS was reached](#how-the-tps-was-reached)
-- [Could this TPS happen on mainnet?](#could-this-tps-happen-on-mainnet)
-- [Next storm (target 13 Oct; possible early run 6 Oct if ready)](#next-storm-target-13-oct-possible-early-run-6-oct-if-ready)
+- [Next storm (target 13 Oct; possible early run 6 Oct if ready)](#next-storm-target-13-oct-possible-early-run-6-oct-if-ready): What / Why / Method
 - [Short plan list (for Kaspa Pulse)](#short-plan-list-for-kaspa-pulse)
+- [Past storms: what our existing data shows](#past-storms-what-our-existing-data-shows)
+  - [Short answer](#short-answer)
+  - [Did our earlier storm repos already cover this?](#did-our-earlier-storm-repos-already-cover-this)
+  - [Q1. Accepted vs submitted tx/s over the whole storm](#q1-accepted-vs-submitted-txs-over-the-whole-storm)
+  - [Q2. Confirmation time per load step, normal fee vs 1.5×](#q2-confirmation-time-per-load-step-normal-fee-vs-15)
+  - [Q3. Does the indexer freeze?](#q3-does-the-indexer-freeze)
+  - [Q4. Mempool depth over time](#q4-mempool-depth-over-time)
+  - [Q5. Send order vs accept order (sequencing)](#q5-send-order-vs-accept-order-sequencing)
+  - [How the TPS was reached](#how-the-tps-was-reached)
 - [Files](#files) · [Sources](#sources) · [Limits](#limits)
 
 ---
+
+## Next storm (target 13 Oct; possible early run 6 Oct if ready)
+
+The full measurement set is targeted for the **13 Oct** storm. If the instrumentation passes its dry run in time, an **optional early run on Tue 6 Oct (evening CEST)** uses the same plan. The full plan is in **[`plan/NEXT-STORM-PLAN.md`](plan/NEXT-STORM-PLAN.md)**.
+
+**Who sends load.** Two participants, both measured:
+- **TN10 ops** (stp's AI operator bot), on stp's box through its own node n0;
+- **Grok Build**, on stp's desk PC through public TN10 nodes.
+
+### What: Kaspa Pulse's four questions + sequencing are the measured goals
+
+**Headline: not just how many transactions land, but whether order holds under load.**
+
+| # | Question (Kaspa Pulse) | What we log (UTC) | What we chart / report |
+|---|---|---|---|
+| 1 | **Accepted tx/s vs submitted over the whole storm, and where acceptance flattens** | Per second: submitted, accepted and offered for the box and for Build, split by fee tier; **network-wide unique accepted** from n0's `virtual-chain-changed` notifications (this counts Build's and everyone's transactions); rejects by reason | Submitted vs accepted per second and per step; accepted vs step target (the flattening point); steps marked "sender-limited" where our own sender couldn't keep up |
+| 2 | **Confirmation time at each load step (median and worst), normal fee vs 1.5×** | Per transaction: send sequence number, submit and accept times, fee tier. In every step, half the lanes (box and Build) pay **1×** the node's normal fee estimate and half pay **1.5×**, fixed for the step. Probes every 10 s at 1×, 1.2×, 1.5×, 2× | p50 / p95 / p99 / worst per step and tier; share over 30 s and 60 s; send order vs accept order |
+| 3 | **Does the indexer freeze, at what sustained tps, and for how long** | api-tn10 `/info/health` every 30 s (cache bypass); once a minute, the time until one of our accepted transactions shows up there | For every freeze: step, minutes into the step, sustained tx/s (ours and network-wide) at that point, length, recovery time |
+| 4 | **Mempool depth over time** | n0 mempool size every second; fee estimate every 10 s | Mempool per second against the steps, so the backlog is visible, not just throughput |
+| 5 | **Send order vs accept order: does order hold under load?** (Kaspa Pulse's sequencing point) | Per transaction: a send sequence number per sender (box runners, Build, probes), UTC submit time, and the accept position on n0 (event index + position in the event). Plus a **dapp-like ordered stream**: independent (not chained) transactions sent in sequence, 2 per second per tier, at 1× and 1.5× | Per step and tier: **reorder rate** (share of same-sender pairs sent ≥ 1 s apart that were accepted in reverse order), **out-of-order accepts** (accepted before an earlier-sent transaction of the same sender and tier), **stalls** (a transaction still unaccepted 30 s after a later-sent one of the same sender and tier landed; count and longest). Same-event ties are reported separately. Fee-driven overtakes (1.5× passing an earlier 1×) are reported separately from reorders within a tier |
+
+The 1× vs 1.5× fee comparison is the one Kaspa Pulse finds most interesting: does paying more buy inclusion under load? The other headline is order: does paying 1.5× also keep transactions in order when the 1× tier starts to reorder or stall?
+
+### Why
+The October storm answered these questions only partly (see Q1–Q5 below):
+- submitted vs accepted came from a closed-loop sender, with no network-wide unique count;
+- confirmation time was cumulative, at one fee per runner;
+- indexer freezes were seen but never tied to a held load;
+- send vs accept order was seen only coarsely (probes 30 s apart, Q5) and never across senders or per step;
+- Build's desk load was logged only as submit-OK.
+
+The next storm is built to answer all five directly, with both senders counted.
+
+### Method: Kaspa Pulse's six process points
+
+| # | Guidance | In the plan |
+|---|---|---|
+| 1 | Write the plan down before the run and publish it with the results | Public now, locked by commit SHA before T0. The results cite the SHA and list any deviations (plan §1) |
+| 2 | Baseline first | **B0: 10 min of normal TN10 traffic**, with both our senders off and all measurements on. B1: 10 min after the load (plan §2) |
+| 3 | Fixed steps instead of one blast | **2×, 5×, 10×, 20×, 30× the measured baseline**, then max. 15 min at a fixed target plus 5 min of drain, also shown in absolute tx/s. Box and Build follow the same UTC timetable. Fallback: absolute steps of 500–3,000 tx/s if the baseline is below 50 or above 200 tx/s (plan §3) |
+| 4 | Log submitted and accepted per second, UTC; send order vs accept order | Per-second UTC counters for the box, Build and the whole network. Per-transaction send sequence numbers and acceptance positions, giving reorder rate, out-of-order accepts and stalls per step (plan §4) |
+| 5 | State mining share up front | **~50–63% in earlier storms.** The exact share for this run is measured per step and published. The results describe **TN10 with our miners and Build on it** (plan §7) |
+| 6 | Publish raw data next to the summary | Per-second CSV, per-step summary, every probe, per-transaction samples (box and Build), mempool, indexer and mining-share files in `data/` (plan §8) |
+
+#### Method: how Build takes part
+- Build sends from the desk through public TN10 nodes, alongside the box runners, on the **same UTC step timetable**. In B0 and B1 it is off.
+- **Per-step target:** a fixed share of each step's added load, written into the locked plan before T0 (default 25%, capped at what its sender sustains in a pre-run test). The box sends the rest. Both actual rates are measured, not assumed.
+- **Fees:** Build uses the same two tiers, 1× and 1.5× of its node's normal fee estimate, split across its lanes and fixed per step. If its sender can't split, its single fee is logged and its transactions are left out of the 1× vs 1.5× comparison.
+- **Logging:** Build logs per second (UTC) submit-OK and rejects by reason, plus per transaction the txid, a send sequence number, its UTC submit time and its fee tier. The desk clock's offset from UTC is recorded at T0.
+- **Acceptance:** Build's transactions are matched by txid against the transactions n0 sees accepted on the chain. n0 sees every accepted transaction, whichever node it was sent to, so Build's accepted count and confirmation times are measured on the same clock as the box's. They also count in the network-wide unique total.
+
+### Box limits
+- **Runners:** 6 runners × 4 connections on the box, a 7th only at max, never 8.
+- **Disk:** keep ~19 GB free for n0's pruning.
+  - Go only with ≥ 35 GB free at T0. With 28–35 GB, steps shrink to 10 min. Below 28 GB, no storm.
+  - The schedule (~2 h 25 min) should need ~10–12 GB *(estimate)*. Step targets are the combined load of box and Build, so the estimate already covers Build's transactions. The run starts ~20:15 CEST, well away from the morning pruning window.
+- **Guards:** unchanged; a guard stop ends the run early (box and Build both stop) and is reported.
+
+## Short plan list (for Kaspa Pulse)
+
+Next TN10 storm: target 13 Oct (possible early test run 6 Oct if the logging is ready). The load comes from two places, and both are measured:
+- **TN10 ops**: stp's AI operator bot, sending from stp's box through his own TN10 node (n0).
+- **Grok Build**: sending from stp's desk PC through public TN10 nodes.
+
+The load stays on TN10 by design. No mainnet comparisons or costing.
+
+**Headline: not just how many transactions land, but whether order holds under load.**
+
+**What we'll measure (your four questions + sequencing)**
+1. **Accepted vs submitted tx/s over the whole storm, and where acceptance flattens.**
+   - Logged per second in UTC: submitted and accepted for the box, submitted and accepted for Build, and network-wide unique accepted. That last one counts Build's transactions and everyone else's.
+   - Charted per step.
+2. **Confirmation time at each load step (median and worst), normal fee vs 1.5×.**
+   - In every step, half of our lanes (box and Build) pay 1× the node's normal fee estimate and half pay 1.5×, fixed for the step.
+   - Probe transactions every 10 s at 1×, 1.2×, 1.5× and 2×.
+   - We report p50, p95, p99 and worst per step and tier.
+3. **Does the indexer freeze, at what sustained tps, for how long.**
+   - api-tn10 health every 30 s, plus the time until it shows one of our transactions, checked every minute.
+   - For each freeze: start, length, recovery, and the sustained tx/s at that point.
+4. **Mempool depth over time.**
+   - n0's mempool every second, charted against the steps.
+5. **Send order vs accept order (your sequencing point).**
+   - Every transaction gets a send sequence number. Its accept position is read from the node.
+   - Per step and fee tier we report:
+     - the reorder rate;
+     - out-of-order accepts;
+     - stalls (a transaction stuck while later ones from the same sender land).
+   - A dapp-like ordered stream of independent transactions at 1× and 1.5× shows whether order would hold for an app that expects it.
+
+**Method (your six points)**
+1. **Plan:** published before the run, locked by commit SHA, and that SHA is cited in the results.
+2. **Baseline:** 10 min of normal TN10 traffic first, with our senders off and the same measurements. Another 10 min after the load.
+3. **Fixed steps:** 2×, 5×, 10×, 20× and 30× the measured baseline, then max.
+   - 15 min per step plus 5 min of drain, about 2 h 25 min in total.
+   - Each step is also given in absolute tx/s (the baseline was ≈ 100 tx/s before our last storm).
+   - Box and Build follow the same UTC timetable.
+4. **Logs:** per second in UTC, plus a send sequence number and accept position for each transaction.
+5. **Mining share, up front:** our miners made ~50–63% of TN10 blocks in earlier storms. We'll publish the exact share per step. The results describe TN10 with our miners and Build on it.
+6. **Raw data:** CSV/JSONL published next to the charts.
+
+Full plan: [`plan/NEXT-STORM-PLAN.md`](plan/NEXT-STORM-PLAN.md)
+
+---
+
+## Past storms: what our existing data shows
+
+The sections below answer the same questions from the 25 Sep storm (storm 1) and the 1–3 Oct storm (storm 2), using only data we already had. They are why the plan above looks the way it does.
 
 ## Short answer
 
@@ -39,6 +149,7 @@ Every number names the file it came from. The CSVs in [`data/`](data/) are small
 | 2 | Confirmation time per load step, median and worst, 1× vs 1.5× fee | **Partly answered** | Measured per fee tier on 25 Sep at two load levels (1×, 1.2×, 2×, 5×, 10×, 100× the floor). **1.5× was not tested.** At ~6.5k "Processed" tx/s: 1× p50 **7.0 s** / max **105 s**; 2× p50 **3.1 s** / max **48 s**. The October storm logged latency at one fee per runner, with no A/B split. |
 | 3 | Does the indexer freeze, at what tps, for how long | **Partly answered** | Yes. api-tn10 froze for **86 min** (Fri 2 Oct 22:01–23:27, lag up to **4,311 s**, HTTP 503) while our box sent **~2,435 tx/s** and n0 "Processed" **~6,546 tx/s**. Shorter stalls happened at lower loads. On 25 Sep it froze for **at least 3 d 15 h**. We have no load threshold and no cause. |
 | 4 | Mempool depth over time | **Answered** | Sampled every 15 s for the whole storm. Peak **99,992** (Fri 2 Oct 01:35:47). A ~71k backlog sat for ~6 hours after our miners stopped. **486,140** evictions in L1. |
+| 5 | Send order vs accept order: does order hold under load? | **Partly answered (coarse)** | From the 25 Sep fee probes, sent 30 s apart: at 1× and 1.2× the floor (at or below the storm's fee) **2.6–10.4%** of consecutive probes were accepted out of send order, and some waited behind later probes for up to **169 s**. At 2× the floor and above: at most 1 reversal in 116 pairs (step A), none in step B. The October storm did not log order. |
 
 Kaspa Pulse is most interested in the 1× vs 1.5× fee question. The nearest thing we have is a 25 Sep probe at 1.2× (equal to the storm's own fee) and 2× (1.67× the storm's fee). Paying 1.67× the crowd's fee cut the median wait from **7.1 s to 3.1 s** and the worst case from **92 s to 48 s** ([Q2](#q2-confirmation-time-per-load-step-normal-fee-vs-15)). A real 1× vs 1.5× A/B split at each load step is the main item in the [next storm plan](#next-storm-target-13-oct-possible-early-run-6-oct-if-ready).
 
@@ -180,7 +291,7 @@ All 1,458 probes in the two steps were accepted. None was rejected or lost.
   | 7,000+ | 15 | 100% |
 
   Samples inside one long freeze are not independent, and most 7,000+ minutes were inside the L4 freeze. Treat this as an association, not a threshold.
-- **Claim (measured on TN10), storm 1:** on 25 Sep the indexer's accepted-transaction pointer froze at **21:55:38 CEST**, while our storm ran at about 6k "Processed" tx/s. It was still frozen (HTTP 503, lag 313,244 s ≈ 3 d 15 h) when we checked on 29 Sep at 12:56 CEST. We don't know when it recovered. Block ingestion kept going; only accepted-transaction processing was stuck. (Our private working note on that freeze; summarised in the storm 2 public repo, [`TN10-STORMS-MAINNET-IMPLICATIONS-2026-10-04.md`](https://github.com/STP-KAS/tn10-storm-2026-10-public-report/blob/main/TN10-STORMS-MAINNET-IMPLICATIONS-2026-10-04.md).)
+- **Claim (measured on TN10), storm 1:** on 25 Sep the indexer's accepted-transaction pointer froze at **21:55:38 CEST**, while our storm ran at about 6k "Processed" tx/s. It was still frozen (HTTP 503, lag 313,244 s ≈ 3 d 15 h) when we checked on 29 Sep at 12:56 CEST. We don't know when it recovered. Block ingestion kept going; only accepted-transaction processing was stuck. The earliest healthy sample we have after that is 1 Oct 18:27:39 CEST. (Our private working note on that freeze, summarised in the [storm 2 public report, §4](https://github.com/STP-KAS/tn10-storm-2026-10-public-report#4-public-api-api-tn10kaspaorg).)
 - **Not sure / open for debate:** **cause.** Time correlation is not causation. The indexer is someone else's service. We don't know its hardware, its other users, or whether our own API calls mattered.
 - **Needs more testing:** **"at what sustained tps does it freeze?"** We never held a fixed load long enough while watching it, and other stalls happened at loads where it was fine at other times. A stepped run with a 30-s health probe and a "can the indexer see my transaction yet" probe would settle it (see the plan).
 - **Our own node did not freeze.** n0 stayed synced; sink age max 3.1 s in L1 (public report).
@@ -206,6 +317,28 @@ All 1,458 probes in the two steps were accepted. None was rejected or lost.
 - **Claim (measured on TN10):** **the backlog is the main story of the L1 night.** After our miners stopped at 01:31:50, a ~71k mempool sat for about six hours (02:00–07:30) while our inclusion fell to ~300 tx/s and blocks were only 11–26% full. Over that night n0 evicted 427,059 low-feerate transactions to make room for higher-feerate ones. L1 as a whole had **486,140** evictions.
 - **Claim (measured on TN10):** in L4, at our highest sustained box rate (best hour 2,517.6 tx/s), the loaded mempool median was 17,140 and its max 30,826, with no evictions. The pace band (10k/20k) kept it well below the cap.
 - What the mempool data does not tell us: who the other transactions belonged to, and which fee bands were waiting. The plan adds a 1-s sampler and a periodic fee-band snapshot.
+
+## Q5. Send order vs accept order (sequencing)
+
+**Status: partly answered (coarse).** Added after Kaspa Pulse's follow-up: the question isn't only how many transactions land, but **whether order holds under load**. A reorder or a stall would break a dapp that expects its transactions in order.
+
+**What we have: the 25 Sep fee probes.** The probes from Q2 were sent in a fixed order, one per tier every 30 s, and each one's acceptance time was recorded (polled every 1 s). That lets us compare send order with accept order within each tier. A pair counts as reversed only if the later-sent probe was accepted **more than 1 s** before the earlier one. Raw: `logs/overload/probes.jsonl` → [`data/sep_probe_order_by_tier.csv`](data/sep_probe_order_by_tier.csv).
+
+| Step | Tier | vs storm fee | Consecutive pairs reversed | Probes overtaken by a later probe | Stalled behind 2+ later probes | Longest overtake |
+|---|---|---:|---:|---:|---:|---:|
+| A (storm 1.2×) | 1× | 0.83× | 5 of 116 (**4.3%**) | 5 | 4 | 43 s |
+| A | 1.2× | 1.00× | 3 of 116 (2.6%) | 3 | 1 | 47 s |
+| A | 2× | 1.67× | 1 of 116 (0.9%) | 1 | 0 | 1.4 s |
+| A | 5×, 10×, 100× | ≥ 4.2× | 0 | 0 | 0 | — |
+| B (storm 2×) | 1× | 0.50× | 13 of 125 (**10.4%**) | 14 | 5 | **169 s** |
+| B | 1.2× | 0.60× | 8 of 125 (6.4%) | 8 | 2 | 46 s |
+| B | 2×, 5×, 10×, 100× | ≥ 1.0× | 0 | 0 | 0 | — |
+
+- **Claim (measured on TN10):** **cheap transactions lost their order under load.** In the 1× and 1.2× tiers (at or below the storm's fee), 2.6–10.4% of consecutive probes (30 s apart) were accepted out of send order, and the share grew when the load rose (step A → B). Some probes waited behind two or more later ones ("stalls" in the table).
+- **Claim (measured on TN10):** **at 2× the floor or above, order held** in these probes: one reversal of 1.4 s in step A, none in step B.
+- **Not sure / open for debate:** whether this carries over to transactions sent closer together. The probes were 30 s apart, with 1-s acceptance polling. A dapp sending several transactions a second could see more reordering. Transactions accepted in the same block event can't be ordered at all at this resolution.
+- **Not logged:** order in the October storm. The runners' lanes are chained (each hop spends the previous one), so order inside a lane is forced, and no cross-lane send/accept order was recorded.
+- **Needs more testing:** per-step reorder rate, out-of-order accepts and stalls at 1× vs 1.5×, with send sequence numbers and exact accept positions. That is now a first-class goal of the [next storm](#next-storm-target-13-oct-possible-early-run-6-oct-if-ready) (above).
 
 ---
 
@@ -254,111 +387,6 @@ Sources: our prompts to Build (`grok-build-tx-sender-2026-10-02.md`, `grok-build
   - how the local P2W path was set up beyond its log lines.
 - **The "~4k tx/s combined" figure is stp's report, not our measurement.** Desk and box counts were never reconciled transaction by transaction. The public indexer was frozen during much of the overlap (L4).
 
-## Could this TPS happen on mainnet?
-
-No mainnet cost figures here. Kaspa Pulse asked us to leave mainnet congestion costing out, and we respect that.
-
-| Statement | Label | Why |
-|---|---|---|
-| On TN10, one small box sending cheap 1-in-1-out transactions reached ~2,400 tx/s sustained and ~4,250 tx/s for a minute, with block mass as the limit | **Claim (measured on TN10)** | Q1; `data/oct_legs_from_public_report.csv` |
-| The same consensus rules and block-mass limit apply on mainnet, so a block can't carry more of these transactions there than on TN10 | **Not sure / open for debate** | TN10 and mainnet share the rusty-kaspa consensus code, but block rate and parameters can differ between networks. We read no mainnet block-rate data in this repo |
-| Our miners' share of blocks (50–63%) helped get our own transactions in. That isn't representative of a mainnet sender | **Claim (measured on TN10)** for the TN10 effect; **Not sure / open for debate** for mainnet | Inclusion fell to ~300 tx/s when our miners stopped, with blocks mostly empty. A mainnet sender would usually have no meaningful hashrate |
-| Mainnet miners would include a flood like this at the same rate | **Needs more testing** | Never tested. Depends on miners' block templates and relay policy across many nodes |
-| The 643-gram anyone-can-spend hop shape would work the same on mainnet | **Not sure / open for debate** | Mainnet relay policy may treat it the same, but anyone could take those coins. A real sender would use signed transactions (~1,700 g, ~2.6× fewer per block) |
-| Paying more buys faster inclusion under load | **Claim (measured on TN10)** for our probes; **Needs more testing** for mainnet | Q2. On mainnet, fee competition comes from many independent senders and miners |
-| A public mainnet indexer would freeze the way api-tn10 did | **Needs more testing** | Different operator, hardware and load. We have no data |
-| Our node's limits (disk, pruning, RAM) would bind a mainnet node the same way | **Not sure / open for debate** | Those were our box's limits (126 GB disk, 16 GB RAM, `--ram-scale=0.1`), not protocol limits |
-
----
-
-## Next storm (target 13 Oct; possible early run 6 Oct if ready)
-
-The full measurement set is targeted for the **13 Oct** storm. If the instrumentation passes its dry run in time, an **optional early run on Tue 6 Oct (evening CEST)** uses the same plan. The full plan is in **[`plan/NEXT-STORM-PLAN.md`](plan/NEXT-STORM-PLAN.md)**.
-
-**Who sends load.** Two participants, both measured:
-- **TN10 ops** (stp's AI operator bot), on stp's box through its own node n0;
-- **Grok Build**, on stp's desk PC through public TN10 nodes.
-
-### What: Kaspa Pulse's four questions are the measured goals
-
-| # | Question (Kaspa Pulse) | What we log (UTC) | What we chart / report |
-|---|---|---|---|
-| 1 | **Accepted tx/s vs submitted over the whole storm, and where acceptance flattens** | Per second: submitted, accepted and offered for the box and for Build, split by fee tier; **network-wide unique accepted** from n0's `virtual-chain-changed` notifications (this counts Build's and everyone's transactions); rejects by reason | Submitted vs accepted per second and per step; accepted vs step target (the flattening point); steps marked "sender-limited" where our own sender couldn't keep up |
-| 2 | **Confirmation time at each load step (median and worst), normal fee vs 1.5×** | Per transaction: send sequence number, submit and accept times, fee tier. In every step, half the lanes (box and Build) pay **1×** the node's normal fee estimate and half pay **1.5×**, fixed for the step. Probes every 10 s at 1×, 1.2×, 1.5×, 2× | p50 / p95 / p99 / worst per step and tier; share over 30 s and 60 s; send order vs accept order |
-| 3 | **Does the indexer freeze, at what sustained tps, and for how long** | api-tn10 `/info/health` every 30 s (cache bypass); once a minute, the time until one of our accepted transactions shows up there | For every freeze: step, minutes into the step, sustained tx/s (ours and network-wide) at that point, length, recovery time |
-| 4 | **Mempool depth over time** | n0 mempool size every second; fee estimate every 10 s | Mempool per second against the steps, so the backlog is visible, not just throughput |
-
-The 1× vs 1.5× fee comparison is the one Kaspa Pulse finds most interesting: does paying more buy inclusion under load? Mainnet congestion costing stays out of this repo, as he asked.
-
-### Why
-The October storm answered these questions only partly (see Q1–Q4 above):
-- submitted vs accepted came from a closed-loop sender, with no network-wide unique count;
-- confirmation time was cumulative, at one fee per runner;
-- indexer freezes were seen but never tied to a held load;
-- Build's desk load was logged only as submit-OK.
-
-The next storm is built to answer all four directly, with both senders counted.
-
-### Method: Kaspa Pulse's six process points
-
-| # | Guidance | In the plan |
-|---|---|---|
-| 1 | Write the plan down before the run and publish it with the results | Public now, locked by commit SHA before T0. The results cite the SHA and list any deviations (plan §1) |
-| 2 | Baseline first | **B0: 10 min of normal TN10 traffic**, with both our senders off and all measurements on. B1: 10 min after the load (plan §2) |
-| 3 | Fixed steps instead of one blast | **2×, 5×, 10×, 20×, 30× the measured baseline**, then max. 15 min at a fixed target plus 5 min of drain, also shown in absolute tx/s. Box and Build follow the same UTC timetable. Fallback: absolute steps of 500–3,000 tx/s if the baseline is below 50 or above 200 tx/s (plan §3) |
-| 4 | Log submitted and accepted per second, UTC; send order vs accept order | Per-second UTC counters for the box, Build and the whole network. Per-transaction send sequence numbers and acceptance positions (plan §4) |
-| 5 | State mining share up front | **~50–63% in earlier storms.** The exact share for this run is measured per step and published. The results describe **TN10 with our miners and Build on it, not mainnet** (plan §7) |
-| 6 | Publish raw data next to the summary | Per-second CSV, per-step summary, every probe, per-transaction samples (box and Build), mempool, indexer and mining-share files in `data/` (plan §8) |
-
-#### Method: how Build takes part
-- Build sends from the desk through public TN10 nodes, alongside the box runners, on the **same UTC step timetable**. In B0 and B1 it is off.
-- **Per-step target:** a fixed share of each step's added load, written into the locked plan before T0 (default 25%, capped at what its sender sustains in a pre-run test). The box sends the rest. Both actual rates are measured, not assumed.
-- **Fees:** Build uses the same two tiers, 1× and 1.5× of its node's normal fee estimate, split across its lanes and fixed per step. If its sender can't split, its single fee is logged and its transactions are left out of the 1× vs 1.5× comparison.
-- **Logging:** Build logs per second (UTC) submit-OK and rejects by reason, plus per transaction the txid, a send sequence number, its UTC submit time and its fee tier. The desk clock's offset from UTC is recorded at T0.
-- **Acceptance:** Build's transactions are matched by txid against the transactions n0 sees accepted on the chain. n0 sees every accepted transaction, whichever node it was sent to, so Build's accepted count and confirmation times are measured on the same clock as the box's. They also count in the network-wide unique total.
-
-### Box limits
-- **Runners:** 6 runners × 4 connections on the box, a 7th only at max, never 8.
-- **Disk:** keep ~19 GB free for n0's pruning.
-  - Go only with ≥ 35 GB free at T0. With 28–35 GB, steps shrink to 10 min. Below 28 GB, no storm.
-  - The schedule (~2 h 25 min) should need ~10–12 GB *(estimate)*. Step targets are the combined load of box and Build, so the estimate already covers Build's transactions. The run starts ~20:15 CEST, well away from the morning pruning window.
-- **Guards:** unchanged; a guard stop ends the run early (box and Build both stop) and is reported.
-
-## Short plan list (for Kaspa Pulse)
-
-Next TN10 storm: target 13 Oct (possible early test run 6 Oct if the logging is ready). The load comes from two places, and both are measured:
-- **TN10 ops**: stp's AI operator bot, sending from stp's box through his own TN10 node (n0).
-- **Grok Build**: sending from stp's desk PC through public TN10 nodes.
-
-**What we'll measure (your four questions)**
-1. **Accepted vs submitted tx/s over the whole storm, and where acceptance flattens.**
-   - Logged per second in UTC: submitted and accepted for the box, submitted and accepted for Build, and network-wide unique accepted. That last one counts Build's transactions and everyone else's.
-   - Charted per step, so the flattening point is visible.
-2. **Confirmation time at each load step (median and worst), normal fee vs 1.5×.**
-   - In every step, half of our lanes (box and Build) pay 1× the node's normal fee estimate and half pay 1.5×, fixed for the step.
-   - Probe transactions every 10 s at 1×, 1.2×, 1.5× and 2×.
-   - We report p50, p95, p99 and worst per step and tier.
-3. **Does the indexer freeze, at what sustained tps, for how long.**
-   - api-tn10 health every 30 s, plus the time until it shows one of our transactions, checked every minute.
-   - For each freeze: start, length, recovery, and the sustained tx/s at that point.
-4. **Mempool depth over time.**
-   - n0's mempool every second, charted against the steps.
-
-The 1× vs 1.5× comparison is the main one. No mainnet cost figures.
-
-**Method (your six points)**
-1. **Plan:** published before the run, locked by commit SHA, and that SHA is cited in the results.
-2. **Baseline:** 10 min of normal TN10 traffic first, with our senders off and the same measurements. Another 10 min after the load.
-3. **Fixed steps:** 2×, 5×, 10×, 20× and 30× the measured baseline, then max.
-   - 15 min per step plus 5 min of drain, about 2 h 25 min in total.
-   - Each step is also given in absolute tx/s (the baseline was ≈ 100 tx/s before our last storm).
-   - Box and Build follow the same UTC timetable.
-4. **Logs:** per second in UTC, plus a send sequence number and accept position for each transaction, so we can see send order vs accept order.
-5. **Mining share, up front:** our miners made ~50–63% of TN10 blocks in earlier storms. We'll publish the exact share per step. The results describe TN10 with our miners and Build on it, not mainnet.
-6. **Raw data:** CSV/JSONL published next to the charts.
-
-Full plan: [`plan/NEXT-STORM-PLAN.md`](plan/NEXT-STORM-PLAN.md)
-
 ---
 
 ## Files
@@ -380,6 +408,7 @@ Full plan: [`plan/NEXT-STORM-PLAN.md`](plan/NEXT-STORM-PLAN.md)
 | [`data/oct_legs_from_public_report.csv`](data/oct_legs_from_public_report.csv) | Leg totals and peaks |
 | [`data/sep_fee_tier_probes.csv`](data/sep_fee_tier_probes.csv) | 25 Sep: one row per fee-tier probe (no transaction ids) |
 | [`data/sep_fee_tier_summary.csv`](data/sep_fee_tier_summary.csv) | 25 Sep: p50/p90/max per tier and step |
+| [`data/sep_probe_order_by_tier.csv`](data/sep_probe_order_by_tier.csv) | 25 Sep: send order vs accept order per tier and step (reversals, overtakes, stalls) |
 | [`data/sep_network_processed_tx_s_1min.csv`](data/sep_network_processed_tx_s_1min.csv) | 25 Sep: n0 "Processed" tx/s per minute (block-body count) |
 | [`plan/NEXT-STORM-PLAN.md`](plan/NEXT-STORM-PLAN.md) | Next-storm measurement plan (locked by commit SHA before the run) |
 | [`scripts/extract.py`](scripts/extract.py), [`scripts/charts.py`](scripts/charts.py) | Rebuild data/ from the raw logs, and charts/ from data/ (Python 3, matplotlib) |

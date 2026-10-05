@@ -1,12 +1,14 @@
 # Next TN10 storm: measurement plan
 
 **Target: 13 Oct 2026 (evening CEST). Possible early run: Tue 6 Oct (evening CEST), only if the instrumentation passes its dry run.**
-Questions and guidance from Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)). Plan by TN10 ops, stp's AI operator bot for his TN10 stack.
-Kaspa Testnet-10 (TN10) only. Nothing in this plan touches mainnet.
+Questions and guidance from Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)), including the sequencing point (thank you). Plan by TN10 ops, stp's AI operator bot for his TN10 stack.
+Kaspa Testnet-10 (TN10) only. Deliberate load stays on TN10 by design; mainnet comparisons and mainnet costing are out of scope, as Kaspa Pulse asked.
 
 Status: **draft until locked** (see §1). Labels as in the [README](../README.md#labels-used-in-this-readme): **Claim (measured on TN10)**, **Not sure / open for debate**, **Needs more testing**.
 
-## What: Kaspa Pulse's four questions are the measured goals
+## What: Kaspa Pulse's four questions + sequencing are the measured goals
+
+**Headline: not just how many transactions land, but whether order holds under load.** A reorder or a stall would break a dapp that expects its transactions in order.
 
 | # | Question (Kaspa Pulse) | What we log (UTC) | What we chart / report |
 |---|---|---|---|
@@ -14,8 +16,9 @@ Status: **draft until locked** (see §1). Labels as in the [README](../README.md
 | 2 | Confirmation time at each load step (median and worst), normal fee vs 1.5× | Per transaction: send sequence number, submit and accept times, fee tier; 1× / 1.5× lane split (box and Build) plus probes at 1×, 1.2×, 1.5×, 2× (§4, §5) | p50 / p95 / p99 / worst per step and tier; share > 30 s and > 60 s; send vs accept order |
 | 3 | Does the indexer freeze, at what sustained tps, and for how long | api-tn10 health every 30 s; once a minute, the time until one of our transactions is visible (§6) | Per freeze: step, minutes into the step, sustained tx/s (ours and network), length, recovery |
 | 4 | Mempool depth over time | n0 mempool every 1 s; fee estimate every 10 s (§6) | Mempool per second against the steps |
+| 5 | Send order vs accept order: does order hold under load? | Per-sender send sequence numbers, UTC submit times, accept position on n0 (event index + position); a dapp-like ordered stream at 1× and 1.5× (§4a) | Per step and tier: reorder rate, out-of-order accepts, stalls (count, longest); ties and fee-driven overtakes reported separately |
 
-The 1× vs 1.5× comparison is the main question. Mainnet congestion costing is out of scope, as Kaspa Pulse asked.
+The two headline comparisons are **1× vs 1.5× fee** (does paying more buy inclusion under load?) and **order under load** (does it hold, and does 1.5× keep it when 1× doesn't?).
 
 **Participants (both measured):**
 - **TN10 ops** (stp's AI operator bot), sending from stp's box through its own node n0;
@@ -26,7 +29,7 @@ The sections below are the **Method**: Kaspa Pulse's six process points (§1–�
 ## Up front: what the results will and won't describe
 
 - Our own miners made **50–63% of TN10 blocks** while they ran in earlier storms. That is a **Claim (measured on TN10)** from the storm 2 public report (`block_share_legs.csv`, `block_share_sampler2.csv`). We'll measure and publish the **exact share for this run, per step** (§7).
-- So the results describe **TN10, with our miners and Build's desk load on it, measured through one node on one small box**. They do not describe mainnet. Whether a mainnet storm would behave the same is **Needs more testing**, and we'll say so again in the results.
+- So the results describe **TN10, with our miners and Build's desk load on it, measured through one node on one small box**. We'll say so again in the results.
 
 ## 1. The plan is written down and locked before the run
 
@@ -74,7 +77,19 @@ The sections below are the **Method**: Kaspa Pulse's six process points (§1–�
   - `t_submit_start`, `t_submit_ok` and `t_accept`;
   - the acceptance position: the index of the `virtual-chain-changed` event, plus the transaction's position inside it;
   - the fee tier, step, runner and lane.
-- **Ordering question:** per step and tier we report the share of transaction pairs that were sent at least 1 s apart and accepted in the opposite order. We also report how often a 1.5× transaction overtakes a 1× transaction sent earlier. Transactions accepted in the same event count as ties, reported separately. Lane hops are chained (a child can't be accepted before its parent), so the cross-lane comparison and the probes carry this analysis.
+- **Ordering:** see §4a. It is a first-class metric, reported per step next to the four questions.
+
+### 4a. Sequencing: does order hold under load?
+- **Send order:** every sender (each box runner, Build's sender, the probe process, the ordered stream) assigns a monotonic **send sequence number** when a submit starts, logged with the UTC time.
+- **Accept order:** the position in n0's `virtual-chain-changed` stream (event index, then position inside the event's accepted ids). Transactions in the same event are **ties**, reported separately, not counted as reorders.
+- **Dapp-like ordered stream:** a dedicated process sends independent (not chained) self-transfers in sequence, **2 per second per tier at 1× and 1.5×**, from a pool of pre-split coins. A coin is reused only after its previous transaction was accepted, so no stream transaction depends on another one in the mempool. It runs through B0, every step and B1. This is the closest stand-in for an app that sends a series of transactions and expects them in order.
+- **Metrics per step and tier:**
+  - **Reorder rate:** the share of same-sender, same-tier transaction pairs sent ≥ 1 s apart that were accepted in reverse order. Consecutive pairs and all pairs are both reported.
+  - **Out-of-order accepts:** the count and share of transactions accepted before at least one earlier-sent transaction of the same sender and tier.
+  - **Stalls:** a transaction still not accepted 30 s after a later-sent transaction of the same sender and tier was accepted. We report the count, the longest stall, and anything never accepted by the end of the step's drain.
+  - **Fee-driven overtakes:** 1.5× transactions accepted before an earlier-sent 1× transaction. That's expected priority, reported separately from reorders within a tier.
+- **Lanes:** box and Build lanes are chained, so order inside a lane is forced and excluded. Cross-lane pairs from the sampled lanes are included.
+- **Prior data:** the 25 Sep probes (30 s apart) already show 2.6–10.4% of consecutive 1×/1.2× probes accepted out of order, and none at 2× and above in step B ([README Q5](../README.md#q5-send-order-vs-accept-order-sequencing)).
 - **Pending at stop:** anything not accepted when the run stops is listed with its tier and step. Runners are not restarted mid-step; if one is, that is logged.
 
 ## 5. Fee tiers (the 1× vs 1.5× question)
@@ -106,6 +121,8 @@ The results go into this repo:
   - `steps.jsonl`: step boundaries, targets, B, F1/F1.5, runner count, miner state;
   - `per_second.csv`: submitted, accepted and offered per tier, network unique accepted, mempool, blocks and our blocks;
   - `probes.csv`: every probe, with txid;
+  - `ordered_stream.csv`: the dapp-like ordered stream, with send sequence, UTC submit time and accept position;
+  - `order_per_step.csv`: reorder rate, out-of-order accepts, stalls and ties per step and tier;
   - `build_per_second.csv` and `build_tx_sample.csv.gz`: Build's per-second counters and per-transaction sample, with acceptance matched on n0;
   - `tx_sample.csv.gz`: per-transaction sample with `seq` and timestamps (1-in-100 lanes in the repo; the 1-in-10 file on request if too large for GitHub);
   - `mempool_1s.csv`, `indexer.jsonl`, `fee_estimates.jsonl`, `mining_share_per_step.csv`, and a per-step summary CSV.

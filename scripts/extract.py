@@ -157,3 +157,22 @@ for r in hr:
 with open(f"{OUT}/oct_api_bad_samples_by_n0_processed_tps.csv", "w", newline="") as fh:
     w = csv.writer(fh); w.writerow(["n0_processed_tx_s_bin", "health_samples", "non_200_or_timeout", "http200_but_lag_over_120s", "bad_share_pct"])
     for k in sorted(B): n, a, b = B[k]; w.writerow([f"{k}-{k+999}" if k < 7000 else "7000+", n, a, b, round(100 * (a + b) / n)])
+
+# ---------- sequencing: send order vs accept order among the 25 Sep probes (same tier) ----------
+# accept time = submit time (ms) + lat_s; acceptance was polled every 1 s, so a pair counts as reversed only if
+# the later-sent probe was accepted more than 1.0 s before the earlier-sent one.
+import itertools
+with open(f"{OUT}/sep_probe_order_by_tier.csv", "w", newline="") as fh:
+    w = csv.writer(fh)
+    w.writerow(["phase", "tier_x_min_feerate", "tier_vs_storm_fee", "probes", "consecutive_pairs", "consecutive_reversed", "consecutive_reversed_pct",
+                "all_pairs", "all_pairs_reversed", "all_pairs_reversed_pct", "probes_overtaken_by_a_later_probe", "stalled_behind_2plus_later_probes", "max_overtake_s"])
+    for ph in ("P1-overload", "P4-max"):
+        stf = 120 if ph.startswith("P1") else 200
+        for m in (1, 1.2, 2, 5, 10, 100):
+            v = sorted((E(s_[i]["t"]), E(s_[i]["t"]) + a_[i]["lat_s"]) for i in s_ if s_[i]["phase"] == ph and s_[i]["mult"] == m and i in a_)
+            cons = sum(1 for (s1, x1), (s2, x2) in zip(v, v[1:]) if x2 < x1 - 1.0)
+            allp = list(itertools.combinations(v, 2)); rev = [(x1 - x2) for (s1, x1), (s2, x2) in allp if x2 < x1 - 1.0]
+            over = sum(1 for k, (s1, x1) in enumerate(v) if any(x2 < x1 - 1.0 for s2, x2 in v[k + 1:]))
+            stall = sum(1 for k, (s1, x1) in enumerate(v) if sum(1 for s2, x2 in v[k + 1:] if x2 < x1 - 1.0) >= 2)
+            w.writerow([ph, m, round(m * 100 / stf, 2), len(v), len(v) - 1, cons, round(100 * cons / (len(v) - 1), 1), len(allp), len(rev),
+                        round(100 * len(rev) / len(allp), 2), over, stall, round(max(rev), 1) if rev else 0])

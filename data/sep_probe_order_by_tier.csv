@@ -1,0 +1,13 @@
+phase,tier_x_min_feerate,tier_vs_storm_fee,probes,consecutive_pairs,consecutive_reversed,consecutive_reversed_pct,all_pairs,all_pairs_reversed,all_pairs_reversed_pct,probes_overtaken_by_a_later_probe,stalled_behind_2plus_later_probes,max_overtake_s
+P1-overload,1,0.83,117,116,5,4.3,6786,10,0.15,5,4,43.2
+P1-overload,1.2,1.0,117,116,3,2.6,6786,4,0.06,3,1,47.3
+P1-overload,2,1.67,117,116,1,0.9,6786,1,0.01,1,0,1.4
+P1-overload,5,4.17,117,116,0,0.0,6786,0,0.0,0,0,0
+P1-overload,10,8.33,117,116,0,0.0,6786,0,0.0,0,0,0
+P1-overload,100,83.33,117,116,0,0.0,6786,0,0.0,0,0,0
+P4-max,1,0.5,126,125,13,10.4,7875,26,0.33,14,5,169.0
+P4-max,1.2,0.6,126,125,8,6.4,7875,10,0.13,8,2,46.3
+P4-max,2,1.0,126,125,0,0.0,7875,0,0.0,0,0,0
+P4-max,5,2.5,126,125,0,0.0,7875,0,0.0,0,0,0
+P4-max,10,5.0,126,125,0,0.0,7875,0,0.0,0,0,0
+P4-max,100,50.0,126,125,0,0.0,7875,0,0.0,0,0,0
