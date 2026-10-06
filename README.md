@@ -163,12 +163,13 @@ Charts and per-minute files: [Measured data](#measured-data). Earlier write-ups,
      - its txids match what n0 sees accepted;
      - it follows the UTC timetable.
    - Prompt: [`plan/GROK-BUILD-PROMPT.md`](plan/GROK-BUILD-PROMPT.md).
-2. **Enough tKAS** in Build's wallet and on the box for the full schedule (amounts to confirm).
-3. **Usage resets** for the bots and Build before the run.
-4. **Box dry run passes** (plan checklist), and **≥ 35 GB free disk** at T0.
-5. **Set Build's share** (default 25%, capped at what it held in its dry run), then **lock the plan by commit SHA** before T0.
-6. **Desk clock and desk miners:** the desk clock is synced by NTP (offset logged at start and end), and stp switches the desk miners off and back on at the UTC times of the miners-off control step.
-7. **Final OK on the start time:** Fri 9 Oct, 20:00 CEST at the earliest, otherwise 13 Oct.
+   - **Desk status:** the four-process gate passed on the mean. The n0 txid match is still open. Detail is in the dry run below.
+2. **Enough tKAS** in Build's wallet and on the box for the full schedule. **OK for both wallets.** [Grok Build](https://github.com/STP-KAS/groks-wallet#grok-build) ([TN10 page](https://tn10.kaspa.stream/addresses/kaspatest:qp4jge54eztxewf8r53rtjdvxakmatsu6tjd0nn9sjhgvzxknsfvjvmwurqhd)) and [Grok Bot](https://github.com/STP-KAS/groks-wallet#grok-bot) ([TN10 page](https://tn10.kaspa.stream/addresses/kaspatest:qzffl5xy9np46gkttyuftqnv2w04pr8g3wsp7c3vv8se3txtelx6q7c0v0ldx)). The desk read the Build wallet at 23:00 UTC on 6 Oct: 3,612,867 tKAS and 15,944 coins of at least 2 tKAS. The Bot wallet is OK on stp's word. The box balance was not read from this desk.
+3. **Usage resets** for the bots and Build before the run. **OK**, per stp on 7 Oct 2026.
+4. **Box dry run passes** (plan checklist), and **≥ 35 GB free disk** at T0. **Not done.** Not measured from this desk.
+5. **Set Build's share** (default 25%, capped at what it held in its dry run), then **lock the plan by commit SHA** before T0. The 25% share still fits the dry run (734 tx/s, 97.9% of 750). **The plan is not locked.**
+6. **Desk clock and desk miners:** the desk clock is synced by NTP (offset logged at start and end), and stp switches the desk miners off and back on at the UTC times of the miners-off control step. Start offsets are logged: +35 ms to +50 ms during the dry run, and +73 ms at 23:00 UTC on 6 Oct for the long pre-run. Desk miners during that pre-run: 0. The end offset waits until 09:02 UTC on 7 Oct. The miner switch is the storm control step and has not been run.
+7. **Final OK on the start time:** Fri 9 Oct, 20:00 CEST at the earliest, otherwise 13 Oct. **Not a start-now.**
 
 ### Desk dry run, 6 Oct 2026
 
@@ -221,7 +222,7 @@ Muon-10 held about 290 tx/s in the six-process run, so the ten-process run left 
 
 Past about 9,000 tx/s the public nodes are the limit. The desk still had free CPU and free RAM. This ceiling is not a new storm rate. The storm still uses 4 fixed processes for the planned share.
 
-The other tasks in the list are unchanged. Earliest start remains Fri 9 Oct 2026, 20:00 CEST, otherwise 13 Oct.
+Tasks 2 and 3 are marked in the list above. Tasks 4, 5, and 7 are still open. The end-of-run clock offset in task 6 is still open. Earliest start remains Fri 9 Oct 2026, 20:00 CEST, otherwise 13 Oct. This note does not start the storm. The 10-hour desk pre-run was still inside its window when this list was scored (armed through 09:02 UTC on 7 Oct). Its total is not in this file.
 
 ### Monitored hold, 6 Oct 2026, 22:57 CEST
 
