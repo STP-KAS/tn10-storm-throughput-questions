@@ -46,9 +46,10 @@ The sections below are the **Method**: Kaspa Pulse's six process points (§1–�
 ## 1. The plan is written down and locked before the run
 
 - This file is the plan. Before T0 we take the SHA of the last commit that changed it (`git log -1 --format=%H -- plan/NEXT-STORM-PLAN.md`) and write it in the run log at T0.
-- The results README cites that SHA at the top, with a link to this file at that commit.
+- The results sections of the README cite that SHA, with a link to this file at that commit.
 - After the lock the plan is not edited. Anything we do differently on the night goes in a **"Deviations from the locked plan"** section of the results, with the time and the reason.
-- The results are published next to this plan, in this repo.
+- The results are published next to this plan, in this repo. Build's result and the bot's result each keep their own section.
+- Once both of those sections are filled, the check of one against the other is [tn10-storm-build-bot-challenge](https://github.com/STP-KAS/tn10-storm-build-bot-challenge). That page stays empty until then. It does not replace the two result sections.
 
 ## 2. Baseline first
 
