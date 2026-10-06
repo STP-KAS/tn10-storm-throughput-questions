@@ -80,9 +80,26 @@ Past about 9,000 tx/s the public nodes are the limit. The desk still had free CP
 
 The other tasks in the list are unchanged. Earliest start remains Fri 9 Oct 2026, 20:00 CEST, otherwise 13 Oct.
 
+### Monitored hold, 6 Oct 2026, 22:57 CEST
+
+The bot already holds more than 3,000 tx/s on its own. This run asked whether the desk can hold that or more, with the five questions recorded at the same time. It is a rehearsal, not the storm. Six fixed processes, one per public node, plus the ordered stream. Fees frozen at the step start: **158 and 237** sompi/gram. Desk miners: **0**. The desk clock was **+60 ms** against time.windows.com. The desk's own node was still syncing, so acceptance was read from vector-10's virtual chain. The box node n0 still matches the same txids.
+
+| Question | What this 45-second hold showed |
+|---|---|
+| 1. Submit vs accept | **6,281 tx/s** mean submit-OK (min 2,952, max 10,404). 282,651 submit-OK. About 3,200 orphan rejects. The listeners saw about **1,500/s** of ours accepted during the send. **55.8%** had been accepted on vector-10 by two minutes after the stop. The 95% saturation rule fails on this window. |
+| 2. Confirmation, 1× vs 1.5× | Of the transactions that landed before the watch stopped: 1× median **23.0 s** (p95 140 s, n=79,448); 1.5× median **20.9 s** (p95 139 s, n=78,290). Paying 1.5× bought about 2 seconds at the median. The tail did not move. **44%** were still unaccepted when the watch stopped, so these percentiles are the ones that made it in. |
+| 3. Indexer | api-tn10 `/info/health` every 30 s: HTTP 200, synced, accepted-tx lag **0–3 s**. It did not freeze during this short hold. |
+| 4. Mempool | Four public nodes climbed together to a max of about **181,000**. vector-10 peaked near **51,000**. muon-10 stayed near a median of **2,100** and only contributed about 270 tx/s. The normal fee estimate moved from about 148 to about 192 while our tiers stayed frozen. |
+| 5. Order | The ordered stream (4 tx/s, both tiers) had **4 reversals in 66** consecutive pairs sent at least 1 s apart (**6.1%**, 95% CI 2.4–14.6%). One same-event tie. No 30-second stall in that stream. On the flood, 46% of 1.5× transactions passed an earlier 1× from the same process. The blast itself sends faster than one per second, so its consecutive pairs are not the ≥1 s sample. |
+
+Block rate stayed about 8–10 per second, with a one-second peak of 21. The network kept producing blocks while the mempool grew.
+
+If Build's job is to match the bot, this desk did it at **six** processes, not at the four that hold the planned 750 tx/s share. Muon-10 is the weak node. The four-process gate for the planned share still stands. This rehearsal does not replace it, and it does not start the storm.
+
 ## Contents
 - [Tasks for stp (before the storm)](#tasks-for-stp-before-the-storm)
   - [Desk dry run, 6 Oct 2026](#desk-dry-run-6-oct-2026)
+  - [Monitored hold, 6 Oct 2026, 22:57 CEST](#monitored-hold-6-oct-2026-2257-cest)
 - [Next storm (early run Fri 9 Oct at the earliest; target 13 Oct if not ready)](#next-storm-early-run-fri-9-oct-at-the-earliest-target-13-oct-if-not-ready): What / Why / Method
 - [Short plan list (for Kaspa Pulse)](#short-plan-list-for-kaspa-pulse)
 - [Later leg (idea, not planned yet)](#later-leg-idea-not-planned-yet)
