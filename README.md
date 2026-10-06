@@ -27,8 +27,62 @@ Every number names the file it came from. The CSVs in [`data/`](data/) are small
 6. **Desk clock and desk miners:** the desk clock is synced by NTP (offset logged at start and end), and stp switches the desk miners off and back on at the UTC times of the miners-off control step.
 7. **Final OK on the start time:** Fri 9 Oct, 20:00 CEST at the earliest, otherwise 13 Oct.
 
+### Desk dry run, 6 Oct 2026
+
+Result of task 1, from the desk. The storm was not started. Raw txid logs stay on the desk for the box to match. They are not in this commit.
+
+**Process count for the storm: 4.** Fixed for the whole run. No auto-scale, no fleet relaunch, no mempool pause. Each process spends its own coins. The ordered stream is a separate process. Desk miners during the test: **0**, and that count did not change.
+
+**Node path: public TN10 nodes** (vector-10, proton-10, electron-10, muon-10), four connections per process, each lane pinned to one connection. The desk's own node was started for the comparison and was still downloading headers, with no RPC open, so it took no traffic. A split across the desk node and the public nodes waits until that node is synced.
+
+**Ordered stream, 30 s** (2 per second at 1× and 2 per second at 1.5×). 120 of 120 submit-OK, 0 rejects, 0 seconds at 0. Fees 100 and 150 sompi/gram. All 120 were seen accepted on those public nodes' virtual chain.
+
+**Top share, 750 tx/s**, counted on the wall clock:
+
+| Processes | Window | Wall-clock mean | Of 750 | Seconds at 0 | Gate |
+|---|---|---:|---:|---:|---|
+| 1 | 31 s | 637 tx/s | 85% | 0 | fail |
+| 2 | 3 min | 698 tx/s | 93% | 0 | fail |
+| 4 | 3 min | 734 tx/s | 97.9% | 0 | pass on the mean |
+
+One process is at the signing ceiling, so its slices run longer than a wall second. Two processes still land at 93%. Four is the smallest count that clears 95%.
+
+The four-process confirmation ran 20:23:29Z to 20:26:29Z (22:23–22:26 CEST). 132,371 submit-OK, 0 rejects. Fees frozen at 100 and 150 sompi/gram. 1.5× is under the 600 sompi/gram cap, so the cap was not raised. 66,007 transactions at 1× and 66,364 at 1.5×. Every per-transaction field is present, times are UTC with milliseconds and `Z`, and `seq` is monotonic per process. 132,026 of those transactions were seen accepted on the public nodes before the processes stopped. 345 were still in flight at the stop.
+
+The mean clears 95%. The rate is not flat: 21 of 177 seconds were under 95% of 750, and the lowest second was 374. No second was 0.
+
+**Lower steps, same 4 processes, 20 s each, started on a UTC time.** Each hit its target on every second, with 0 rejects and 0 seconds at 0.
+
+| Step target | Submit-OK | Seen accepted before stop |
+|---:|---:|---:|
+| 25 tx/s | 500 | 483 |
+| 100 tx/s | 2,000 | 2,000 |
+| 225 tx/s | 4,500 | 4,500 |
+| 475 tx/s | 9,500 | 9,006 |
+
+The rest of the 25 and 475 steps were still in flight at the stop, not rejected.
+
+**Clock.** Offset against `time.windows.com` was +35 ms at 20:07Z, +45 ms at 20:18Z, and +50 ms at 20:29Z. All under 100 ms. No resync. Node.js 24.19.0. Public nodes reported kaspad 2.1.0.
+
+**n0.** Acceptance above is from the public nodes the desk submitted to. It is not yet matched against the box node n0. That match is the box's check, once it has the desk logs.
+
+**Ceiling, same evening.** The table above is the gate for the planned share. After it passed, the desk tried for the highest submit rate it could hold. Same wallet, public nodes only, fees still frozen at 100 and 150 sompi/gram. The desk's own node was still syncing and took no traffic.
+
+| Setup | Window | Submit-OK | Rejects | Mean submit | Seen accepted during the window |
+|---|---|---:|---:|---:|---:|
+| 1 process, vector-10 | 20 s | 44,996 | 0 | 2,250 tx/s | 32,344 |
+| 6 processes, one per public node | 20 s | 126,426 | 0 | 6,321 tx/s | 38,822 |
+| 10 processes, two each on the five faster nodes | 12 s | 109,991 | 28,617 orphans | about 9,100 tx/s | about 14,500 |
+
+Muon-10 held about 290 tx/s in the six-process run, so the ten-process run left it out. The orphans are a child submitted before that node would take its parent. Submit-OK counts only transactions the node took. Inclusion during the window was lower than the submit rate: the rest was still in mempools when the processes stopped. Just after the ten-process run, proton-10's mempool was about 37,000 and its normal fee estimate had moved to 162 sompi/gram. The runs did not follow that move. They stayed at 100 and 150, under the 600 cap.
+
+Past about 9,000 tx/s the public nodes are the limit. The desk still had free CPU and free RAM. This ceiling is not a new storm rate. The storm still uses 4 fixed processes for the planned share.
+
+The other tasks in the list are unchanged. Earliest start remains Fri 9 Oct 2026, 20:00 CEST, otherwise 13 Oct.
+
 ## Contents
 - [Tasks for stp (before the storm)](#tasks-for-stp-before-the-storm)
+  - [Desk dry run, 6 Oct 2026](#desk-dry-run-6-oct-2026)
 - [Next storm (early run Fri 9 Oct at the earliest; target 13 Oct if not ready)](#next-storm-early-run-fri-9-oct-at-the-earliest-target-13-oct-if-not-ready): What / Why / Method
 - [Short plan list (for Kaspa Pulse)](#short-plan-list-for-kaspa-pulse)
 - [Later leg (idea, not planned yet)](#later-leg-idea-not-planned-yet)
