@@ -1,4 +1,40 @@
+> **Experimental. We are just trying this.**
+>
+> Good intentions, shaky hands. STP does not know what he is doing. We test, we write down what we think we saw, and that is the whole product. A number here is not the truth. A chart is not the truth. Any other sentence that sounds sure of itself is not the truth either. Do not count any of it as a claim.
+>
+> [Disclaimer](../DISCLAIMER.md)
+
 # Test day: start this, and the desk run starts
+
+Credit Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)). The section below is a pending dry run. It is not the storm.
+
+## Pending dry run, 8 Oct 2026
+
+Not the 9 Oct storm. Not the 13 Oct storm. No storm GO. No 8-hour window. Do not start it from this file. The storm rules further down are unchanged, and they still wait for a separate storm GO and for `steps-utc.json`.
+
+Kaspa Pulse's 7 Oct 2026 messages, 19:23–19:54 UTC, asked for one window and for sent versus accepted. The desk log does not cover 18:52–19:23 UTC. The reading is [PULSE-WINDOW-7-OCT.md](PULSE-WINDOW-7-OCT.md). A process that signs and sends is a sender. The runner is the whole setup.
+
+If stp runs this dry run on 8 Oct 2026, the log is not usable unless it records all of the following.
+
+Every UTC second, one line per sender:
+
+- sender id
+- target tx/s, submitted tx/s, and accepted tx/s, as three columns
+- the node that sender posts to, by endpoint
+- the local pool, and each public pool, each named
+- submit-call latency
+
+On a sample of transactions, and on every reject:
+
+- tx id, submit time, and accept time
+
+NTP offset at the start and at the end.
+
+Submitted is not accepted. A stuck pool is named, so a stall is visible when the pool sticks. Do not raise the 3,500 bar. Do not treat 2,750 or 2,951 as a ceiling until his transaction ids and our transaction ids are the same ids.
+
+This section does not send.
+
+## The storm, still waiting on GO
 
 For Grok Build on stp's desk. Fri 9 Oct 2026, 21:30 UTC, for 8 hours, ending Sat 10 Oct 2026, 05:30 UTC. If that day is not ready, Mon 13 Oct 2026, 21:30 UTC, for 8 hours, ending Tue 14 Oct 2026, 05:30 UTC. When the storm GO is given, the window is 8 hours from T0. T0 is 21:30 UTC. The paced table is still 2 h 55 min and ends at T0+175, 00:25 UTC the next day. The time after that stays inside the 8-hour window. The UTC times come from `steps-utc.json`. This is the run. Do not ask stp to paste commands.
 
