@@ -12,9 +12,9 @@ Questions and guidance from Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)).
 
 **Kaspa Pulse, 7 Oct 2026:** weekly runs sound good. One clean run first, and go through those numbers properly, before we stack more. We send the results when that run is done, and take the next step from there.
 
-Analysis and charts by TN10 ops, stp's AI operator bot for his TN10 stack. The runs are stp's TN10 setup: TN10 ops on its own node, and Grok Build on stp's desk PC. First written Sun 4 Oct 2026, 23:00–23:59 CEST. The front of this note was put in reading order on 6 Oct 2026. The measured tables below are the same extracts.
+Analysis and charts by TN10 ops, stp's AI operator bot for his TN10 stack. The runs are stp's TN10 setup: TN10 ops on its own node, and Grok Build on stp's desk PC. First written Sun 4 Oct 2026, 21:00–21:59 UTC. The front of this note was put in reading order on 6 Oct 2026. The measured tables below are the same extracts.
 
-Kaspa **Testnet-10 (TN10) only**. All times are **CEST (UTC+2)**. Deliberate load stays on TN10. Mainnet comparisons and mainnet costing are out of scope, as Kaspa Pulse asked.
+Kaspa **Testnet-10 (TN10) only**. Every clock on this page is **UTC**. Deliberate load stays on TN10. Mainnet comparisons and mainnet costing are out of scope, as Kaspa Pulse asked.
 
 In our storms, our own miners made **50–63% of TN10 blocks** while they ran (storm 2 public report, `block_share_legs.csv`). The numbers describe **TN10 with our miners on it**, through one node on one small box. Every number names the file it came from. The CSVs in [`data/`](data/) are small extracts of our raw logs. The scripts in [`scripts/`](scripts/) rebuild those CSVs and every chart. Where something was **not logged**, the text says so.
 
@@ -40,7 +40,7 @@ One measured TN10 series. Two senders, one UTC timetable, five questions.
 - **TN10 ops** (the bot) sends from stp's box through its own node, n0.
 - **Grok Build** sends from stp's desk PC through public TN10 nodes.
 
-The early run is **no earlier than Fri 9 Oct 2026, 20:00 CEST**. If Build's dry run has not passed, or the tKAS and the usage resets are not ready, the same plan runs on **13 Oct 2026** (evening CEST). The 6 Oct early run is cancelled. There is no storm until the dry run passes and stp gives a separate GO for the storm.
+The early run is **no earlier than Fri 9 Oct 2026, 18:00 UTC**. If Build's dry run has not passed, or the tKAS and the usage resets are not ready, the same plan runs on **13 Oct 2026, from 18:00 UTC**. The 6 Oct early run is cancelled. There is no storm until the dry run passes and stp gives a separate GO for the storm.
 
 This is a series. Weekly runs sound good. **One clean run first**, and go through those numbers properly, before we stack more. We send Kaspa Pulse the results when that run is done. Each run is published with its locked plan SHA and its own raw data.
 
@@ -86,7 +86,7 @@ Build runs on that same UTC timetable.
 - Fees: half the lanes at **1×** the node's normal estimate, half at **1.5×**, frozen for the step. 1.5× stays under the 600 sompi/gram cap.
 - Gate: achieved send rate at least 95% of target at every step, per-transaction logs complete, txids matched to what n0 accepted, UTC timetable followed. Miss the gate, and the storm waits for 13 Oct.
 
-Box side: 6 runners × 4 connections, a 7th only at the max step. Go only with at least 35 GB free at T0. Between 28 and 35 GB, the steps shrink to 10 min. Below 28 GB, no storm. Keep about 19 GB free for n0's pruning. A guard stop ends the run for the box and for Build, and the stop is reported. T0 is no earlier than 20:00 CEST.
+Box side: 6 runners × 4 connections, a 7th only at the max step. Go only with at least 35 GB free at T0. Between 28 and 35 GB, the steps shrink to 10 min. Below 28 GB, no storm. Keep about 19 GB free for n0's pruning. A guard stop ends the run for the box and for Build, and the stop is reported. T0 is no earlier than 18:00 UTC.
 
 ## Goal
 
@@ -145,7 +145,7 @@ The same watches run for the baseline, every step, both drains, and the miners-o
 
 A step is sender-limited when that sender's submit-OK stays under 95% of its target. Saturation is the 95% / 60 s rule in the plan.
 
-The [monitored hold of 6 Oct, 22:57 CEST](#monitored-hold-6-oct-2026-2257-cest) is a rehearsal of this table: six fixed Build processes, the five questions recorded together, for 45 seconds. It does not replace the four-process gate, and it does not start the storm.
+The [monitored hold of 6 Oct, 20:57 UTC](#monitored-hold-6-oct-2026-2057-utc) is a rehearsal of this table: six fixed Build processes, the five questions recorded together, for 45 seconds. It does not replace the four-process gate, and it does not start the storm.
 
 ## History of the storms
 
@@ -154,32 +154,32 @@ The [monitored hold of 6 Oct, 22:57 CEST](#monitored-hold-6-oct-2026-2257-cest) 
 | Storm 1 | 25–26 Sep 2026 | TN10 ops on the box, with fee-tier probes | Confirmation time by fee tier, and a coarse order check. No 1.5× tier. |
 | Storm 2 | 1–3 Oct 2026, legs L1–L4 | TN10 ops through n0. Build on the desk over the same days. | Box submitted vs accepted, indexer freezes, mempool depth. Build logged submit-OK. Order was not logged. |
 | Desk dry run | 6 Oct 2026 | Build. Four processes for the planned share. Public nodes. | Four processes cleared 95% of 750 on the mean (734 tx/s, 97.9%). The txid match against n0 is still open. A later ceiling run reached about 9,100 submit-OK tx/s, with orphan rejects. This was not the storm. |
-| Monitored hold | 6 Oct 2026, 22:57 CEST | Build. Six processes. | A 45-second rehearsal of the five questions. Mean submit-OK 6,281 tx/s. This was not the storm. |
-| Next storm | Fri 9 Oct 2026, 20:00 CEST at the earliest. Otherwise 13 Oct. | The bot and Build, on one timetable | The five questions, both senders, and the miners-off control. The result sections stay empty until then. |
+| Monitored hold | 6 Oct 2026, 20:57 UTC | Build. Six processes. | A 45-second rehearsal of the five questions. Mean submit-OK 6,281 tx/s. This was not the storm. |
+| Next storm | Fri 9 Oct 2026, 18:00 UTC at the earliest. Otherwise 13 Oct, from 18:00 UTC. | The bot and Build, on one timetable | The five questions, both senders, and the miners-off control. The result sections stay empty until then. |
 
-While the box miners ran in storm 2 they made 50–63% of TN10 blocks. When they stopped on Fri 2 Oct at 01:31:50, our inclusion fell to about 300 tx/s.
+While the box miners ran in storm 2 they made 50–63% of TN10 blocks. When they stopped on Thu 1 Oct at 23:31:50 UTC, our inclusion fell to about 300 tx/s.
 
 Charts and per-minute files: [Measured data](#measured-data). Earlier write-ups, still the sources: [storm 2 public report](https://github.com/STP-KAS/tn10-storm-2026-10-public-report), [round1-public](https://github.com/STP-KAS/grok-bot-vprogs-round1-public), [round2](https://github.com/STP-KAS/grok-bot-vprogs-round2), [build opinion](https://github.com/STP-KAS/tn10-vprogs-build-opinion).
 
 ## Tasks for stp (before the storm)
 
-Status at the close of the desk pre-run, 2026-10-07T05:55:18Z. The long holds, with the exact window of every run, are in [tn10-build-desk-tps](https://github.com/STP-KAS/tn10-build-desk-tps#long-holds-6-7-oct-2026). The senders stopped at 2026-10-07T05:54:55Z. Covenant activity on TN10 is gaining traction again after that stop. The slices and the reason are in [point 9](#early-recommendations-for-builders) and on the [desk page](https://github.com/STP-KAS/tn10-build-desk-tps#after-the-stop).
+Status at the close of the desk pre-run, 2026-10-07T05:55:18 UTC. The long holds, with the exact window of every run, are in [tn10-build-desk-tps](https://github.com/STP-KAS/tn10-build-desk-tps#long-holds-6-7-oct-2026). The senders stopped at 2026-10-07T05:54:55 UTC. Covenant activity on TN10 is gaining traction again after that stop. The slices and the reason are in [point 9](#early-recommendations-for-builders) and on the [desk page](https://github.com/STP-KAS/tn10-build-desk-tps#after-the-stop).
 
 | # | Task | Status |
 |---|---|---|
-| 1 | Dry-run gate. No storm until it passes. | **Passed on the desk.** 4 processes, 734 tx/s, 97.9% of 750, 0 rejects. The n0 txid match is still open. Detail below. |
+| 1 | Dry-run gate. No storm until it passes. | **Passed on the desk.** 4 processes, 734 tx/s, 97.9% of 750, 0 rejects. Log check at 2026-10-07T13:59 UTC: 148,991 submit-OK, 0 rejects, every required field present, seq 1..N with no gaps. The manifest is on the desk, not in git. The n0 txid match is still open. Detail below. |
 | 2 | Enough tKAS for the full schedule. | **OK for both wallets.** [Grok Build](https://github.com/STP-KAS/groks-wallet#grok-build) ([TN10 page](https://tn10.kaspa.stream/addresses/kaspatest:qp4jge54eztxewf8r53rtjdvxakmatsu6tjd0nn9sjhgvzxknsfvjvmwurqhd)) and [Grok Bot](https://github.com/STP-KAS/groks-wallet#grok-bot) ([TN10 page](https://tn10.kaspa.stream/addresses/kaspatest:qzffl5xy9np46gkttyuftqnv2w04pr8g3wsp7c3vv8se3txtelx6q7c0v0ldx)). Desk reading of Build at 23:00 UTC on 6 Oct: 3,612,867 tKAS, 15,944 coins of at least 2 tKAS. The Bot wallet is OK on stp's word. The box balance was not read from this desk. |
 | 3 | Usage resets for the bots and Build. | **OK**, per stp on 7 Oct 2026. |
 | 4 | Box dry run, and at least 35 GB free at T0. | **Not done.** Not measured from this desk. |
 | 5 | Set Build's share, then lock the plan by commit SHA. | **Not locked.** The 25% share still fits the dry run. The shape to use is saved. Lock stays with stp before T0. |
-| 6 | Desk clock, and the miner switch. | **Start logged, switch not run.** +73 ms at 2026-10-06T23:00:16Z. At 2026-10-07T05:55:18Z the desk was inside one second of a whole-second Date header. Miners during the pre-run: 0. |
-| 7 | Final OK on the start time. | **Not given.** Earliest start remains Fri 9 Oct 2026, 20:00 CEST, otherwise 13 Oct. |
+| 6 | Desk clock, and the miner switch. | **Start logged, switch not run.** +73 ms at 2026-10-06T23:00:16 UTC. Stripchart at 2026-10-07T13:58:54 UTC was +77 ms. Miners: 0. |
+| 7 | Final OK on the start time. | **Not given.** Earliest start remains Fri 9 Oct 2026, 18:00 UTC, otherwise 13 Oct, from 18:00 UTC. |
 
 ### On test day
 
 Start [`plan/TESTDAY.md`](plan/TESTDAY.md). That is the run. It uses [`plan/DESK-SHAPE-9-OCT.md`](plan/DESK-SHAPE-9-OCT.md) and the paste-in prompt [`plan/GROK-BUILD-PROMPT.md`](plan/GROK-BUILD-PROMPT.md). No command list to copy. It sends only after the storm GO and `steps-utc.json`. If it disagrees with [`plan/NEXT-STORM-PLAN.md`](plan/NEXT-STORM-PLAN.md), the plan wins.
 
-Paced steps: 4 processes, depth 2, in-flight 48. The long hold and the uncapped max step: two signers on each public node, depth 2, in-flight 64, fee 200 and 300, cap 600. That shape held 2,207 tx/s seen accepted from 2026-10-06T23:53:27.326Z to 2026-10-07T05:54:53.185Z.
+Paced steps: 4 processes, depth 2, in-flight 48. The long hold and the uncapped max step: two signers on each public node, depth 2, in-flight 64, fee 200 and 300, cap 600. That shape held 2,207 tx/s seen accepted from 2026-10-06T23:53:27.326 UTC to 2026-10-07T05:54:53.185 UTC.
 
 ### For the Grok bot
 
@@ -195,11 +195,11 @@ The one request behind the plan: a flow that is hurt by sitting in the mempool s
 
 **1. Let the fee follow the network, up to a ceiling chosen first.** Read a public fee estimate on a timer. When the normal estimate rises above the fee on your next transaction, raise that fee toward the estimate. When the estimate falls, lower it. Do not leave a sensitive flow frozen at the quiet-network floor for the whole congestion. On this desk the quiet floor was 100 sompi/gram. After the mempool filled, the normal estimate sat near 186–194, and a pair frozen at 200 and 300 kept inclusion moving for six hours. A pair frozen at 100 and 150 took a smaller share of the same kind of blocks. A fee of 2,000 did not hold: orphans overtook submits and the rate fell away. This desk's own ceiling stays 600 sompi/gram. An automatic raise that can pass the ceiling is not this plan.
 
-**2. Keep the unconfirmed chain short.** Depth 8, from 2026-10-06T21:22:15.436Z to 2026-10-06T22:53:03.590Z, filled and then sat at zero for most seconds: 521 tx/s seen accepted. Depth 2, two signers on each public node, from 2026-10-06T23:53:27.326Z to 2026-10-07T05:54:53.185Z, held 2,207 tx/s seen accepted. For a sequencer, this desk would start at two unconfirmed hops per coin and add the next hop when one is accepted.
+**2. Keep the unconfirmed chain short.** Depth 8, from 2026-10-06T21:22:15.436 UTC to 2026-10-06T22:53:03.590 UTC, filled and then sat at zero for most seconds: 521 tx/s seen accepted. Depth 2, two signers on each public node, from 2026-10-06T23:53:27.326 UTC to 2026-10-07T05:54:53.185 UTC, held 2,207 tx/s seen accepted. For a sequencer, this desk would start at two unconfirmed hops per coin and add the next hop when one is accepted.
 
-**3. Count accepts, and treat a silent feed as a fault.** Submit-OK of about 6,300 tx/s for 20 seconds, and about 9,100 tx/s for 12 seconds, did not last. The number to publish is seen accepted over the whole window. At 2026-10-07T03:39:25Z this desk's observer stopped reporting new blocks. The signers' own feeds kept counting accepts until the stop at 05:54:53Z. A builder who only watches one subscription can mistake a dead feed for an idle network. Reconnect, and check a second node, before you drop the fee or add more transactions.
+**3. Count accepts, and treat a silent feed as a fault.** Submit-OK of about 6,300 tx/s for 20 seconds, and about 9,100 tx/s for 12 seconds, did not last. The number to publish is seen accepted over the whole window. At 2026-10-07T03:39:25 UTC this desk's observer stopped reporting new blocks. The signers' own feeds kept counting accepts until the stop at 05:54:53 UTC. A builder who only watches one subscription can mistake a dead feed for an idle network. Reconnect, and check a second node, before you drop the fee or add more transactions.
 
-**4. One spender per coin, and do not reshuffle coins while the mempool is full.** Two processes on one coin spend the same output. A new split while the old transactions are still in the mempool spends outputs that already have a child in flight. At 2026-10-07T06:09Z, about 15 minutes after this desk stopped, vector-10 still reported about 50,900 in the mempool, and the count was falling by only a few per second, while the virtual DAA score was still advancing at about 10 per second. At 2026-10-07T06:27:46Z the highest of the six public mempools was still 49,141. Wait for that count to clear before the next split. The count is a warning about coins. It is a poor signal that the next block is full: the 06:09Z slice in point 9 was about 1.5 user transactions per block.
+**4. One spender per coin, and do not reshuffle coins while the mempool is full.** Two processes on one coin spend the same output. A new split while the old transactions are still in the mempool spends outputs that already have a child in flight. At 2026-10-07T06:09 UTC, about 15 minutes after this desk stopped, vector-10 still reported about 50,900 in the mempool, and the count was falling by only a few per second, while the virtual DAA score was still advancing at about 10 per second. At 2026-10-07T06:27:46 UTC the highest of the six public mempools was still 49,141. Wait for that count to clear before the next split. The count is a warning about coins. It is a poor signal that the next block is full: the 06:09 UTC slice in point 9 was about 1.5 user transactions per block.
 
 **5. When every lane is already waiting, more CPU does not raise the rate.** The twelve signers used about one core, and the machine was near 5% CPU, with every lane two deep. A signed one-input one-output is about 1,624 grams. At 500,000 grams and 10 blocks per second that is about 3,080 tx/s. This hold was 2,207. The gap is block space, not idle cores. The change this desk would test next is a higher fee still under the 600 ceiling, not a thirteenth signer. A lighter transaction is the change to test only after that, and it is untested here.
 
@@ -209,21 +209,21 @@ The one request behind the plan: a flow that is hurt by sitting in the mempool s
 
 **8. Mainnet gets the same shape of plan, not these TN10 numbers.** A sensitive mainnet flow should watch the mainnet estimate, raise and lower its fee inside a ceiling chosen for mainnet, keep a short unconfirmed chain, and count accepts. It should not copy 200, 300, or 2,207 tx/s onto mainnet. Those numbers are this TN10 pre-run. Mainnet that night was quiet, about 11 tx/s with mempool 1.
 
-**9. After a plain flood stops, covenant activity comes back because the block opened.** The senders stopped at 2026-10-07T05:54:55Z. Covenant flows on TN10 are gaining traction again. This desk's view: the apps did not change. The plain transfers stopped taking the block, a waiting covenant step can be accepted, and the app can post the next step.
+**9. After a plain flood stops, covenant activity comes back because the block opened.** The senders stopped at 2026-10-07T05:54:55 UTC. Covenant flows on TN10 are gaining traction again. This desk's view: the apps did not change. The plain transfers stopped taking the block, a waiting covenant step can be accepted, and the app can post the next step.
 
 Three slices from api-tn10, 40 selected-chain blocks each, coinbase left out. A covenant transaction is one with a covenant on an output. The times are the two ends of the walk. These are a few seconds each, so they are not an hour rate. The same table is on the [desk page](https://github.com/STP-KAS/tn10-build-desk-tps#after-the-stop).
 
 | When | Span | User txs | Covenant txs | Per block |
 |---|---|---:|---:|---:|
-| During the hold | 2026-10-07T02:59:49Z to 02:59:58Z | 12,218 | 3 | about 305 |
-| 15 min after the stop | 2026-10-07T06:09:38Z to 06:09:43Z | 61 | 3 | about 1.5 |
-| 22 min after the stop | 2026-10-07T06:17:11Z to 06:17:19Z | 279 | 7 | about 7 |
+| During the hold | 2026-10-07T02:59:49 UTC to 02:59:58 UTC | 12,218 | 3 | about 305 |
+| 15 min after the stop | 2026-10-07T06:09:38 UTC to 06:09:43 UTC | 61 | 3 | about 1.5 |
+| 22 min after the stop | 2026-10-07T06:17:11 UTC to 06:17:19 UTC | 279 | 7 | about 7 |
 
 During the hold that slice was 12,218 user transactions and 3 covenant transactions. After the stop the plain flood is gone, and covenant transactions are in the open blocks (3, then 7, with 8 and then 26 covenant outputs). A render of the TN10 homepage at this desk left the last-hour Covenants card empty, so this is the block sample, not that card.
 
 The six-hour hold included 2,207 plain transfers per second. Each is about 1,624 grams, at 200 and 300 sompi per gram. About 3,080 of them fill a 500,000-gram block at 10 blocks per second, so the hold was most of the mass. Miners take a higher fee per gram first. A covenant step often weighs more, so the same fee per gram costs more, and a step that stays near the quiet floor waits behind the plain transfers. A covenant app is a sequence. The next step is built from the output of the previous one, so one waiting step holds the whole flow. The explorer then shows a quiet covenant lane. When the plain flood stops, the next blocks have room. The waiting step is included, the app posts the next one, and the lane looks busy again. That is the traction.
 
-The mempool count can stay large while this happens. At 2026-10-07T06:27:46Z the highest public mempool was 49,141. A vector-10 fee read at 2026-10-07T06:28Z was about 162 and 131 sompi per gram in the normal buckets, and about 243 in the priority bucket. During the hold the normal quote was about 186–194 and the priority quote was about 876. Watch the blocks. A high mempool count alone will keep calling the network packed after the blocks have opened.
+The mempool count can stay large while this happens. At 2026-10-07T06:27:46 UTC the highest public mempool was 49,141. A vector-10 fee read at 2026-10-07T06:28 UTC was about 162 and 131 sompi per gram in the normal buckets, and about 243 in the priority bucket. During the hold the normal quote was about 186–194 and the priority quote was about 876. Watch the blocks. A high mempool count alone will keep calling the network packed after the blocks have opened.
 
 The mainnet hour the same night, Covenants 44 and mempool 1, is the other network. It is not this TN10 recovery.
 
@@ -249,7 +249,7 @@ Result of task 1, from the desk. The storm was not started. Raw txid logs stay o
 
 One process is at the signing ceiling, so its slices run longer than a wall second. Two processes still land at 93%. Four is the smallest count that clears 95%.
 
-The four-process confirmation ran 20:23:29Z to 20:26:29Z (22:23–22:26 CEST). 132,371 submit-OK, 0 rejects. Fees frozen at 100 and 150 sompi/gram. 1.5× is under the 600 sompi/gram cap, so the cap was not raised. 66,007 transactions at 1× and 66,364 at 1.5×. Every per-transaction field is present, times are UTC with milliseconds and `Z`, and `seq` is monotonic per process. 132,026 of those transactions were seen accepted on the public nodes before the processes stopped. 345 were still in flight at the stop.
+The four-process confirmation ran 20:23:29 UTC to 20:26:29 UTC. 132,371 submit-OK, 0 rejects. Fees frozen at 100 and 150 sompi/gram. 1.5× is under the 600 sompi/gram cap, so the cap was not raised. 66,007 transactions at 1× and 66,364 at 1.5×. Every per-transaction field is present, times are UTC with milliseconds and `Z`, and `seq` is monotonic per process. 132,026 of those transactions were seen accepted on the public nodes before the processes stopped. 345 were still in flight at the stop.
 
 The mean clears 95%. The rate is not flat: 21 of 177 seconds were under 95% of 750, and the lowest second was 374. No second was 0.
 
@@ -264,7 +264,7 @@ The mean clears 95%. The rate is not flat: 21 of 177 seconds were under 95% of 7
 
 The rest of the 25 and 475 steps were still in flight at the stop, not rejected.
 
-**Clock.** Offset against `time.windows.com` was +35 ms at 20:07Z, +45 ms at 20:18Z, and +50 ms at 20:29Z. All under 100 ms. No resync. Node.js 24.19.0. Public nodes reported kaspad 2.1.0.
+**Clock.** Offset against `time.windows.com` was +35 ms at 20:07 UTC, +45 ms at 20:18 UTC, and +50 ms at 20:29 UTC. All under 100 ms. No resync. Node.js 24.19.0. Public nodes reported kaspad 2.1.0.
 
 **n0.** Acceptance above is from the public nodes the desk submitted to. It is not yet matched against the box node n0. That match is the box's check, once it has the desk logs.
 
@@ -280,9 +280,9 @@ Muon-10 held about 290 tx/s in the six-process run, so the ten-process run left 
 
 Past about 9,000 tx/s the public nodes are the limit. The desk still had free CPU and free RAM. This ceiling is not a new storm rate. The storm still uses 4 fixed processes for the planned share.
 
-Tasks 1, 2, and 3 are marked in the table above. Tasks 4, 5, and 7 are still open. Task 6 has its start and its pre-run end offset. The miner switch waits for the storm. Earliest start remains Fri 9 Oct 2026, 20:00 CEST, otherwise 13 Oct. This note does not start the storm. The long-hold totals are in [tn10-build-desk-tps](https://github.com/STP-KAS/tn10-build-desk-tps#long-holds-6-7-oct-2026).
+Tasks 1, 2, and 3 are marked in the table above. Tasks 4, 5, and 7 are still open. Task 6 has its start and its pre-run end offset. The miner switch waits for the storm. Earliest start remains Fri 9 Oct 2026, 18:00 UTC, otherwise 13 Oct, from 18:00 UTC. This note does not start the storm. The long-hold totals are in [tn10-build-desk-tps](https://github.com/STP-KAS/tn10-build-desk-tps#long-holds-6-7-oct-2026).
 
-### Monitored hold, 6 Oct 2026, 22:57 CEST
+### Monitored hold, 6 Oct 2026, 20:57 UTC
 
 The bot already holds more than 3,000 tx/s on its own. This run asked whether the desk can hold that or more, with the five questions recorded at the same time. It is a rehearsal, not the storm. Six fixed processes, one per public node, plus the ordered stream. Fees frozen at the step start: **158 and 237** sompi/gram. Desk miners: **0**. The desk clock was **+60 ms** against time.windows.com. The desk's own node was still syncing, so acceptance was read from vector-10's virtual chain. The box node n0 still matches the same txids.
 
@@ -370,8 +370,8 @@ The sections below answer the same questions from the 25 Sep storm (storm 1) and
 |---|---|---|---|
 | 1 | Accepted vs submitted tx/s, where acceptance flattens | **Partly answered** | Logged per runner every 10 s. Our box's acceptance flattened at about **2,200–2,600 tx/s** (median per minute) once the runners were allowed more than ~3,000–4,000 tx/s. Best minute **4,253 tx/s**. Accepted stayed within 1% of submitted, because our sender throttles itself. What's missing is an open-loop offered rate and the other senders' submissions. |
 | 2 | Confirmation time per load step, median and worst, 1× vs 1.5× fee | **Partly answered** | Measured per fee tier on 25 Sep at two load levels (1×, 1.2×, 2×, 5×, 10×, 100× the floor). **1.5× was not tested.** At ~6.5k "Processed" tx/s: 1× p50 **7.0 s** / max **105 s**; 2× p50 **3.1 s** / max **48 s**. The October storm logged latency at one fee per runner, with no A/B split. |
-| 3 | Does the indexer freeze, at what tps, for how long | **Partly answered** | Yes. api-tn10 froze for **86 min** (Fri 2 Oct 22:01–23:27, lag up to **4,311 s**, HTTP 503) while our box sent **~2,435 tx/s** and n0 "Processed" **~6,546 tx/s**. Shorter stalls happened at lower loads. On 25 Sep it froze for **at least 3 d 15 h**. We have no load threshold and no cause. |
-| 4 | Mempool depth over time | **Answered** | Sampled every 15 s for the whole storm. Peak **99,992** (Fri 2 Oct 01:35:47). A ~71k backlog sat for ~6 hours after our miners stopped. **486,140** evictions in L1. |
+| 3 | Does the indexer freeze, at what tps, for how long | **Partly answered** | Yes. api-tn10 froze for **86 min** (Fri 2 Oct 20:01–21:27 UTC, lag up to **4,311 s**, HTTP 503) while our box sent **~2,435 tx/s** and n0 "Processed" **~6,546 tx/s**. Shorter stalls happened at lower loads. On 25 Sep it froze for **at least 3 d 15 h**. We have no load threshold and no cause. |
+| 4 | Mempool depth over time | **Answered** | Sampled every 15 s for the whole storm. Peak **99,992** (Thu 1 Oct 23:35:47 UTC). A ~71k backlog sat for ~6 hours after our miners stopped. **486,140** evictions in L1. |
 | 5 | Send order vs accept order: does order hold under load? | **Partly answered (coarse)** | From the 25 Sep fee probes, sent 30 s apart: at 1× and 1.2× the floor (at or below the storm's fee) **2.6–10.4%** of consecutive probes were accepted out of send order, and some waited behind later probes for up to **169 s**. At 2× the floor and above: at most 1 reversal in 116 pairs (step A), none in step B. The October storm did not log order. |
 
 Kaspa Pulse is most interested in the 1× vs 1.5× fee question. The nearest thing we have is a 25 Sep probe at 1.2× (equal to the storm's own fee) and 2× (1.67× the storm's fee). Paying 1.67× the crowd's fee cut the median wait from **7.1 s to 3.1 s** and the worst case from **92 s to 48 s** ([Q2](#q2-confirmation-time-per-load-step-normal-fee-vs-15)). A real 1× vs 1.5× A/B split at each load step is the main item in the [next storm plan](plan/NEXT-STORM-PLAN.md).
@@ -387,7 +387,7 @@ Kaspa Pulse is most interested in the 1× vs 1.5× fee question. The nearest thi
 | 3. Indexer freeze | Not in these repos (the 25 Sep freeze is in a private working note, summarised in the storm 2 public repo) | **Yes**: stall windows, durations, box tps and n0 tps in each window (`data/api_windows_vs_load.csv`) | The build opinion notes the public health document stayed frozen. No timings of its own |
 | 4. Mempool depth | Per-10-min medians/maxima in the overload summary | Per-window medians/p95/max and evictions (`data/mempool_windows.csv`). **No over-time chart** | Not covered |
 
-So the pieces were mostly there, spread over several repos. This repo pulls them into one place, adds per-minute series and charts, and the second load step of the 25 Sep fee probes (22:47–23:50), which no earlier write-up had in full.
+So the pieces were mostly there, spread over several repos. This repo pulls them into one place, adds per-minute series and charts, and the second load step of the 25 Sep fee probes (20:47–21:50 UTC), which no earlier write-up had in full.
 
 ---
 
@@ -404,7 +404,7 @@ So the pieces were mostly there, spread over several repos. This repo pulls them
 - `accepted`: our transactions whose id then appeared in n0's `virtual-chain-changed` notification, i.e. accepted by the selected chain. The engine code is `r5-engine.mjs` (class `Engine`).
 - `rate`: the most that runner was allowed to send at that moment (its token-bucket cap).
 
-[`scripts/extract.py`](scripts/extract.py) splits each runner's log into segments at restarts, spreads each 10-s increment evenly over its seconds and sums all runners per minute → [`data/oct_box_submitted_vs_accepted_1min.csv`](data/oct_box_submitted_vs_accepted_1min.csv) (1,801 minutes, Thu 1 Oct 20:00 → Sat 3 Oct 02:00). Check: the per-minute file sums to 59,149,806 submitted and 58,917,966 accepted. That matches the leg totals in [`data/oct_legs_from_public_report.csv`](data/oct_legs_from_public_report.csv) (59,137,819 / 58,905,910), except for a ~12k-tx smoke run before L1 (12,019 txs, Thu 20:14–20:16).
+[`scripts/extract.py`](scripts/extract.py) splits each runner's log into segments at restarts, spreads each 10-s increment evenly over its seconds and sums all runners per minute → [`data/oct_box_submitted_vs_accepted_1min.csv`](data/oct_box_submitted_vs_accepted_1min.csv) (1,801 minutes, Thu 1 Oct 18:00 UTC → Sat 3 Oct 00:00 UTC). Check: the per-minute file sums to 59,149,806 submitted and 58,917,966 accepted. That matches the leg totals in [`data/oct_legs_from_public_report.csv`](data/oct_legs_from_public_report.csv) (59,137,819 / 58,905,910), except for a ~12k-tx smoke run before L1 (12,019 txs, Thu 18:14–18:16 UTC).
 
 **What it shows**
 - **Claim (measured on TN10):** **accepted tracked submitted closely in every leg**: L1 99.61%, L2 99.39%, L3 99.15%, L4 99.98% (`data/oct_legs_from_public_report.csv`). A transaction counts as "not accepted" when the runner that sent it never saw it on the chain. That includes transactions still in flight when a runner restarted, so the gap is not a count of dropped transactions.
@@ -425,7 +425,7 @@ So the pieces were mostly there, spread over several repos. This repo pulls them
 
   (Computed from `data/oct_box_submitted_vs_accepted_1min.csv`. The 0–999 row is mostly the L1 night after our miners stopped, at ~300 tx/s with a ~71k backlog.) Up to a cap of about 3,000 tx/s, accepted rises with the cap. Above that, the median stays at about **2,200–2,600 tx/s**, however high the cap goes.
 - **Claim (measured on TN10):** the knee test on Fri 2 Oct (L3): **6 runners 2,410 tx/s, 7 runners 2,383, 8 runners collapsed to 1,165**. At 8 runners the mempool went from 14k to 79k in 75 s and blocks were full by mass at 492k (public report README, L3 row; `build-brief-how-box-storm-works-2026-10-02.md` §7).
-- **Claim (measured on TN10):** the best clock-aligned minute in our file is **4,227 accepted tx/s** (Fri 2 Oct 01:25). The best sliding 60 s is **4,252.8** (from 01:24:46), best 5 min **3,843**, best hour **2,517.6** (L4, from 21:57:12) (`data/oct_legs_from_public_report.csv`). Those peaks came with 7 runners, a 30× fee burst and our own miners making ~60% of blocks (see [How the TPS was reached](#how-the-tps-was-reached)).
+- **Claim (measured on TN10):** the best clock-aligned minute in our file is **4,227 accepted tx/s** (Thu 1 Oct 23:25 UTC). The best sliding 60 s is **4,252.8** (from 23:24:46 UTC), best 5 min **3,843**, best hour **2,517.6** (L4, from 19:57:12 UTC) (`data/oct_legs_from_public_report.csv`). Those peaks came with 7 runners, a 30× fee burst and our own miners making ~60% of blocks (see [How the TPS was reached](#how-the-tps-was-reached)).
 
 **Why "partly":**
 - **Submitted is not an open-loop offered rate.** A runner lane waits for each submit reply before building its next transaction, and runners pause themselves when the mempool is deep (>75k in the engine; storm-watch pauses everything at >80k). So when blocks are full, our sender slows down. The flattening shows up as **submit rate flattening** with acceptance following it, not as a growing gap between submitted and accepted. The rate cap is the best proxy for "offered" that we have.
@@ -444,7 +444,7 @@ So the pieces were mostly there, spread over several repos. This repo pulls them
 
 Two load levels ran back to back with the same probes. That gives two "load steps", though not a designed stepped schedule:
 
-**Step A: 21:48:41–22:46:14.** The storm paid 120 sompi/g (1.2×). n0 "Processed" ~6,460 tx/s average ([`data/sep_network_processed_tx_s_1min.csv`](data/sep_network_processed_tx_s_1min.csv)). Mempool median ~63k, max 99,662.
+**Step A: 19:48:41–20:46:14 UTC.** The storm paid 120 sompi/g (1.2×). n0 "Processed" ~6,460 tx/s average ([`data/sep_network_processed_tx_s_1min.csv`](data/sep_network_processed_tx_s_1min.csv)). Mempool median ~63k, max 99,662.
 
 | Tier | Feerate | vs storm fee | Probes | p50 | p90 | Worst | > 30 s |
 |---|---:|---:|---:|---:|---:|---:|---:|
@@ -455,7 +455,7 @@ Two load levels ran back to back with the same probes. That gives two "load step
 | 10× | 1,000 | 8.33× | 117 | 1.2 s | 1.7 s | 3.7 s | 0 |
 | 100× | 10,000 | 83× | 117 | 1.2 s | 1.7 s | 3.7 s | 0 |
 
-**Step B: 22:47:26–23:50:41.** The storm paid 200 sompi/g (2×). n0 "Processed" ~7,420 tx/s average (this includes the stop at the end). Mempool median ~53k, max 80,781.
+**Step B: 20:47:26–21:50:41 UTC.** The storm paid 200 sompi/g (2×). n0 "Processed" ~7,420 tx/s average (this includes the stop at the end). Mempool median ~53k, max 80,781.
 
 | Tier | Feerate | vs storm fee | Probes | p50 | p90 | Worst | > 30 s |
 |---|---:|---:|---:|---:|---:|---:|---:|
@@ -474,9 +474,9 @@ All 1,458 probes in the two steps were accepted. None was rejected or lost.
 - **Not sure / open for debate:** these probes ran on one node with `--ram-scale=0.1` (mempool cap ~100k), under our own flood, with our miners making a large share of blocks, and with Grok Build's desk traffic possibly mixed in (round2 README, "Confounder").
 
 **What the October storm logged.** The runners' `lat_p50` / `lat_p95` are **percentiles over every transaction that process saw accepted since it started**, not per 10-s interval (`r5-engine.mjs`, `pstats()` sorts the whole `lat` array). And each runner paid **one fee at a time**, so there was no 1× vs 1.5× split. The end-of-segment values are in [`data/oct_runner_latency_cumulative_by_segment.csv`](data/oct_runner_latency_cumulative_by_segment.csv), for example:
-- L4 (Fri 21:57 → Sat 01:06, 200 sompi/g, ~2.5M txs per runner): p50 **6.0–7.1 s**, p95 **12.4–13.6 s**.
-- L3 (Fri 11:52 → 16:50, 200–392 sompi/g, the six main runners): p50 **8.1–10.4 s**, p95 **16.4–20.7 s**.
-- L1 night after our miners stopped (Fri 01:10 → 07:53; fee 6,000 → 200): p50 **~5 s** and p95 **893–953 s** for 6 of the 7 runners. The seventh shows p50 1.7 s / p95 101 s.
+- L4 (Fri 19:57 → Fri 23:06 UTC, 200 sompi/g, ~2.5M txs per runner): p50 **6.0–7.1 s**, p95 **12.4–13.6 s**.
+- L3 (Fri 09:52 → 14:50 UTC, 200–392 sompi/g, the six main runners): p50 **8.1–10.4 s**, p95 **16.4–20.7 s**.
+- L1 night after our miners stopped (Thu 23:10 → Fri 05:53 UTC; fee 6,000 → 200): p50 **~5 s** and p95 **893–953 s** for 6 of the 7 runners. The seventh shows p50 1.7 s / p95 101 s.
 
 **Not logged in October: confirmation time per load step, and confirmation time by fee level.** We say this plainly. The next storm plan fixes both.
 
@@ -490,17 +490,17 @@ All 1,458 probes in the two steps were accepted. None was rejected or lost.
 
 **Freezes and stalls, 1–3 Oct** (box tps and n0 tps are the averages inside each window):
 
-| Window (CEST) | Length | What happened | Box accepted tx/s | n0 "Processed" tx/s | Back to normal |
+| Window (UTC) | Length | What happened | Box accepted tx/s | n0 "Processed" tx/s | Back to normal |
 |---|---:|---|---:|---:|---|
-| Thu 22:29–23:31 | 62 min | lagging, not frozen: lag rose and fell between 137 and 704 s, intermittent 503 | 1,477 | 3,591 | Thu 23:33 |
-| Thu 23:03–23:29 | 26 min | continuous 503 (inside the window above) | 951 | 2,705 | Thu 23:33 |
-| Thu 23:53–Fri 00:09 | 16 min | stall + 503 again (our sampler then stopped for 51 min) | 2,421 | 4,217 | Fri 01:00 (our sampler was off 00:09–01:00) |
-| Fri 01:22–01:30 | 8 min | 503 with slow (18 s) replies, then stall, during the 30× fee burst | 2,161 | 5,427 | Fri 01:32 |
-| Fri 09:55–09:57 | 2 min | stall right after the L2 peak | 1,645 | 4,948 | Fri 09:59 |
-| Fri 12:25–12:47 | 22 min | two 503s + intermittent stall, lag 22–170 s | 2,005 | 5,340 | Fri 12:49 |
-| **Fri 22:01–23:27** | **86 min** | **full freeze**: 503 on every sample from 22:09 to 23:27; lag grew ~120 s per 120-s sample, max **4,311 s** at 23:21:49 | **2,435** | **6,546** | **Fri 23:29** |
+| Thu 20:29–21:31 | 62 min | lagging, not frozen: lag rose and fell between 137 and 704 s, intermittent 503 | 1,477 | 3,591 | Thu 21:33 |
+| Thu 21:03–21:29 | 26 min | continuous 503 (inside the window above) | 951 | 2,705 | Thu 21:33 |
+| Thu 21:53–22:09 | 16 min | stall + 503 again (our sampler then stopped for 51 min) | 2,421 | 4,217 | Thu 23:00 (our sampler was off 22:09–23:00 UTC) |
+| Thu 23:22–23:30 | 8 min | 503 with slow (18 s) replies, then stall, during the 30× fee burst | 2,161 | 5,427 | Thu 23:32 |
+| Fri 07:55–07:57 | 2 min | stall right after the L2 peak | 1,645 | 4,948 | Fri 07:59 |
+| Fri 10:25–10:47 | 22 min | two 503s + intermittent stall, lag 22–170 s | 2,005 | 5,340 | Fri 10:49 |
+| **Fri 20:01–21:27** | **86 min** | **full freeze**: 503 on every sample from 20:09 to 21:27 UTC; lag grew ~120 s per 120-s sample, max **4,311 s** at 21:21:49 UTC | **2,435** | **6,546** | **Fri 21:29** |
 
-- **Claim (measured on TN10):** **yes, it froze.** The longest freeze in the October storm was 86 minutes, while our box held ~2,435 accepted tx/s (best 5-min bin 3,238 at 23:15) and n0 "Processed" ~6,546 tx/s. Whenever our sampler was running, health came back within 2–4 minutes of the last bad sample.
+- **Claim (measured on TN10):** **yes, it froze.** The longest freeze in the October storm was 86 minutes, while our box held ~2,435 accepted tx/s (best 5-min bin 3,238 at 21:15 UTC) and n0 "Processed" ~6,546 tx/s. Whenever our sampler was running, health came back within 2–4 minutes of the last bad sample.
 - **Claim (measured on TN10):** **the chance of a bad health sample rose with n0's load** ([`data/oct_api_bad_samples_by_n0_processed_tps.csv`](data/oct_api_bad_samples_by_n0_processed_tps.csv)):
 
   | n0 "Processed" tx/s | Samples | Bad (non-200, timeout, or lag > 120 s) |
@@ -514,7 +514,7 @@ All 1,458 probes in the two steps were accepted. None was rejected or lost.
   | 7,000+ | 15 | 100% |
 
   Samples inside one long freeze are not independent, and most 7,000+ minutes were inside the L4 freeze. Treat this as an association, not a threshold.
-- **Claim (measured on TN10), storm 1:** on 25 Sep the indexer's accepted-transaction pointer froze at **21:55:38 CEST**, while our storm ran at about 6k "Processed" tx/s. It was still frozen (HTTP 503, lag 313,244 s ≈ 3 d 15 h) when we checked on 29 Sep at 12:56 CEST. We don't know when it recovered. Block ingestion kept going; only accepted-transaction processing was stuck. The earliest healthy sample we have after that is 1 Oct 18:27:39 CEST. (Our private working note on that freeze, summarised in the [storm 2 public report, §4](https://github.com/STP-KAS/tn10-storm-2026-10-public-report#4-public-api-api-tn10kaspaorg).)
+- **Claim (measured on TN10), storm 1:** on 25 Sep the indexer's accepted-transaction pointer froze at **19:55:38 UTC**, while our storm ran at about 6k "Processed" tx/s. It was still frozen (HTTP 503, lag 313,244 s ≈ 3 d 15 h) when we checked on 29 Sep at 10:56 UTC. We don't know when it recovered. Block ingestion kept going; only accepted-transaction processing was stuck. The earliest healthy sample we have after that is 1 Oct 16:27:39 UTC. (Our private working note on that freeze, summarised in the [storm 2 public report, §4](https://github.com/STP-KAS/tn10-storm-2026-10-public-report#4-public-api-api-tn10kaspaorg).)
 - **Not sure / open for debate:** **cause.** Time correlation is not causation. The indexer is someone else's service. We don't know its hardware, its other users, or whether our own API calls mattered.
 - **Needs more testing:** **"at what sustained tps does it freeze?"** We never held a fixed load long enough while watching it, and other stalls happened at loads where it was fine at other times. A stepped run with a 30-s health probe and a "can the indexer see my transaction yet" probe would settle it (see the plan).
 - **Our own node did not freeze.** n0 stayed synced; sink age max 3.1 s in L1 (public report).
@@ -530,14 +530,14 @@ All 1,458 probes in the two steps were accepted. None was rejected or lost.
 | Window | Median | p95 | Max | Evicted for higher feerate |
 |---|---:|---:|---:|---:|
 | L1, box miners on | 3,038 | 73,359 | 99,803 | 59,081 |
-| L1, 30× fee burst Fri 01:10–01:30 | 64,992 | 75,560 | 77,480 | 0 |
+| L1, 30× fee burst Thu 23:10–23:30 UTC | 64,992 | 75,560 | 77,480 | 0 |
 | L1 night, box miners off | 71,498 | 84,142 | **99,992** | **427,059** |
 | L2 | 2,176 | 59,180 | 96,293 | 0 |
 | L3 loaded | 4,448 | 42,153 | 76,461 | 0 |
 | L4 loaded | 17,140 | 25,993 | 30,826 | 0 |
 
-- **Claim (measured on TN10):** peak **99,992** at Fri 2 Oct 01:35:47, just under n0's ~100k cap (`--ram-scale=0.1`). Storm-watch flagged a ">80k" pause in 50 of the 1,801 minutes.
-- **Claim (measured on TN10):** **the backlog is the main story of the L1 night.** After our miners stopped at 01:31:50, a ~71k mempool sat for about six hours (02:00–07:30) while our inclusion fell to ~300 tx/s and blocks were only 11–26% full. Over that night n0 evicted 427,059 low-feerate transactions to make room for higher-feerate ones. L1 as a whole had **486,140** evictions.
+- **Claim (measured on TN10):** peak **99,992** at Thu 1 Oct 23:35:47 UTC, just under n0's ~100k cap (`--ram-scale=0.1`). Storm-watch flagged a ">80k" pause in 50 of the 1,801 minutes.
+- **Claim (measured on TN10):** **the backlog is the main story of the L1 night.** After our miners stopped at 23:31:50 UTC, a ~71k mempool sat for about six hours (00:00–05:30 UTC) while our inclusion fell to ~300 tx/s and blocks were only 11–26% full. Over that night n0 evicted 427,059 low-feerate transactions to make room for higher-feerate ones. L1 as a whole had **486,140** evictions.
 - **Claim (measured on TN10):** in L4, at our highest sustained box rate (best hour 2,517.6 tx/s), the loaded mempool median was 17,140 and its max 30,826, with no evictions. The pace band (10k/20k) kept it well below the cap.
 - What the mempool data does not tell us: who the other transactions belonged to, and which fee bands were waiting. The plan adds a 1-s sampler and a periodic fee-band snapshot.
 
@@ -572,21 +572,21 @@ All 1,458 probes in the two steps were accepted. None was rejected or lost.
 Sources: `build-brief-how-box-storm-works-2026-10-02.md` (written from the running code), `storm-p2w-runner.mjs`, `r5-engine.mjs`, `storm-watch.sh`, `timeline.md`, the storm 2 public report.
 
 - **One node, one box.** All load went into **n0**, our own TN10 kaspad 2.1.0 on the box (8 vCPU Xeon VM, 16 GB RAM, 126 GB disk). It runs without a UTXO index, with `--ram-scale=0.1` (mempool cap ~100k). The miners, runners and samplers ran on the same box.
-- **Workers ("runners").** A runner is one Node.js process with **1,250 lanes** (1,500 for runner 1) and **4 wRPC connections** to n0. A single connection tops out at ~378 tx/s. **6 runners** was the default. **7 was best overnight in L1** (3,845 tx/s at Fri 01:26 vs 3,375 with 6; `timeline.md`). In L3, 7 added nothing (2,383 vs 2,410) and 8 collapsed throughput to 1,165.
+- **Workers ("runners").** A runner is one Node.js process with **1,250 lanes** (1,500 for runner 1) and **4 wRPC connections** to n0. A single connection tops out at ~378 tx/s. **6 runners** was the default. **7 was best overnight in L1** (3,845 tx/s at Thu 23:26 UTC vs 3,375 with 6; `timeline.md`). In L3, 7 added nothing (2,383 vs 2,410) and 8 collapsed throughput to 1,165.
 - **Lanes = independent coin chains.** Each lane holds exactly one coin. Its next transaction spends the previous one's output, with one transaction in flight per lane. The runner waits only for the node's "accepted into mempool" reply, not for a block, then builds the child. It tracks every lane's tip locally and never asks the node for UTXOs during the run.
 - **Self-transfer transactions.** Each hop is **1 input → 1 output** back to the same lane address, no payload, no change. "P2W" lanes use an anyone-can-spend script tag (`push4(laneId) OP_DROP OP_TRUE`), so hops need no signature and weigh **643 grams** of mass. A signed 1-in-1-out weighs ~1,700 g, so P2W fits ~2.6× more transactions into a block. Early L1 also used signed "SMX" runners.
 - **Coin feeder (UTXO prep).** A feeder (`coinbase-feeder.mjs`) hands each new lane one whole mature coinbase coin from our own mining address (median 3.087 tKAS). One funding transaction (1,701 g) per lane, no fan-out. A lane retires below 0.3 tKAS and re-funds.
-- **Fee.** A fee daemon reads `getFeeEstimate` every 30 s and sets `feerate = min(FEE_MAX, max(2 × 100, 2 × clamp(normal, 100, 200)))`, i.e. **2× the normal estimate, with the base clamped so our own load can't run it up**, cap 400. Average paid feerate was **337–386 sompi/g in L2–L4** and **1,090 in L1** (`data/oct_legs_from_public_report.csv`). L1 includes a 30× period (up to 6,000 sompi/g) on the night of 1–2 Oct, which the build brief describes as a runaway from multiplying the raw estimate. The clamp was added after it. In storm 1 (25–26 Sep) the fee was 1.2×, then 2×, then **10× = 1,000 sompi/g** from 26 Sep 00:14 (storm 1 handoff log).
+- **Fee.** A fee daemon reads `getFeeEstimate` every 30 s and sets `feerate = min(FEE_MAX, max(2 × 100, 2 × clamp(normal, 100, 200)))`, i.e. **2× the normal estimate, with the base clamped so our own load can't run it up**, cap 400. Average paid feerate was **337–386 sompi/g in L2–L4** and **1,090 in L1** (`data/oct_legs_from_public_report.csv`). L1 includes a 30× period (up to 6,000 sompi/g) on the night of 1–2 Oct, which the build brief describes as a runaway from multiplying the raw estimate. The clamp was added after it. In storm 1 (25–26 Sep) the fee was 1.2×, then 2×, then **10× = 1,000 sompi/g** from 25 Sep 22:14 UTC (storm 1 handoff log).
 - **Mempool backoff.** A pace band slows every runner linearly as n0's mempool grows, from full rate at the low mark to zero at the high mark. The marks changed between legs: 45k/72k in L2; 25k/45k, then 10k/20k in L3; 10k/20k in L4 (`timeline.md`). Each runner also hard-pauses above 75k and resumes below 55k (`r5-engine.mjs`; the build brief describes a later 90k setting). Storm-watch pauses everything above 80k until it falls below 55k (`storm-watch.sh`).
 - **Stop and disk/memory guards** (`storm-watch.sh`, `timeline.md`):
   - runner pause at free disk ≤ 21 GB (briefly 19.5 GB on 2 Oct);
   - STOP when free disk stays under **19 GB for more than 900 s** (pruning-window seconds don't count);
   - immediate STOP at 10 GB;
   - STOP when free RAM < 1 GB, or when n0 is unsynced or more than 300 s behind for 2 ticks;
-  - rate cut to 25% in the pruning windows (07:05–08:10 and 19:05–20:10).
+  - rate cut to 25% in the pruning windows (05:05–06:10 UTC and 17:05–18:10 UTC).
   
   The scaler drops the newest runner if the sink age exceeds 2.5 s. Every October leg ended on a disk pause or a disk or RAM STOP.
-- **Our own miners.** stp's miners made **50–63% of TN10 blocks** while the box miners ran: L1 P2W 60.3%, L2 62.8%, L3 58.1% (`block_share_legs.csv` in the public report; L4 52.6% from the independent sampler there). When the box miners stopped (Fri 01:31:50), our inclusion fell to ~300 tx/s although blocks were mostly empty.
+- **Our own miners.** stp's miners made **50–63% of TN10 blocks** while the box miners ran: L1 P2W 60.3%, L2 62.8%, L3 58.1% (`block_share_legs.csv` in the public report; L4 52.6% from the independent sampler there). When the box miners stopped (Thu 23:31:50 UTC), our inclusion fell to ~300 tx/s although blocks were mostly empty.
 - **Block mass is the ceiling.** TN10 blocks fill by mass at ~490–500k per block. Past the knee, more senders only grow the mempool. At 8 runners, blocks hit 492k mass, the block rate fell from 9.1/s to 7.8/s, and throughput halved (build brief §7).
 
 ### (b) How Build generated its load (stp's desk PC)
@@ -599,9 +599,9 @@ Sources: our prompts to Build (`grok-build-tx-sender-2026-10-02.md`, `grok-build
   - First version: up to 400 lanes, at most 1,000 tx/s per process, fee 2× normal capped at 600 sompi/g.
   - v2: a coordinator plus auto-scaled workers, each with 4 connections and 250 lanes; flat 1.5× normal fee, cap 600; pause above 80k mempool.
 - **What its logs show** (desk check in the public report):
-  - a sender log with **17,415,510 submits** (Thu 20:38 → Fri 12:03). Its `accepted` field is a submit result, not inclusion.
-  - a public-node runner whose status lines reached **24,249 submit-OK per second** (Fri 15:35:44, 24 workers). That is above any inclusion ceiling we measured, so it's a submit rate.
-  - a "local P2W scale" path counting inclusions on the desk's own local node, peak **2,795.6/s** for a minute (Fri 21:33, feerate 150); 2,698.6 during L4.
+  - a sender log with **17,415,510 submits** (Thu 18:38 → Fri 10:03 UTC). Its `accepted` field is a submit result, not inclusion.
+  - a public-node runner whose status lines reached **24,249 submit-OK per second** (Fri 13:35:44 UTC, 24 workers). That is above any inclusion ceiling we measured, so it's a submit rate.
+  - a "local P2W scale" path counting inclusions on the desk's own local node, peak **2,795.6/s** for a minute (Fri 19:33 UTC, feerate 150); 2,698.6 during L4.
   - An earlier public wallet-load note by Build: 1,162 tx/s, which was 340 sweeps in 0.29 s, all included (as read in the build opinion).
 - **Unknown:**
   - which exact script versions ran on the desk;
@@ -635,6 +635,7 @@ Sources: our prompts to Build (`grok-build-tx-sender-2026-10-02.md`, `grok-build
 | [`data/sep_network_processed_tx_s_1min.csv`](data/sep_network_processed_tx_s_1min.csv) | 25 Sep: n0 "Processed" tx/s per minute (block-body count) |
 | [`plan/NEXT-STORM-PLAN.md`](plan/NEXT-STORM-PLAN.md) | Next-storm measurement plan (locked by commit SHA before the run) |
 | [`plan/GROK-BUILD-PROMPT.md`](plan/GROK-BUILD-PROMPT.md) | Paste-in prompt for Grok Build (desk sender): what to send, what to log, dry run, stop rules |
+| [`plan/FINISH-TASKS-PROMPT.md`](plan/FINISH-TASKS-PROMPT.md) | Paste-in prompt for Grok Build to close the desk side of the seven pre-storm tasks. It does not start the storm |
 | [`scripts/extract.py`](scripts/extract.py), [`scripts/charts.py`](scripts/charts.py) | Rebuild data/ from the raw logs, and charts/ from data/ (Python 3, matplotlib) |
 
 ## Sources

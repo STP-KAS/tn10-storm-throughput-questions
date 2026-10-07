@@ -1,6 +1,6 @@
 # Next TN10 storm: measurement plan
 
-**Early run: no earlier than Fri 9 Oct 2026, 20:00 CEST** (waiting on usage resets for the bots and Build, and enough tKAS). **If the 9th isn't ready, 13 Oct 2026 (evening CEST) stays the target.** The 6 Oct early run is cancelled. Either date runs only after the instrumentation passes its dry run.
+**Early run: no earlier than Fri 9 Oct 2026, 18:00 UTC** (waiting on usage resets for the bots and Build, and enough tKAS). **If the 9th isn't ready, 13 Oct 2026, from 18:00 UTC, stays the target.** The 6 Oct early run is cancelled. Either date runs only after the instrumentation passes its dry run.
 
 **Not a one-off.** This is a series, not a single run. There is no deadline. Each run is published with its own locked plan and raw data, and the changes between runs are listed.
 
@@ -60,7 +60,7 @@ The sections below are the **Method**: Kaspa Pulse's six process points (§1–�
 - **B0, 10 min of normal TN10 traffic** before any load step. Both our senders (box runners and Build) are off. Everything else runs exactly as during the steps: the samplers, the fee probes (4 small transactions every 2 s, 2 tx/s), the box ordered stream (4 tx/s), the indexer probe, the mining-share counter, and the same miner state (miners on).
 - From B0 we compute the **baseline load B** = median network-wide unique accepted tx/s over the 10 minutes, **minus our own probe and stream transactions** (known by txid), and the baseline confirmation times per fee tier.
 - **B1, a 10-min after-load baseline** at the end, after the final drain, with the same measurements. It shows whether things went back to normal.
-- For scale: before the 1 Oct storm, n0's "Processed" counter showed ~100 tx/s (mean 99.8 over 1 Oct 18:41–20:10 CEST, `host.jsonl`). That counter overstates unique transactions, so B is likely somewhat lower *(estimate)*.
+- For scale: before the 1 Oct storm, n0's "Processed" counter showed ~100 tx/s (mean 99.8 over 1 Oct 16:41–18:10 UTC, `host.jsonl`). That counter overstates unique transactions, so B is likely somewhat lower *(estimate)*.
 
 ## 3. Fixed steps, not one blast
 
@@ -83,14 +83,14 @@ The sections below are the **Method**: Kaspa Pulse's six process points (§1–�
 | 10 | **max** | 7 runners, uncapped | on | 15 + 10 drain | T0+165 |
 | 11 | B1 after-load baseline | senders off | on | 10 min | T0+175 |
 
-  Total **2 h 55 min**. Start no earlier than 20:00 CEST; T0 ≈ 20:15 CEST (after the 19:05–20:10 pruning-window slowdown), so it ends ≈ 23:10 CEST, well before 01:00. Probes, the box ordered stream and all samplers run through every phase.
+  Total **2 h 55 min**. Start no earlier than 18:00 UTC; T0 ≈ 18:15 UTC (after the 17:05–18:10 UTC pruning-window slowdown), so it ends ≈ 21:10 UTC, well before 23:00 UTC. Probes, the box ordered stream and all samplers run through every phase.
 - Workers: 6 runners × 4 wRPC connections, a 7th only for the max step. Never 8; it collapsed throughput on 2 Oct.
 - **Box and Build follow the same UTC timetable.** Step start times are fixed in UTC at T0 and given to both.
 
 ### 3b. Miners-off control step (part of the main run)
 - **Purpose:** our miners made 50–63% of TN10 blocks, so a reorder could come from **our own block templates** rather than from the network. One step with **all our miners off** (box and desk), compared with the same step with them on, separates the two.
 - **Load: matched and low, so it measures order, not backlog.**
-  - **Claim (measured on TN10):** in storm 2, after our box miners stopped (Fri 01:31:50), our inclusion fell to **~300 tx/s** for five hours, while n0's mempool sat at a median of 71,498 (max 99,992). That's a backlog, not a reorder signal (storm 2 public report, L1 and mempool tables).
+  - **Claim (measured on TN10):** in storm 2, after our box miners stopped (Thu 23:31:50 UTC), our inclusion fell to **~300 tx/s** for five hours, while n0's mempool sat at a median of 71,498 (max 99,992). That's a backlog, not a reorder signal (storm 2 public report, L1 and mempool tables).
   - So the control runs at the **2× step's target** (≈ 200 tx/s total if B ≈ 100, of which ≈ +100 from us), well under that ~300 tx/s. If 2× B would exceed **250 tx/s total**, both halves of the pair (rows 2 and 4) run at 250 tx/s total instead, and that is recorded.
   - Same split as the 2× step: box and Build shares, fee tiers, probes and ordered stream unchanged. Only the miners change.
 - **Backlog check:** if the control step hits saturation (§3c) at any point, it is flagged **"backlog-bound"** and its reorder numbers are **not used as a control**. They are still published.
@@ -110,7 +110,7 @@ The sections below are the **Method**: Kaspa Pulse's six process points (§1–�
 - The **saturation point** of the run is the lowest step target at which saturation occurs. The same rule is also reported per sender (box, Build) as a breakdown.
 
 ### 3a. Grok Build as a participant
-- Build sends from stp's desk PC through public TN10 nodes, alongside the box runners. It is off in B0 and B1. For the long hold and the uncapped max, Build also submits through its own synced TN10 node, with coins the public signers are not using. The paced share stays on the public nodes. On the morning of 7 Oct 2026 the six public hostnames were three machines, and the added desk node put blocks on the mass ceiling (about 305 transactions per block, compute mass about 498,000 of 500,000). A recheck at 2026-10-07T11:10Z tried 88 public wRPC names. The ones that answered were still three machines, all kaspad 2.1.0, synced, with a UTXO index. Different addresses sat in front of one mempool. No fourth public node was found. A second kaspad on the same PC would copy about 105 GB and relay into those same three pools. It does not add block mass. Recheck the hostnames before counting nodes. Extra pre-run senders stop if those pools climb. That stop is not a storm fee change, and a storm step still does not pause for mempool. The fee for that storm step stays the frozen 1× and 1.5× pair, cap 600. The 400/600 pre-run has not beaten the six-hour 2,207 seen accepted, so it does not move the fee.
+- Build sends from stp's desk PC through public TN10 nodes, alongside the box runners. It is off in B0 and B1. For the long hold and the uncapped max, Build also submits through its own synced TN10 node, with coins the public signers are not using. The paced share stays on the public nodes. On the morning of 7 Oct 2026 the six public hostnames were three machines, and the added desk node put blocks on the mass ceiling (about 305 transactions per block, compute mass about 498,000 of 500,000). A recheck at 2026-10-07T11:10 UTC tried 88 public wRPC names. The ones that answered were still three machines, all kaspad 2.1.0, synced, with a UTXO index. Different addresses sat in front of one mempool. No fourth public node was found. A second kaspad on the same PC would copy about 105 GB and relay into those same three pools. It does not add block mass. Recheck the hostnames before counting nodes. Extra pre-run senders stop if those pools climb. That stop is not a storm fee change, and a storm step still does not pause for mempool. The fee for that storm step stays the frozen 1× and 1.5× pair, cap 600. The 400/600 pre-run has not beaten the six-hour 2,207 seen accepted, so it does not move the fee.
 - **Per-step share:** Build's target is a fixed share of each step's added load, written into the locked plan before T0 (default **25%**, capped at what its sender sustains in a pre-run test). The box sends the rest. The max step has both senders uncapped. Actual rates are measured for both.
 - **Fees:** the same two tiers, 1× and 1.5× of its node's normal fee estimate, split across Build's lanes and fixed per step. If its sender can't split, its single fee is logged and its transactions are left out of the 1× vs 1.5× comparison.
 - **Steady rate:** last storm Build's runners did not run at 100% of their target (stp's observation). Build fixes that before the storm. Its runners hold the step target for the whole step, and the shortfall, if any, is visible per second.
@@ -142,9 +142,9 @@ The sections below are the **Method**: Kaspa Pulse's six process points (§1–�
 
 ## 4. Per-second logs in UTC, and send order vs accept order
 
-- **All timestamps are UTC**, ISO 8601 with milliseconds (`2026-10-09T18:15:00.123Z`). Summaries also show CEST.
+- **All timestamps are UTC**, ISO 8601 with milliseconds (`2026-10-09T18:15:00.123Z`). Summaries use UTC.
 - **Clocks (tightening 3):**
-  - **Box:** the box is a container on a cloud VM. It has no NTP daemon of its own; its clock comes from the host. We log its offset against two public NTP servers (`pool.ntp.org`, `time.cloudflare.com`, SNTP query) at T0, every 10 min and at the end. Checked Mon 5 Oct, ~21:15 CEST: −9 ms and −8 ms.
+  - **Box:** the box is a container on a cloud VM. It has no NTP daemon of its own; its clock comes from the host. We log its offset against two public NTP servers (`pool.ntp.org`, `time.cloudflare.com`, SNTP query) at T0, every 10 min and at the end. Checked Mon 5 Oct, ~19:15 UTC: −9 ms and −8 ms.
   - **Desk:** Windows Time. Build logs `w32tm /query /status` and the offset from `w32tm /stripchart /computer:time.windows.com /samples:5 /dataonly` at start and end (exact commands confirmed on the desk).
   - **Box-only confirmation times** (box runners, box probes, box stream) use the box clock at both ends, so the offset cancels. Only drift matters, and it is logged.
   - **Build's confirmation times** are t_accept (box clock) − t_submit (desk clock), **corrected** by (desk offset − box offset), interpolated linearly between start and end. If either offset is missing, or the desk offset moved by more than 50 ms between start and end, Build's confirmation times are **flagged** and reported separately as uncorrected.
@@ -173,7 +173,7 @@ The sections below are the **Method**: Kaspa Pulse's six process points (§1–�
 ## 5. Fee tiers (the 1× vs 1.5× question)
 
 - At each step start we read n0's normal fee estimate → **F1** (floor 100 sompi/gram) and set **F1.5 = 1.5 × F1**. Both are frozen for the step. Build applies the same rule with its public node's estimate, and that value is logged.
-- The desk repo's 6,321 tx/s is submit-OK over 20 seconds at 100 and 150. The seen-accepted count in that same window is 38,822. The long number is 2,207 seen accepted over six hours at 200 and 300. On 7 Oct 2026 at 13:57Z a 200/300 pair on the desk node saw about 1,539 accepted while the block was full. Moving part of the lanes to 1,018/1,527, under a priority quote that then read 2,447, brought the combined rate to about 1,403. That reading does not move this fee.
+- The desk repo's 6,321 tx/s is submit-OK over 20 seconds at 100 and 150. The seen-accepted count in that same window is 38,822. The long number is 2,207 seen accepted over six hours at 200 and 300. On 7 Oct 2026 at 13:57 UTC a 200/300 pair on the desk node saw about 1,539 accepted while the block was full. Moving part of the lanes to 1,018/1,527, under a priority quote that then read 2,447, brought the combined rate to about 1,403. That reading does not move this fee.
 - In every runner, even lanes pay F1 and odd lanes pay F1.5: same runner, connections, transaction shape (643-gram hops) and moment. A lane keeps its tier for the whole step.
 - **Probes:** a separate process sends one small, non-chained, signed self-transfer per tier (**1×, 1.2×, 1.5×, 2×** of F1) **every 2 s** (was every 10 s), from its own wallets. That's 2 tx/s in total, from a pre-split pool of 600 coins per tier; a coin is reused only after its previous probe was accepted. 1.2× and 2× link back to the 25 Sep probes.
 - **Probe n and what it buys (tightening 4).** We raise the rate, not the step length: longer steps would cost disk and time, while 2 tx/s of probes costs almost nothing.
@@ -199,7 +199,7 @@ The sections below are the **Method**: Kaspa Pulse's six process points (§1–�
 
 ### 6a. The box is not the chain (tightening 2)
 - **Everything we send from the box goes through n0**, and all acceptance is read from n0. n0 is one node with our settings, so some limits we hit can be ours, not TN10's.
-- **n0 as it runs** (read from the running process, Mon 5 Oct ~21:15 CEST): kaspad **2.1.0**, `--testnet --netsuffix=10 --ram-scale=0.1 --async-threads=4 --outpeers=6 --maxinpeers=24 --rpcmaxclients=64`, no UTXO index. The flags are logged again at T0.
+- **n0 as it runs** (read from the running process, Mon 5 Oct ~19:15 UTC): kaspad **2.1.0**, `--testnet --netsuffix=10 --ram-scale=0.1 --async-threads=4 --outpeers=6 --maxinpeers=24 --rpcmaxclients=64`, no UTXO index. The flags are logged again at T0.
 - **Mempool cap:** in the rusty-kaspa source (`mining/src/mempool/config.rs`), the defaults are 1,000,000 transactions and 1,000,000,000 bytes, multiplied by `ram-scale` (at most 1.0). So n0's cap is **100,000 transactions / 100 MB**. **Claim (measured on TN10):** storm 2 peaked at 99,992 (`mempool_windows.csv`).
 - **Logged every second:**
   - n0 process CPU (100% = one core, 800% = the whole box) and RSS;
@@ -249,8 +249,8 @@ The results go into this repo:
 ## 9. Box limits (our setup, not protocol limits)
 
 - One node (n0, kaspad 2.1.0, `--ram-scale=0.1`, mempool cap ~100k) on an 8-vCPU / 16 GB / 126 GB box.
-- **Disk:** keep ~19 GB free for n0's pruning at all times. The morning pruning window (~07:15–08:30 CEST) needs 11–15 GB of temporary disk; a pruning disk-full crashed n0 on 3 Oct.
-  - On 2 Oct, ~2.2k tx/s used ~4.7–5.0 GB/h. The loaded steps needed roughly 10–12 GB *(estimate)*. The miners-off control and the two settles add ~30 min at ≤ 250 tx/s, about 0.5 GB more, so **~10.5–12.5 GB** *(estimate)*. Probes at 2 tx/s are negligible. With ≥ 35 GB at T0 and ~19 GB kept for pruning, that leaves 16 GB, so it fits. (Free on Mon 5 Oct ~21:15 CEST: 44 GB.)
+- **Disk:** keep ~19 GB free for n0's pruning at all times. The morning pruning window (~05:15–06:30 UTC) needs 11–15 GB of temporary disk; a pruning disk-full crashed n0 on 3 Oct.
+  - On 2 Oct, ~2.2k tx/s used ~4.7–5.0 GB/h. The loaded steps needed roughly 10–12 GB *(estimate)*. The miners-off control and the two settles add ~30 min at ≤ 250 tx/s, about 0.5 GB more, so **~10.5–12.5 GB** *(estimate)*. Probes at 2 tx/s are negligible. With ≥ 35 GB at T0 and ~19 GB kept for pruning, that leaves 16 GB, so it fits. (Free on Mon 5 Oct ~19:15 UTC: 44 GB.)
   - **Go only with ≥ 35 GB free at T0.** With 28–35 GB, steps shrink to 10 min (recorded as a deviation). Below 28 GB, no storm.
 - **Guards** (unchanged): runner pause at ≤ 21 GB free; STOP below 19 GB for more than 900 s; immediate STOP at 10 GB or RAM < 1 GB; STOP if n0 is unsynced or more than 300 s behind. A guard stop ends the run early for both senders (box and Build) and is reported as such.
 

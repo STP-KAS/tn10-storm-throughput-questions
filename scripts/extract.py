@@ -5,18 +5,18 @@ Raw inputs (not in this repo, sizes in README):
                storm-watch.jsonl (15 s), api-health-min.jsonl (120 s)
   Sept storm : tn10-break-test-2026-09-25/logs/overload/probes.jsonl (fee-tier probes, every 30 s),
                logs/tps12h/nettps.jsonl (network included tx/s)
-All times written in CEST (UTC+2). Nothing is estimated: every value is a logged value, a difference
+All times written in UTC. Nothing is estimated: every value is a logged value, a difference
 of logged cumulative counters, or a min/median/max of logged samples."""
 import json, glob, csv, os, sys, statistics as st, datetime as dt, collections
 OCT = sys.argv[1] if len(sys.argv) > 1 else "/workspace/artifacts/stress-tests/data"
 SEP = sys.argv[2] if len(sys.argv) > 2 else "/workspace/tn10-break-test-2026-09-25/logs"
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data")
-CEST = dt.timezone(dt.timedelta(hours=2))
+UTC = dt.timezone.utc
 def E(s):
     s = s.replace("Z", "+00:00")
     if len(s) > 5 and s[-5] in "+-" and s[-3] != ":": s = s[:-2] + ":" + s[-2:]
     return dt.datetime.fromisoformat(s).timestamp()
-def C(ts, fmt="%Y-%m-%d %H:%M:%S"): return dt.datetime.fromtimestamp(ts, CEST).strftime(fmt)
+def C(ts, fmt="%Y-%m-%d %H:%M:%S"): return dt.datetime.fromtimestamp(ts, UTC).strftime(fmt)
 def jl(path):
     for l in open(path):
         if l.startswith("{"):
@@ -74,7 +74,7 @@ with open(f"{OUT}/oct_box_submitted_vs_accepted_1min.csv", "w", newline="") as f
     w = csv.writer(fh)
     tgt_m = collections.Counter()
     for (mm, tag), v in tgt.items(): tgt_m[mm] += st.mean(v)
-    w.writerow(["minute_cest", "box_target_rate_tx_s", "runner_reps_paused", "box_submitted_tx_s", "box_accepted_tx_s", "runners_sending", "n0_mempool_min", "n0_mempool_median", "n0_mempool_max",
+    w.writerow(["minute_utc", "box_target_rate_tx_s", "runner_reps_paused", "box_submitted_tx_s", "box_accepted_tx_s", "runners_sending", "n0_mempool_min", "n0_mempool_median", "n0_mempool_max",
                 "n0_processed_tx_s_all_senders", "disk_free_gb_min", "storm_watch_pause_flags"])
     for m in range(lo, hi + 1, 60):
         mm = mp.get(m, []); pp = proc.get(m, []); dd = disk.get(m, [])
@@ -85,8 +85,8 @@ with open(f"{OUT}/oct_box_submitted_vs_accepted_1min.csv", "w", newline="") as f
 # runner latency: lat_p50/p95 in a 'rep' line are percentiles over ALL txs the process saw accepted since it started
 with open(f"{OUT}/oct_runner_latency_cumulative_by_segment.csv", "w", newline="") as fh:
     w = csv.writer(fh)
-    w.writerow(["file", "tag", "segment_start_cest", "segment_end_cest", "feerate_sompi_per_gram_first", "feerate_last", "submitted", "accepted_seen_on_n0_virtual_chain",
-                "last_rep_cest", "lat_p50_s_cumulative", "lat_p95_s_cumulative"])
+    w.writerow(["file", "tag", "segment_start_utc", "segment_end_utc", "feerate_sompi_per_gram_first", "feerate_last", "submitted", "accepted_seen_on_n0_virtual_chain",
+                "last_rep_utc", "lat_p50_s_cumulative", "lat_p95_s_cumulative"])
     for g in segs:
         if not g["lat"] or g["pts"][-1][1] < 10000: continue
         fr = [x for x in g["fr"] if x is not None]
@@ -96,7 +96,7 @@ with open(f"{OUT}/oct_runner_latency_cumulative_by_segment.csv", "w", newline=""
 # ---------- 3. api-tn10 indexer health, with box accepted tx/s and n0 processed tx/s at the same minute ----------
 with open(f"{OUT}/oct_api_tn10_health_2min.csv", "w", newline="") as fh:
     w = csv.writer(fh)
-    w.writerow(["time_cest", "http", "error", "indexer_lag_s_acceptedTxBlockTimeDiff", "db_isSynced", "stall_suspected", "box_accepted_tx_s_that_minute", "n0_processed_tx_s_that_minute"])
+    w.writerow(["time_utc", "http", "error", "indexer_lag_s_acceptedTxBlockTimeDiff", "db_isSynced", "stall_suspected", "box_accepted_tx_s_that_minute", "n0_processed_tx_s_that_minute"])
     for j in jl(f"{OCT}/api-health-min.jsonl"):
         if j.get("type") != "health": continue
         t = int(E(j["ts"])); m = t - t % 60
@@ -119,7 +119,7 @@ def mp_at(t):
     return best
 with open(f"{OUT}/sep_fee_tier_probes.csv", "w", newline="") as fh:
     w = csv.writer(fh)
-    w.writerow(["submit_cest", "phase", "storm_feerate_sompi_g", "tier_x_min_feerate", "probe_feerate_sompi_g", "tier_vs_storm_fee", "mass", "ok", "accepted", "inclusion_s", "mempool_at_cycle"])
+    w.writerow(["submit_utc", "phase", "storm_feerate_sompi_g", "tier_x_min_feerate", "probe_feerate_sompi_g", "tier_vs_storm_fee", "mass", "ok", "accepted", "inclusion_s", "mempool_at_cycle"])
     for i, r in sorted(s_.items()):
         stf = 120 if r["phase"].startswith("P1") else (200 if r["phase"].startswith("P4") else "")
         a = a_.get(i)
@@ -133,7 +133,7 @@ for j in jl(f"{SEP}/tps12h/nettps.jsonl"):
     t = E(j["t"])
     if t_lo <= t <= t_hi and j.get("net_tps") is not None: nt[int(t - t % 60)].append(j["net_tps"])
 with open(f"{OUT}/sep_network_processed_tx_s_1min.csv", "w", newline="") as fh:
-    w = csv.writer(fh); w.writerow(["minute_cest", "network_processed_tx_s_block_bodies_mean", "samples"])
+    w = csv.writer(fh); w.writerow(["minute_utc", "network_processed_tx_s_block_bodies_mean", "samples"])
     for m in sorted(nt): w.writerow([C(m, "%Y-%m-%d %H:%M"), round(st.mean(nt[m]), 1), len(nt[m])])
 print("segments", len(segs), "minutes", (hi - lo) // 60 + 1)
 
@@ -143,8 +143,8 @@ def pct(a, p):  # same linear interpolation as analyze-overload.py
     return round(a[f] + (a[c] - a[f]) * (k - f), 2)
 rows = list(csv.DictReader(open(f"{OUT}/sep_fee_tier_probes.csv")))
 with open(f"{OUT}/sep_fee_tier_summary.csv", "w", newline="") as fh:
-    w = csv.writer(fh); w.writerow(["phase", "window_cest", "storm_feerate", "tier_x_min", "probe_feerate", "tier_vs_storm_fee", "sent", "accepted", "p50_s", "p90_s", "max_s", "over_30s", "over_60s"])
-    for ph, win in (("P1-overload", "21:48:41-22:46:14"), ("P4-max", "22:47:26-23:50:41")):
+    w = csv.writer(fh); w.writerow(["phase", "window_utc", "storm_feerate", "tier_x_min", "probe_feerate", "tier_vs_storm_fee", "sent", "accepted", "p50_s", "p90_s", "max_s", "over_30s", "over_60s"])
+    for ph, win in (("P1-overload", "19:48:41-20:46:14"), ("P4-max", "20:47:26-21:50:41")):
         for m in ("1", "1.2", "2", "5", "10", "100"):
             s = [r for r in rows if r["phase"] == ph and r["tier_x_min_feerate"] == m]; l = [float(r["inclusion_s"]) for r in s if r["inclusion_s"]]
             w.writerow([ph, win, s[0]["storm_feerate_sompi_g"], m, s[0]["probe_feerate_sompi_g"], s[0]["tier_vs_storm_fee"], len(s), len(l), pct(l, 50), pct(l, 90), max(l), sum(x > 30 for x in l), sum(x > 60 for x in l)])

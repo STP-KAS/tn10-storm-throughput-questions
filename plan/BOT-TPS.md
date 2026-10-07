@@ -6,16 +6,16 @@ The number that matters is transactions **seen accepted** over a long step, not 
 
 ## What held
 
-From 2026-10-06T23:53:27.326Z to 2026-10-07T05:54:53.185Z, twelve signers on the six public nodes held **2,207 tx/s seen accepted** for 6 h 1 m 26 s. Submit was 2,210 tx/s. Rejects were 0.07% of submits. Depth was 2. The fee was frozen at 200 and 300 sompi/gram. The cap stayed 600.
+From 2026-10-06T23:53:27.326 UTC to 2026-10-07T05:54:53.185 UTC, twelve signers on the six public nodes held **2,207 tx/s seen accepted** for 6 h 1 m 26 s. Submit was 2,210 tx/s. Rejects were 0.07% of submits. Depth was 2. The fee was frozen at 200 and 300 sompi/gram. The cap stayed 600.
 
 A signed one-input one-output is about 1,624 grams. At 500,000 grams and 10 blocks per second the count ceiling is about 3,080 tx/s. The hold sat under that ceiling with the pipes already full, on about one CPU core.
 
 ## What did not hold
 
-- **Depth 8**, 2026-10-06T21:22:15.436Z to 2026-10-06T22:53:03.590Z. The pipe filled and about four fifths of the seconds were zero. Wall rate 539 tx/s submit, 521 tx/s seen accepted.
+- **Depth 8**, 2026-10-06T21:22:15.436 UTC to 2026-10-06T22:53:03.590 UTC. The pipe filled and about four fifths of the seconds were zero. Wall rate 539 tx/s submit, 521 tx/s seen accepted.
 - **Fee 2,000.** The long attempt stalled. Orphans passed submits and the rate fell to about 0.
 - **A few seconds at 6,000–9,000 submit-OK.** The 20-second six-process run and the 12-second ten-process run did not survive as holds. The 12-second run carried 28,617 orphan rejects.
-- **One burst with a dead virtual-chain feed**, 2026-10-06T23:08:02.667Z to 2026-10-06T23:11:51.851Z. Five nodes submitted once and then accepted nothing for 3 m 49 s.
+- **One burst with a dead virtual-chain feed**, 2026-10-06T23:08:02.667 UTC to 2026-10-06T23:11:51.851 UTC. Five nodes submitted once and then accepted nothing for 3 m 49 s.
 - **More signers after the pipe is full.** At 2,210 tx/s the desk was near 5% CPU. Another process had no empty lane.
 
 ## Changes that raise a long rate
