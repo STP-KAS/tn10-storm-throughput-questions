@@ -18,10 +18,10 @@ The storm prompt is [`GROK-BUILD-PROMPT.md`](GROK-BUILD-PROMPT.md). The test-day
 
 ## What is already running
 
-Leave it running. Scored at 2026-10-07T07:31:43 UTC.
+The trial clock has ended. A partial score was taken at 2026-10-07T07:31:43 UTC. The full public score is in tn10-build-desk-tps.
 
-- Twelve public signers plus the order stream. Step `long10-f400`. Depth 2, in-flight 64, fee 400 and 600, cap 600. Parent `long10-f400b.ps1`. Until **2026-10-07T16:38:59 UTC**.
-- A 90-second slice, 07:30:00 UTC to 07:31:39 UTC, was 2,284 tx/s submit and 2,283 tx/s seen accepted, 0 rejects. That slice does not replace the six-hour **2,207**. 9 Oct stays on **200 and 300** and on **two signers** until the whole window is scored.
+- Twelve public signers plus the order stream. Step `long10-f400`. Depth 2, in-flight 64, fee 400 and 600, cap 600. Parent `long10-f400b.ps1`. The clock ended at **2026-10-07T16:38:59 UTC**. The signers have exited.
+- A 90-second slice, 07:30:00 UTC to 07:31:39 UTC, was 2,284 tx/s submit and 2,283 tx/s seen accepted, 0 rejects. The whole public window is now scored in tn10-build-desk-tps: 668 tx/s submit and 273 tx/s seen accepted, and seen accepted is 0 after 08:05 UTC. That does not beat the six-hour **2,207**. 9 Oct stays on **200 and 300** and on **two signers**.
 - Desk clock against `time.windows.com`: about **+72 ms** (five samples, +71.5 to +72.0 ms). Miners **0**.
 - Local kaspad was in IBD, about 69%, and was not taking traffic.
 - Build wallet at 23:00 UTC on 6 Oct: **3,612,867 tKAS**, **15,944** coins of at least 2 tKAS. Do not read UTXOs again while those signers are spending.
@@ -82,9 +82,9 @@ Leave it **not given**. Do not write a start time. Do not create `steps-utc.json
 
 This is not an eighth README task. It is what task 5 is waiting on.
 
-- Let the trial run until 2026-10-07T16:38:59 UTC. Do not stop it to sample. Do not add a signer. Lanes that are already two deep stay at two signers. The desk node and the three-machine note are already in DESK-SHAPE. Do not remove them. The fee still waits for the full window.
-- When the signers have exited, score the whole window from the per-second logs: submit-OK per second, seen accepted per second, rejects, seconds at 0, UTC start, UTC end.
-- If that seen-accepted rate is above **2,207**, write it into [`DESK-SHAPE-9-OCT.md`](DESK-SHAPE-9-OCT.md) as the long-window figure and say the 9 Oct pair can move. If it is not above 2,207, write the figure in the desk TPS note and leave 9 Oct on 200 and 300.
+- The trial ran to 2026-10-07T16:38:59 UTC. It was not stopped to sample. No signer was added.
+- Scored from the twelve public per-second logs, 2026-10-07T06:39:01.356Z to 2026-10-07T16:38:59.632Z: 24,040,746 submits, 9,812,395 seen accepts, 23,942 rejects. That is 668 tx/s submit and 273 tx/s seen accepted. Seen accepted is 0 after 08:05Z. The order stream and the desk-node logs are not in that total.
+- 273 is not above **2,207**. The figure is in the desk TPS note. 9 Oct stays on 200 and 300.
 - Do not put txids in either repo.
 
 ## Done
