@@ -31,9 +31,9 @@ This is the shape that held the highest rate for minutes, with seen-accepted mat
 
 The whole leg, 2026-10-06T23:53:27.326Z to 2026-10-07T05:54:53.185Z (6 h 1 m 26 s, stopped on request): **2,210 tx/s** submit and **2,207 tx/s** seen accepted, 47,922,856 submits, 47,863,985 seen accepted, 35,639 rejects. The first minute was about **2,530** submit and **2,500** seen accepted. The rate then settled at the six-hour figure. Use the six-hour figure on 9 Oct.
 
-The one-signer leg before it, depth 2 and in-flight 48, frozen at 100 and 150 (vector-10 at 136 and 204), ran about 39 minutes and closed at about **2,050 tx/s** included, with 0 rejects in the last 3 minutes. Moving to two signers and to 200 and 300 gained about **400 tx/s**. The gain was on proton-10, electron-10, quark-10, neutrino-10 and muon-10. Vector-10 came down.
+The one-signer leg before it, depth 2 and in-flight 48, frozen at 100 and 150 (vector-10 at 136 and 204), ran about 39 minutes. Its five nodes plus the older muon process overlapped near **2,050–2,120 tx/s** included. Per node, submit tx/s, one signer then two signers: vector-10 574 then 549, proton-10 263 then 320, electron-10 282 then 327, quark-10 274 then 328, neutrino-10 263 then 311, muon-10 465 then 376. The second signer raised the four slower nodes by about 50 tx/s each. The two fast nodes went down. The net over the long window was about **2,207**, not a 400 tx/s gain. The first minute of the two-signer leg was about 2,500, and that minute is not the gain.
 
-The pipes were full again (depth equal to two hops on every live lane). The twelve signers used about **one core**. The desk was still near **5%** CPU. More signers do not raise the rate once the pipe is full.
+The pipes were full again (depth equal to two hops on every live lane). The twelve signers used about **one core**. The desk was still near **5%** CPU. More signers do not raise the rate once the pipe is full. A third signer is not the default. Add one on a node only when that node's lanes are not already two deep.
 
 A signed one-input one-output is about **1,624 grams**. A full 500,000-gram block at 10 blocks per second holds about **3,080** of them.
 
@@ -41,7 +41,9 @@ A signed one-input one-output is about **1,624 grams**. A full 500,000-gram bloc
 
 At an empty mempool the public quote was **100**. After this desk filled the mempools the normal quote sat near **186–194**, and the priority bucket was far above that. Signers frozen at 100 and 150 were under that quote for the rest of the leg. **200 and 300** is the pair that then held, and 300 is under the 600 cap.
 
-On 9 Oct, use **200 and 300** for the long hold and for the uncapped max step. A later pre-run may try 400 and 600, still under the cap, only after the public mempool has drained. That trial does not change 9 Oct until its seen-accepted rate over a long window is written here. For a paced step, if the quote at step start is the idle floor of 100, arm at 200 and 300 as well. A step that starts at 100 spends the rest of the step under the quote its own mempool creates. If the quote at step start is already above 200, freeze that quote and its 1.5×. If 1.5× would pass 600, stop and ask. Do not raise the cap.
+On 9 Oct, use **200 and 300** for the long hold and for the uncapped max step, and keep **two signers** on each public node. A third signer is only for a node whose lanes are not already two deep.
+
+A 10-hour pre-run at **400 and 600**, same depth, same two signers, started at 2026-10-07T06:38:59Z and runs until 2026-10-07T16:38:59Z. It spends coins that no mempool transaction for this wallet already spends, so it did not wait for the whole public mempool to reach zero. In the seconds ending 2026-10-07T06:40:14Z the lanes were about **2,140 tx/s** submit and the same seen accepted, 0 rejects, and every lane was already about two deep, so the reserved third share was not started. That opening is not the result. 9 Oct stays on 200 and 300, and on two signers, until the seen-accepted rate over this long window is written here. Do not switch the storm to 400 because the test was started. For a paced step, if the quote at step start is the idle floor of 100, arm at 200 and 300 as well. A step that starts at 100 spends the rest of the step under the quote its own mempool creates. If the quote at step start is already above 200, freeze that quote and its 1.5×. If 1.5× would pass 600, stop and ask. Do not raise the cap.
 
 ## Coins
 

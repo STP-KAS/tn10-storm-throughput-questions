@@ -36,8 +36,9 @@ The 6–7 Oct desk pre-run is written in [`DESK-SHAPE-9-OCT.md`](DESK-SHAPE-9-OC
 
 - Paced steps, the 25% share: **4** fixed processes, depth **2**, in-flight **48**, the dry-run gate that held **734 tx/s**.
 - The long hold and the uncapped max step: **two signers on each public node**, depth **2**, in-flight **64**, fee frozen at **200 and 300** sompi/gram. The rate that lasted is **2,207 tx/s seen accepted**, from 2026-10-06T23:53:27.326Z to 2026-10-07T05:54:53.185Z. The first minutes were higher, about 2,450, and then it settled.
+- The one-signer depth-2 leg overlapped near 2,050–2,120. The second signer added about 50 tx/s on proton-10, electron-10, quark-10 and neutrino-10. Vector-10 and muon-10 went down. Do not add a third signer while every lane is already two deep.
 - Fee cap stays **600**. Depth 8, a 45-second burst, and a fee of 2,000 did not hold.
-- A follow-up hold at **400 and 600** sompi/gram, same depth and same signer count, is the test of whether a higher fee under the cap raises the long rate. It starts only after the public mempool from the 6–7 Oct hold has drained. Until that hold's seen-accepted rate is written down, **9 Oct stays on 200 and 300**. Do not switch the storm to 400 because the test was started.
+- A 10-hour hold at **400 and 600**, same depth and the same two signers, started at 2026-10-07T06:38:59Z and runs until 2026-10-07T16:38:59Z. Its opening seconds were about 2,140 tx/s seen accepted, with the pipes full, so no third signer was added. Until that hold's seen-accepted rate over the long window is written down, **9 Oct stays on 200 and 300 and on two signers**. Do not switch the storm to 400 because the test was started.
 
 If that note and [`NEXT-STORM-PLAN.md`](NEXT-STORM-PLAN.md) disagree, the plan wins. Stop and ask stp.
 
