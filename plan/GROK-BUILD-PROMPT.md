@@ -28,6 +28,16 @@ So we could not say how much of your load actually landed, or how fast. This tim
 6. **No real transactions without stp's GO.** One GO for the dry run, a separate GO for the storm.
 7. If anything doesn't match this prompt, **stop and ask stp**.
 
+## Shape that held, for 9 Oct
+
+The 6–7 Oct desk pre-run is written in [`DESK-SHAPE-9-OCT.md`](DESK-SHAPE-9-OCT.md). Use that shape on 9 Oct.
+
+- Paced steps, the 25% share: **4** fixed processes, depth **2**, in-flight **48**, the dry-run gate that held **734 tx/s**.
+- The long hold and the uncapped max step: **two signers on each public node**, depth **2**, in-flight **64**, fee frozen at **200 and 300** sompi/gram. That held about **2,420–2,450 tx/s** seen accepted, with 0 rejects, after the mempool was full.
+- Fee cap stays **600**. Depth 8, a 45-second burst, and a fee of 2,000 did not hold.
+
+If that note and [`NEXT-STORM-PLAN.md`](NEXT-STORM-PLAN.md) disagree, the plan wins. Stop and ask stp.
+
 ## Process setup for the live storm (settle and test before the storm)
 
 How many processes / PowerShell windows you run **during the storm** is decided in the dry run and then **fixed for the whole storm**.

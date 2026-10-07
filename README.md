@@ -20,7 +20,7 @@ In our storms, our own miners made **50–63% of TN10 blocks** while they ran (s
 - [Build and the bot](#build-and-the-bot)
 - [Monitoring](#monitoring)
 - [History of the storms](#history-of-the-storms)
-- [Tasks for stp](#tasks-for-stp-before-the-storm), including the [dry run](#desk-dry-run-6-oct-2026)
+- [Tasks for stp](#tasks-for-stp-before-the-storm), including the [dry run](#desk-dry-run-6-oct-2026) and the [9 Oct shape](plan/DESK-SHAPE-9-OCT.md)
 - [Results after the storm](#results-after-the-storm): [Build](#build-result), [bot](#bot-result), [Leg 3](#leg-3-merged-challenge)
 - [Open builder leg](#open-builder-leg), a separate idea
 - [Measured data](#measured-data): charts and tables from the past storms
@@ -36,7 +36,7 @@ The early run is **no earlier than Fri 9 Oct 2026, 20:00 CEST**. If Build's dry 
 
 This is a series. We can repeat it, fixing what each run exposes, until the measurements are clean and the results hold up. Each run is published with its locked plan SHA and its own raw data.
 
-The lock text is [`plan/NEXT-STORM-PLAN.md`](plan/NEXT-STORM-PLAN.md). Build's paste-in instructions are [`plan/GROK-BUILD-PROMPT.md`](plan/GROK-BUILD-PROMPT.md). If the prompt and the plan disagree, the plan wins, and Build stops and asks stp.
+The lock text is [`plan/NEXT-STORM-PLAN.md`](plan/NEXT-STORM-PLAN.md). Build's paste-in instructions are [`plan/GROK-BUILD-PROMPT.md`](plan/GROK-BUILD-PROMPT.md). What the desk pre-run actually held, and the shape to use on 9 Oct, is [`plan/DESK-SHAPE-9-OCT.md`](plan/DESK-SHAPE-9-OCT.md). If the prompt or that shape note disagrees with the plan, the plan wins, and Build stops and asks stp.
 
 ## Why
 
