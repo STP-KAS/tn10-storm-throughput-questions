@@ -58,7 +58,7 @@ One measured TN10 series. Two senders, one UTC timetable, five questions.
 - **TN10 ops** (the bot) sends from stp's box through its own node, n0.
 - **Grok Build** sends from stp's desk PC through public TN10 nodes.
 
-The early run is **no earlier than Fri 9 Oct 2026, 18:00 UTC**. If Build's dry run has not passed, or the tKAS and the usage resets are not ready, the same plan runs on **13 Oct 2026, from 18:00 UTC**. The 6 Oct early run is cancelled. There is no storm until the dry run passes and stp gives a separate GO for the storm. When that GO is given, the run takes **2 h 55 min** from T0. The plan puts T0 at about 18:15 UTC and the last baseline at about 21:10 UTC.
+The storm starts at **Fri 9 Oct 2026, 21:30 UTC** and runs **8 hours**, to **Sat 10 Oct 2026, 05:30 UTC**. If Build's dry run has not passed, or the tKAS and the usage resets are not ready, the same plan runs on **Mon 13 Oct 2026, 21:30 UTC**, to **Tue 14 Oct 2026, 05:30 UTC**. The 6 Oct early run is cancelled. There is no storm until the dry run passes and stp gives a separate GO for the storm. When that GO is given, the window is **8 hours** from T0. T0 is **21:30 UTC**. The paced table inside that window is still **2 h 55 min** and ends at T0+175 (**00:25 UTC** the next day).
 
 This is a series. Weekly runs sound good. **One clean run first**, and go through those numbers properly, before we stack more. We send Kaspa Pulse the results when that run is done. Each run is published with its locked plan SHA and its own raw data.
 
@@ -85,7 +85,7 @@ Kaspa Pulse's six process points, and the four tightenings from his review, are 
 |---|---|---|
 | 1 | Write the plan down first | Public now. Locked by commit SHA before T0. The results cite that SHA and list any deviation. |
 | 2 | Baseline first | **B0:** 10 min of normal TN10 traffic, both senders off, measurements on. **B1:** 10 min after the load. |
-| 3 | Fixed steps | **2×, 5×, 10×, 20×, 30×** the measured baseline, then max. A **2× miners-off control** sits right after the 2× step, at the same load. 15 min at the target, then 5 min of drain. About 2 h 55 min. If the baseline is under 50 or over 200 tx/s, the fallback is absolute steps of 500–3,000 tx/s. |
+| 3 | Fixed steps | **2×, 5×, 10×, 20×, 30×** the measured baseline, then max. A **2× miners-off control** sits right after the 2× step, at the same load. 15 min at the target, then 5 min of drain. The paced table is about 2 h 55 min. The storm window around it is 8 hours. If the baseline is under 50 or over 200 tx/s, the fallback is absolute steps of 500–3,000 tx/s. |
 | 4 | Log submitted and accepted per second, and order | Per-second UTC counters for the box, for Build, and for the network. Per transaction: send sequence, submit time, accept position. |
 | 5 | State the mining share up front | **50–63%** in the earlier storms. This run publishes the share **for every step**, including the miners-off control. |
 | 6 | Raw data next to the summary | Per-second CSV, per-step summary, every probe, per-transaction samples, mempool, indexer and mining share, in `data/`. |
@@ -104,7 +104,7 @@ Build runs on that same UTC timetable.
 - Fees: half the lanes at **1×** the node's normal estimate, half at **1.5×**, frozen for the step. 1.5× stays under the 600 sompi/gram cap.
 - Gate: achieved send rate at least 95% of target at every step, per-transaction logs complete, txids matched to what n0 accepted, UTC timetable followed. Miss the gate, and the storm waits for 13 Oct.
 
-Box side: 6 runners × 4 connections, a 7th only at the max step. Go only with at least 35 GB free at T0. Between 28 and 35 GB, the steps shrink to 10 min. Below 28 GB, no storm. Keep about 19 GB free for n0's pruning. A guard stop ends the run for the box and for Build, and the stop is reported. T0 is no earlier than 18:00 UTC.
+Box side: 6 runners × 4 connections, a 7th only at the max step. Go only with at least 35 GB free at T0. Between 28 and 35 GB, the steps shrink to 10 min. Below 28 GB, no storm. Keep about 19 GB free for n0's pruning. A guard stop ends the run for the box and for Build, and the stop is reported. T0 is 21:30 UTC. The storm window is 8 hours.
 
 ## Goal
 
@@ -181,7 +181,7 @@ Oldest first. The short bursts stay above the long holds. The 9 or 13 Oct row is
 | Two signers, fee 200 and 300 | 2026-10-06 23:53 UTC to 2026-10-07 05:54 UTC | Build. Two signers on each public node. | **2,210 tx/s submit, 2,207 tx/s seen accepted.** The long number. |
 | Fee 400 and 600 | 2026-10-07 06:39–16:38 UTC | Build. Twelve public lane signers. | **668 tx/s submit, 273 tx/s seen accepted.** Seen accepted is 0 after 08:05 UTC. Does not replace 2,207. |
 | Included-rate tries | 2026-10-07 14:26–16:27 UTC | Build. Desk node. Lighter hop. | Best minute 2,951. Best socket 1,636. 3,500 was not read. [3500 note](https://github.com/STP-KAS/tn10-build-desk-tps-3500). |
-| Next storm | Fri 9 Oct 2026, 18:00 UTC at the earliest. Otherwise 13 Oct, from 18:00 UTC. | The bot and Build, on one timetable | The five questions, both senders, and the miners-off control. When GO is given, 2 h 55 min from T0. The result sections stay empty until then. |
+| Next storm | Fri 9 Oct 2026, 21:30 UTC, for 8 hours, to Sat 10 Oct 05:30 UTC. Otherwise Mon 13 Oct 21:30 UTC, to Tue 14 Oct 05:30 UTC. | The bot and Build, on one timetable | The five questions, both senders, and the miners-off control. When GO is given, 8 hours from T0. The paced table is 2 h 55 min inside that window. The result sections stay empty until then. |
 
 While the box miners ran in storm 2 they made 50–63% of TN10 blocks. When they stopped on Thu 1 Oct at 23:31:50 UTC, our inclusion fell to about 300 tx/s.
 
@@ -199,7 +199,7 @@ Status at the close of the desk pre-run, 2026-10-07T05:55:18 UTC. The long holds
 | 4 | Box dry run, and at least 35 GB free at T0. | **Not done.** Not measured from this desk. |
 | 5 | Set Build's share, then lock the plan by commit SHA. | **Not locked.** The 25% share still fits the dry run. The shape to use is saved. Lock stays with stp before T0. |
 | 6 | Desk clock, and the miner switch. | **Start logged, switch not run.** +73 ms at 2026-10-06T23:00:16 UTC. Stripchart at 2026-10-07T13:58:54 UTC was +77 ms. Miners: 0. |
-| 7 | Final OK on the start time. | **Not given.** Earliest start remains Fri 9 Oct 2026, 18:00 UTC, otherwise 13 Oct, from 18:00 UTC. |
+| 7 | Final OK on the start time. | **Not given.** The start is Fri 9 Oct 2026, 21:30 UTC, for 8 hours, to Sat 10 Oct 05:30 UTC, otherwise Mon 13 Oct 21:30 UTC, to Tue 14 Oct 05:30 UTC. |
 
 ### On test day
 
@@ -306,7 +306,7 @@ Muon-10 held about 290 tx/s in the six-process run, so the ten-process run left 
 
 Past about 9,000 tx/s the public nodes are the limit. The desk still had free CPU and free RAM. This ceiling is not a new storm rate. The storm still uses 4 fixed processes for the planned share.
 
-Tasks 1, 2, and 3 are marked in the table above. Tasks 4, 5, and 7 are still open. Task 6 has its start and its pre-run end offset. The miner switch waits for the storm. Earliest start remains Fri 9 Oct 2026, 18:00 UTC, otherwise 13 Oct, from 18:00 UTC. This note does not start the storm. The long-hold totals are in [tn10-build-desk-tps](https://github.com/STP-KAS/tn10-build-desk-tps#long-holds-6-7-oct-2026).
+Tasks 1, 2, and 3 are marked in the table above. Tasks 4, 5, and 7 are still open. Task 6 has its start and its pre-run end offset. The miner switch waits for the storm. The start is Fri 9 Oct 2026, 21:30 UTC, for 8 hours, to Sat 10 Oct 05:30 UTC, otherwise Mon 13 Oct 21:30 UTC, to Tue 14 Oct 05:30 UTC. This note does not start the storm. The long-hold totals are in [tn10-build-desk-tps](https://github.com/STP-KAS/tn10-build-desk-tps#long-holds-6-7-oct-2026).
 
 ### Monitored hold, 6 Oct 2026, 20:57 UTC
 

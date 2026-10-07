@@ -15,10 +15,10 @@ If this prompt, [`TESTDAY.md`](TESTDAY.md), or [`DESK-SHAPE-9-OCT.md`](DESK-SHAP
 
 | | |
 |---|---|
-| Earliest start | **Fri 9 Oct 2026, 18:00 UTC**. If that day is not ready, **13 Oct, from 18:00 UTC**. |
-| When the storm GO is given | **2 h 55 min** from T0. |
-| T0 in the plan | about **18:15 UTC**. |
-| Last baseline in the plan | about **21:10 UTC**. |
+| Start | **Fri 9 Oct 2026, 21:30 UTC**. If that day is not ready, **Mon 13 Oct 2026, 21:30 UTC**. |
+| When the storm GO is given | **8 hours** from T0, ending **05:30 UTC** the next day. |
+| T0 in the plan | **21:30 UTC**. |
+| Paced table in the plan | **2 h 55 min**, ending at T0+175 (**00:25 UTC** the next day). The step lengths are unchanged. The time after T0+175 stays inside the 8-hour window. This file does not name a phase for it. |
 | Where the times actually are | `steps-utc.json`, from stp, at T0. Each step has a UTC start and a UTC end. |
 
 Do not invent the timetable. Do not start on the date line alone. If `steps-utc.json` is missing, stop and ask.
@@ -92,7 +92,7 @@ Follow `steps-utc.json`. Nothing in the list below is a guess at the clock.
 
 ## What to log
 
-All times are **UTC, ISO 8601, milliseconds, `Z`**. Example: `2026-10-09T18:15:00.123Z`.
+All times are **UTC, ISO 8601, milliseconds, `Z`**. Example: `2026-10-09T21:30:00.123Z`.
 
 **Per transaction**, one JSON line, in `build-tx-<date>-p<i>.jsonl`. The ordered stream uses `-order`.
 

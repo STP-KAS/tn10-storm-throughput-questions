@@ -8,7 +8,7 @@ The storm prompt is [`GROK-BUILD-PROMPT.md`](GROK-BUILD-PROMPT.md). The test-day
 
 ## Hard stops
 
-1. **Do not start the storm.** No storm GO. Do not write `steps-utc.json`. Do not give the final OK on the start time. Earliest start remains **Fri 9 Oct 2026, 18:00 UTC**, otherwise **13 Oct, from 18:00 UTC**.
+1. **Do not start the storm.** No storm GO. Do not write `steps-utc.json`. Do not give the final OK on the start time. The start is **Fri 9 Oct 2026, 21:30 UTC, for 8 hours, ending Sat 10 Oct 2026, 05:30 UTC**, otherwise **Mon 13 Oct 2026, 21:30 UTC, ending Tue 14 Oct 2026, 05:30 UTC**.
 2. **Do not lock the plan.** Do not commit a "locked" SHA. The lock stays with stp before T0.
 3. **Do not run the miner switch.** Desk miners stay **0**. Do not start `kaspa-miner`.
 4. **One spender family.** The fee-400 signers have exited. Do not start them again. Do not start `build-storm2`, `p2w.mjs`, `storm-sender`, or a second `measure.mjs` sender. The halt file `C:\Users\Remco\kaspa-tn10\build-storm2\STOP` stays. Its text is `halt`. Do not delete it.
@@ -76,7 +76,7 @@ The miner switch is a test-day step. It runs only from [`TESTDAY.md`](TESTDAY.md
 
 ### 7. Final OK on the start time
 
-Leave it **not given**. Do not write a start time. Do not create `steps-utc.json`. Repeat the earliest start: Fri 9 Oct 2026, 18:00 UTC, otherwise 13 Oct, from 18:00 UTC.
+Leave it **not given**. Do not write a start time. Do not create `steps-utc.json`. Repeat the start: Fri 9 Oct 2026, 21:30 UTC, for 8 hours, ending Sat 10 Oct 2026, 05:30 UTC, otherwise Mon 13 Oct 2026, 21:30 UTC, ending Tue 14 Oct 2026, 05:30 UTC.
 
 ## 8. Score the fee trial when its clock ends
 

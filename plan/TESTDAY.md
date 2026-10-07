@@ -1,6 +1,6 @@
 # Test day: start this, and the desk run starts
 
-For Grok Build on stp's desk. Fri 9 Oct 2026, 18:00 UTC, or 13 Oct from 18:00 UTC if that is the date. When the storm GO is given, the run takes 2 h 55 min from T0. The plan puts T0 at about 18:15 UTC and the last baseline at about 21:10 UTC. The UTC times come from `steps-utc.json`. This is the run. Do not ask stp to paste commands.
+For Grok Build on stp's desk. Fri 9 Oct 2026, 21:30 UTC, for 8 hours, ending Sat 10 Oct 2026, 05:30 UTC. If that day is not ready, Mon 13 Oct 2026, 21:30 UTC, for 8 hours, ending Tue 14 Oct 2026, 05:30 UTC. When the storm GO is given, the window is 8 hours from T0. T0 is 21:30 UTC. The paced table is still 2 h 55 min and ends at T0+175, 00:25 UTC the next day. The time after that stays inside the 8-hour window. The UTC times come from `steps-utc.json`. This is the run. Do not ask stp to paste commands.
 
 The shape is [`DESK-SHAPE-9-OCT.md`](DESK-SHAPE-9-OCT.md). The measurement rules are [`NEXT-STORM-PLAN.md`](NEXT-STORM-PLAN.md) and [`GROK-BUILD-PROMPT.md`](GROK-BUILD-PROMPT.md). If this file and the plan disagree, the plan wins. Stop and ask stp.
 

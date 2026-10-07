@@ -1,6 +1,6 @@
 # Next TN10 storm: measurement plan
 
-**Early run: no earlier than Fri 9 Oct 2026, 18:00 UTC** (waiting on usage resets for the bots and Build, and enough tKAS). **If the 9th isn't ready, 13 Oct 2026, from 18:00 UTC, stays the target.** The 6 Oct early run is cancelled. Either date runs only after the instrumentation passes its dry run.
+**Start: Fri 9 Oct 2026, 21:30 UTC, for 8 hours, ending Sat 10 Oct 2026, 05:30 UTC** (waiting on usage resets for the bots and Build, and enough tKAS). **If the 9th isn't ready, Mon 13 Oct 2026, 21:30 UTC, for 8 hours, ending Tue 14 Oct 2026, 05:30 UTC, stays the target.** The 6 Oct early run is cancelled. Either date runs only after the instrumentation passes its dry run.
 
 **Not a one-off.** This is a series, not a single run. There is no deadline. Each run is published with its own locked plan and raw data, and the changes between runs are listed.
 
@@ -83,7 +83,7 @@ The sections below are the **Method**: Kaspa Pulse's six process points (§1–�
 | 10 | **max** | 7 runners, uncapped | on | 15 + 10 drain | T0+165 |
 | 11 | B1 after-load baseline | senders off | on | 10 min | T0+175 |
 
-  Total **2 h 55 min**. Start no earlier than 18:00 UTC; T0 ≈ 18:15 UTC (after the 17:05–18:10 UTC pruning-window slowdown), so it ends ≈ 21:10 UTC, well before 23:00 UTC. When the storm GO is given, Build and the box run this table, and the run takes 2 h 55 min. Probes, the box ordered stream and all samplers run through every phase.
+  The paced table is **2 h 55 min** and ends at T0+175. The storm window is **8 hours**. T0 is **21:30 UTC**. On 9 Oct the table ends **Sat 10 Oct 2026, 00:25 UTC** and the storm ends **Sat 10 Oct 2026, 05:30 UTC**. On 13 Oct the table ends **Tue 14 Oct 2026, 00:25 UTC** and the storm ends **Tue 14 Oct 2026, 05:30 UTC**. 21:30 UTC is after the 17:05–18:10 UTC pruning-window slowdown. The end at 05:30 UTC meets the morning pruning window in §9. The step lengths above are unchanged. The time after T0+175 stays inside the 8-hour window. This table does not name a phase for it. When the storm GO is given, Build and the box run this window. Probes, the box ordered stream and all samplers run through every phase of the table.
 - Workers: 6 runners × 4 wRPC connections, a 7th only for the max step. Never 8; it collapsed throughput on 2 Oct.
 - **Box and Build follow the same UTC timetable.** Step start times are fixed in UTC at T0 and given to both.
 
@@ -142,7 +142,7 @@ The sections below are the **Method**: Kaspa Pulse's six process points (§1–�
 
 ## 4. Per-second logs in UTC, and send order vs accept order
 
-- **All timestamps are UTC**, ISO 8601 with milliseconds (`2026-10-09T18:15:00.123Z`). Summaries use UTC.
+- **All timestamps are UTC**, ISO 8601 with milliseconds (`2026-10-09T21:30:00.123Z`). Summaries use UTC.
 - **Clocks (tightening 3):**
   - **Box:** the box is a container on a cloud VM. It has no NTP daemon of its own; its clock comes from the host. We log its offset against two public NTP servers (`pool.ntp.org`, `time.cloudflare.com`, SNTP query) at T0, every 10 min and at the end. Checked Mon 5 Oct, ~19:15 UTC: −9 ms and −8 ms.
   - **Desk:** Windows Time. Build logs `w32tm /query /status` and the offset from `w32tm /stripchart /computer:time.windows.com /samples:5 /dataonly` at start and end (exact commands confirmed on the desk).
@@ -249,8 +249,8 @@ The results go into this repo:
 ## 9. Box limits (our setup, not protocol limits)
 
 - One node (n0, kaspad 2.1.0, `--ram-scale=0.1`, mempool cap ~100k) on an 8-vCPU / 16 GB / 126 GB box.
-- **Disk:** keep ~19 GB free for n0's pruning at all times. The morning pruning window (~05:15–06:30 UTC) needs 11–15 GB of temporary disk; a pruning disk-full crashed n0 on 3 Oct.
-  - On 2 Oct, ~2.2k tx/s used ~4.7–5.0 GB/h. The loaded steps needed roughly 10–12 GB *(estimate)*. The miners-off control and the two settles add ~30 min at ≤ 250 tx/s, about 0.5 GB more, so **~10.5–12.5 GB** *(estimate)*. Probes at 2 tx/s are negligible. With ≥ 35 GB at T0 and ~19 GB kept for pruning, that leaves 16 GB, so it fits. (Free on Mon 5 Oct ~19:15 UTC: 44 GB.)
+- **Disk:** keep ~19 GB free for n0's pruning at all times. The morning pruning window (~05:15–06:30 UTC) needs 11–15 GB of temporary disk; a pruning disk-full crashed n0 on 3 Oct. The 8-hour storm ends at 05:30 UTC, inside that window.
+  - On 2 Oct, ~2.2k tx/s used ~4.7–5.0 GB/h. The loaded steps of the paced table (2 h 55 min) needed roughly 10–12 GB *(estimate)*. The miners-off control and the two settles add ~30 min at ≤ 250 tx/s, about 0.5 GB more, so **~10.5–12.5 GB** *(estimate)* for that table. Probes at 2 tx/s are negligible. With ≥ 35 GB at T0 and ~19 GB kept for pruning, that leaves 16 GB for the paced table. (Free on Mon 5 Oct ~19:15 UTC: 44 GB.) The hours after T0+175 are not in the 10–12 GB figure.
   - **Go only with ≥ 35 GB free at T0.** With 28–35 GB, steps shrink to 10 min (recorded as a deviation). Below 28 GB, no storm.
 - **Guards** (unchanged): runner pause at ≤ 21 GB free; STOP below 19 GB for more than 900 s; immediate STOP at 10 GB or RAM < 1 GB; STOP if n0 is unsynced or more than 300 s behind. A guard stop ends the run early for both senders (box and Build) and is reported as such.
 

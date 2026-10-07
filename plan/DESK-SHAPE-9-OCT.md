@@ -1,6 +1,6 @@
 # Desk shape for the 9 Oct test
 
-What worked on the Grok Build desk during the 6–7 Oct 2026 TN10 pre-run. Use this on the real test, **Fri 9 Oct 2026, 18:00 UTC**, or **13 Oct** if that is the date. When the storm GO is given, the run takes 2 h 55 min from T0. The plan puts T0 at about 18:15 UTC and the last baseline at about 21:10 UTC.
+What worked on the Grok Build desk during the 6–7 Oct 2026 TN10 pre-run. Use this on the real test, **Fri 9 Oct 2026, 21:30 UTC, for 8 hours, ending Sat 10 Oct 2026, 05:30 UTC**, or **Mon 13 Oct 2026, 21:30 UTC, for 8 hours, ending Tue 14 Oct 2026, 05:30 UTC** if that is the date. When the storm GO is given, the window is 8 hours from T0. T0 is 21:30 UTC. The paced table is still 2 h 55 min and ends at T0+175, 00:25 UTC the next day.
 
 This file does not start the storm, does not lock the plan, and does not fill the result sections. The lock text is still [`NEXT-STORM-PLAN.md`](NEXT-STORM-PLAN.md). If this note and that plan disagree, the plan wins and Build stops and asks stp. The numbers below are the pre-run. The 10-hour window is already in [tn10-build-desk-tps](https://github.com/STP-KAS/tn10-build-desk-tps): 668 tx/s submit and 273 tx/s seen accepted. It does not move the fee on this page. The paste-in for 9 or 13 Oct is [`GROK-BUILD-PROMPT.md`](GROK-BUILD-PROMPT.md).
 
@@ -110,4 +110,4 @@ A watcher may start one dead signer again, on that signer's own coin file. It mu
 
 ## Still open
 
-The n0 txid match, the box dry run, 35 GB free at T0, the plan lock, the end-of-run clock offset, and the final OK on the start time. Earliest start remains Fri 9 Oct 2026, 18:00 UTC, otherwise 13 Oct, from 18:00 UTC.
+The n0 txid match, the box dry run, 35 GB free at T0, the plan lock, the end-of-run clock offset, and the final OK on the start time. The start is Fri 9 Oct 2026, 21:30 UTC, for 8 hours, ending Sat 10 Oct 2026, 05:30 UTC, otherwise Mon 13 Oct 2026, 21:30 UTC, ending Tue 14 Oct 2026, 05:30 UTC.
