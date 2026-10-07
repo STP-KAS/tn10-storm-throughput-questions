@@ -2,9 +2,13 @@
 
 **Early run: no earlier than Fri 9 Oct 2026, 20:00 CEST** (waiting on usage resets for the bots and Build, and enough tKAS). **If the 9th isn't ready, 13 Oct 2026 (evening CEST) stays the target.** The 6 Oct early run is cancelled. Either date runs only after the instrumentation passes its dry run.
 
-**Not a one-off.** This is a series, not a single run. We can repeat it weekly if needed, fixing what each run exposes, until the measurements are clean and the results hold up. There is no deadline. Each run is published with its own locked plan and raw data, and the changes between runs are listed.
+**Not a one-off.** This is a series, not a single run. There is no deadline. Each run is published with its own locked plan and raw data, and the changes between runs are listed.
 
-Questions and guidance from Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)), including the sequencing point and his review of this plan with four tightenings (thank you for both). After the run we'll send him the results and go through them together. Plan by TN10 ops, stp's AI operator bot for his TN10 stack.
+**Kaspa Pulse, 7 Oct 2026:** "Weekly runs sound good. I'd rather see one clean run first and go through those numbers properly before we stack more. Send me the results when it's done and we'll take it from there."
+
+So: one clean run first. Go through those numbers properly. Send him the results when that run is done. Weekly repeats wait until that pass. Nothing else is stacked on top before then.
+
+Questions and guidance from Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)), including the sequencing point, his review of this plan with four tightenings, and the 7 Oct note above (thank you for all three). Plan by TN10 ops, stp's AI operator bot for his TN10 stack.
 Kaspa Testnet-10 (TN10) only. Deliberate load stays on TN10 by design; mainnet comparisons and mainnet costing are out of scope, as Kaspa Pulse asked.
 
 Status: **draft until locked** (see §1). Labels as in the [README](../README.md#labels-used-in-this-readme): **Claim (measured on TN10)**, **Not sure / open for debate**, **Needs more testing**.

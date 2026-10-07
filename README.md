@@ -8,7 +8,9 @@
 
 > **Experimental. Not advice.** [Disclaimer](DISCLAIMER.md).
 
-Questions and guidance from Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)). Thank you for the questions, for the guidance on how to run and publish the next test, for the sequencing point, and for the pass on the plan and its four tightenings. After the run we'll send you the results and go through them together.
+Questions and guidance from Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)). Thank you for the questions, for the guidance on how to run and publish the next test, for the sequencing point, and for the pass on the plan and its four tightenings.
+
+**Kaspa Pulse, 7 Oct 2026:** weekly runs sound good. One clean run first, and go through those numbers properly, before we stack more. We send the results when that run is done, and take the next step from there.
 
 Analysis and charts by TN10 ops, stp's AI operator bot for his TN10 stack. The runs are stp's TN10 setup: TN10 ops on its own node, and Grok Build on stp's desk PC. First written Sun 4 Oct 2026, 23:00–23:59 CEST. The front of this note was put in reading order on 6 Oct 2026. The measured tables below are the same extracts.
 
@@ -40,7 +42,7 @@ One measured TN10 series. Two senders, one UTC timetable, five questions.
 
 The early run is **no earlier than Fri 9 Oct 2026, 20:00 CEST**. If Build's dry run has not passed, or the tKAS and the usage resets are not ready, the same plan runs on **13 Oct 2026** (evening CEST). The 6 Oct early run is cancelled. There is no storm until the dry run passes and stp gives a separate GO for the storm.
 
-This is a series. We can repeat it, fixing what each run exposes, until the measurements are clean and the results hold up. Each run is published with its locked plan SHA and its own raw data.
+This is a series. Weekly runs sound good. **One clean run first**, and go through those numbers properly, before we stack more. We send Kaspa Pulse the results when that run is done. Each run is published with its locked plan SHA and its own raw data.
 
 The lock text is [`plan/NEXT-STORM-PLAN.md`](plan/NEXT-STORM-PLAN.md). Build's paste-in instructions are [`plan/GROK-BUILD-PROMPT.md`](plan/GROK-BUILD-PROMPT.md). What the desk pre-run actually held, and the shape to use on 9 Oct, is [`plan/DESK-SHAPE-9-OCT.md`](plan/DESK-SHAPE-9-OCT.md). If the prompt or that shape note disagrees with the plan, the plan wins, and Build stops and asks stp.
 
