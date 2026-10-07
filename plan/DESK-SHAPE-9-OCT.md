@@ -41,7 +41,7 @@ A signed one-input one-output is about **1,624 grams**. A full 500,000-gram bloc
 
 At an empty mempool the public quote was **100**. After this desk filled the mempools the normal quote sat near **186–194**, and the priority bucket was far above that. Signers frozen at 100 and 150 were under that quote for the rest of the leg. **200 and 300** is the pair that then held, and 300 is under the 600 cap.
 
-On 9 Oct, use **200 and 300** for the long hold and for the uncapped max step. For a paced step, if the quote at step start is the idle floor of 100, arm at 200 and 300 as well. A step that starts at 100 spends the rest of the step under the quote its own mempool creates. If the quote at step start is already above 200, freeze that quote and its 1.5×. If 1.5× would pass 600, stop and ask. Do not raise the cap.
+On 9 Oct, use **200 and 300** for the long hold and for the uncapped max step. A later pre-run may try 400 and 600, still under the cap, only after the public mempool has drained. That trial does not change 9 Oct until its seen-accepted rate over a long window is written here. For a paced step, if the quote at step start is the idle floor of 100, arm at 200 and 300 as well. A step that starts at 100 spends the rest of the step under the quote its own mempool creates. If the quote at step start is already above 200, freeze that quote and its 1.5×. If 1.5× would pass 600, stop and ask. Do not raise the cap.
 
 ## Coins
 

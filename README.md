@@ -20,7 +20,7 @@ In our storms, our own miners made **50–63% of TN10 blocks** while they ran (s
 - [Build and the bot](#build-and-the-bot)
 - [Monitoring](#monitoring)
 - [History of the storms](#history-of-the-storms)
-- [Tasks for stp](#tasks-for-stp-before-the-storm), the [dry run](#desk-dry-run-6-oct-2026), the [9 Oct shape](plan/DESK-SHAPE-9-OCT.md), the [test-day run](plan/TESTDAY.md), and [advice for the bot](plan/BOT-TPS.md)
+- [Tasks for stp](#tasks-for-stp-before-the-storm), the [dry run](#desk-dry-run-6-oct-2026), the [9 Oct shape](plan/DESK-SHAPE-9-OCT.md), the [test-day run](plan/TESTDAY.md), [advice for the bot](plan/BOT-TPS.md), and [early recommendations for builders](#early-recommendations-for-builders)
 - [Results after the storm](#results-after-the-storm): [Build](#build-result), [bot](#bot-result), [Leg 3](#leg-3-merged-challenge)
 - [Open builder leg](#open-builder-leg), a separate idea
 - [Measured data](#measured-data): charts and tables from the past storms
@@ -178,6 +178,30 @@ Paced steps: 4 processes, depth 2, in-flight 48. The long hold and the uncapped 
 [`plan/BOT-TPS.md`](plan/BOT-TPS.md) is the high-TPS advice from this pre-run. The bot keeps its own wallet and its own sender. Depth 2, a fee near the loaded quote, and disjoint coins are what turned a 521 tx/s long run into a 2,207 tx/s long run. Depth 8, a fee of 2,000, and a few seconds above 6,000 submit-OK did not hold.
 
 The gate itself is unchanged. Build's process count is fixed for the whole storm. No auto-scale. Each process has its own coins. A step passes when achieved stays at or above 95% of target, the per-transaction logs are complete, the txids match what n0 sees accepted, and the run follows the UTC timetable. The prompt is [`plan/GROK-BUILD-PROMPT.md`](plan/GROK-BUILD-PROMPT.md).
+
+### Early recommendations for builders
+
+**Not sure / open for debate.** This is this desk's view after the 6–7 Oct TN10 pre-run. It is not a Kaspa rule, not an audit, and not a mainnet result. It is a plan a builder can try when a dapp, or anything else that sequences its own transactions, should keep moving on TN10. The same plan is what this desk would try on mainnet. Mainnet was quiet the same night, about 11 tx/s with mempool 1, so that part is untested.
+
+The one request behind the plan: a flow that is hurt by sitting in the mempool should raise its own fee while the network is loaded, and lower it when the load passes. The rest are the other things this desk would change before calling a rate real.
+
+**1. Let the fee follow the network, up to a ceiling chosen first.** Read a public fee estimate on a timer. When the normal estimate rises above the fee on your next transaction, raise that fee toward the estimate. When the estimate falls, lower it. Do not leave a sensitive flow frozen at the quiet-network floor for the whole congestion. On this desk the quiet floor was 100 sompi/gram. After the mempool filled, the normal estimate sat near 186–194, and a pair frozen at 200 and 300 kept inclusion moving for six hours. A pair frozen at 100 and 150 took a smaller share of the same kind of blocks. A fee of 2,000 did not hold: orphans overtook submits and the rate fell away. This desk's own ceiling stays 600 sompi/gram. An automatic raise that can pass the ceiling is not this plan.
+
+**2. Keep the unconfirmed chain short.** Depth 8, from 2026-10-06T21:22:15.436Z to 2026-10-06T22:53:03.590Z, filled and then sat at zero for most seconds: 521 tx/s seen accepted. Depth 2, two signers on each public node, from 2026-10-06T23:53:27.326Z to 2026-10-07T05:54:53.185Z, held 2,207 tx/s seen accepted. For a sequencer, this desk would start at two unconfirmed hops per coin and add the next hop when one is accepted.
+
+**3. Count accepts, and treat a silent feed as a fault.** Submit-OK of about 6,300 tx/s for 20 seconds, and about 9,100 tx/s for 12 seconds, did not last. The number to publish is seen accepted over the whole window. At 2026-10-07T03:39:25Z this desk's observer stopped reporting new blocks. The signers' own feeds kept counting accepts until the stop at 05:54:53Z. A builder who only watches one subscription can mistake a dead feed for an idle network. Reconnect, and check a second node, before you drop the fee or add more transactions.
+
+**4. One spender per coin, and do not reshuffle coins while the mempool is full.** Two processes on one coin spend the same output. A new split while the old transactions are still in the mempool spends outputs that already have a child in flight. At 2026-10-07T06:09Z, about 15 minutes after this desk stopped, vector-10 still reported about 50,900 in the mempool, and the count was falling by only a few per second, while the virtual DAA score was still advancing at about 10 per second. Wait for that backlog to clear before the next split.
+
+**5. When every lane is already waiting, more CPU does not raise the rate.** The twelve signers used about one core, and the machine was near 5% CPU, with every lane two deep. A signed one-input one-output is about 1,624 grams. At 500,000 grams and 10 blocks per second that is about 3,080 tx/s. This hold was 2,207. The gap is block space, not idle cores. The change this desk would test next is a higher fee still under the 600 ceiling, not a thirteenth signer. A lighter transaction is the change to test only after that, and it is untested here.
+
+**6. Order is something you measure.** In the 25 Sep probes on this repo, sent 30 seconds apart, 2.6–10.4% of consecutive probes at the storm's own fee were accepted out of send order. At twice that fee, reversals were rare. A higher fee shortened the wait in those probes. It does not by itself prove a later sequence will hold. A sequencer that needs order should use its own coins, send the next one after the previous accept, log send order against accept order, and publish the reversals with the rate.
+
+**7. Do not read inclusion only from the indexer.** On 2 Oct, api-tn10 froze for 86 minutes, lag up to 4,311 seconds, while the box was still sending. A dapp that decides "included" from the indexer should also have a node feed. The indexer can lag, or stop, while the chain is still accepting.
+
+**8. Mainnet gets the same shape of plan, not these TN10 numbers.** A sensitive mainnet flow should watch the mainnet estimate, raise and lower its fee inside a ceiling chosen for mainnet, keep a short unconfirmed chain, and count accepts. It should not copy 200, 300, or 2,207 tx/s onto mainnet. Those numbers are this TN10 pre-run. Mainnet that night was not under this load.
+
+This plan does not start the 9 Oct storm. The storm's own fee rule is still the one in [`plan/NEXT-STORM-PLAN.md`](plan/NEXT-STORM-PLAN.md). If they disagree, the plan wins.
 
 ### Desk dry run, 6 Oct 2026
 

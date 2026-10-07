@@ -31,7 +31,7 @@ Follow `steps-utc.json`. Send nothing in B0, B1, and the settle phases.
 
 - Split each node's coins by line into two files. Do not use `part i/2` on a host file.
 - Depth **2**. In-flight **64**. **4** connections.
-- Fee frozen at **200 and 300**, unless the step-start quote is already above 200. Same 600 cap.
+- Fee frozen at **200 and 300**, unless the step-start quote is already above 200. Same 600 cap. A 400 and 600 trial is a pre-run, not the storm fee, until its seen-accepted rate over the long window is written into this file.
 - The pipes filled at about one core. Do not add a thirteenth signer to chase CPU.
 
 **Ordered stream.** Its own process, its own coins, 4 tx/s, both tiers, depth 1, on proton-10. It counts inside the share.
