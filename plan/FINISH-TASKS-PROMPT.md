@@ -11,22 +11,22 @@ The storm prompt is [`GROK-BUILD-PROMPT.md`](GROK-BUILD-PROMPT.md). The test-day
 1. **Do not start the storm.** No storm GO. Do not write `steps-utc.json`. Do not give the final OK on the start time. Earliest start remains **Fri 9 Oct 2026, 18:00 UTC**, otherwise **13 Oct, from 18:00 UTC**.
 2. **Do not lock the plan.** Do not commit a "locked" SHA. The lock stays with stp before T0.
 3. **Do not run the miner switch.** Desk miners stay **0**. Do not start `kaspa-miner`.
-4. **One spender family.** The fee trial already running is that family. Do not start `build-storm2`, `p2w.mjs`, `storm-sender`, or a second `measure.mjs` sender. The halt file `C:\Users\Remco\kaspa-tn10\build-storm2\STOP` stays. Its text is `halt`. Do not delete it.
+4. **One spender family.** The fee-400 signers have exited. Do not start them again. Do not start `build-storm2`, `p2w.mjs`, `storm-sender`, or a second `measure.mjs` sender. The halt file `C:\Users\Remco\kaspa-tn10\build-storm2\STOP` stays. Its text is `halt`. Do not delete it.
 5. **Keys stay on the desk.** Do not print, paste, log, upload, or commit a key, seed, wallet file, address, or txid. Pass a key path only. Public text uses the name Fermi.
-6. **TN10 only.** `testnet-10` and `kaspatest` only. Do not send to n0, `bore.pub`, or `159.223.110.159`. The desk node at `127.0.0.1:17210` takes no traffic until `measure.mjs --mode check --via own` exits 0, and only the waiter `long10-local.ps1` may arm `loc0`–`loc3`. Do not arm them by hand.
+6. **TN10 only.** `testnet-10` and `kaspatest` only. Do not send to n0, `bore.pub`, or `159.223.110.159`. This checklist does not send. Do not arm `loc0`–`loc3` or any later signer. Those coin files stay spent. The storm's long hold may use the synced desk node. That permission is in [`GROK-BUILD-PROMPT.md`](GROK-BUILD-PROMPT.md), not here.
 7. If a number was not read in this pass, write **not measured**. Do not invent a balance, a disk figure, a usage counter, or an n0 match.
 
-## What is already running
+## What already ran
 
-The trial clock has ended. A partial score was taken at 2026-10-07T07:31:43 UTC. The full public score is in tn10-build-desk-tps.
+The trial clock has ended. A partial score was taken at 2026-10-07T07:31:43 UTC. The full public score is in tn10-build-desk-tps. Nothing in this list is still sending.
 
 - Twelve public signers plus the order stream. Step `long10-f400`. Depth 2, in-flight 64, fee 400 and 600, cap 600. Parent `long10-f400b.ps1`. The clock ended at **2026-10-07T16:38:59 UTC**. The signers have exited.
 - A 90-second slice, 07:30:00 UTC to 07:31:39 UTC, was 2,284 tx/s submit and 2,283 tx/s seen accepted, 0 rejects. The whole public window is now scored in tn10-build-desk-tps: 668 tx/s submit and 273 tx/s seen accepted, and seen accepted is 0 after 08:05 UTC. That does not beat the six-hour **2,207**. 9 Oct stays on **200 and 300** and on **two signers**.
 - Desk clock against `time.windows.com`: about **+72 ms** (five samples, +71.5 to +72.0 ms). Miners **0**.
-- Local kaspad was in IBD, about 69%, and was not taking traffic.
-- Build wallet at 23:00 UTC on 6 Oct: **3,612,867 tKAS**, **15,944** coins of at least 2 tKAS. Do not read UTXOs again while those signers are spending.
+- The desk node was later synced and used for the included-rate tries in tn10-build-desk-tps-3500. This checklist does not start it, stop it, or send through it. The storm's long hold may use it. That permission is in [`GROK-BUILD-PROMPT.md`](GROK-BUILD-PROMPT.md), not here.
+- Build wallet at 23:00 UTC on 6 Oct: **3,612,867 tKAS**, **15,944** coins of at least 2 tKAS. The signers have exited. Do not read UTXOs in a documentation pass. A balance re-read stays a separate task.
 
-Do not delete the `GO` file while those signers are alive. After they exit, do not write a new GO.
+Do not write a new GO for the fee-400 family.
 
 ## The seven tasks
 
@@ -45,7 +45,7 @@ The open part is the **n0 txid match**. This desk is not n0.
 
 ### 2. Enough tKAS
 
-Wait until the fee-trial signers have exited after 16:38:59 UTC. Then one read, `measure.mjs --mode check`, on a public node. Record `balance_tkas` and `coins_2tkas` and the UTC time. Do not print the address.
+The fee-trial signers have exited. A balance re-read is still open, and it is not part of ordering these notes. When stp asks for it: one read, `measure.mjs --mode check`, on a public node. Record `balance_tkas` and `coins_2tkas` and the UTC time. Do not print the address.
 
 The Bot wallet stays **OK on stp's word**. Do not spend it. The box balance stays unread unless this desk has a box shell stp already uses. If it does not, write "box balance not measured".
 

@@ -18,8 +18,26 @@ Kaspa **Testnet-10 (TN10) only**. Every clock on this page is **UTC**. Deliberat
 
 In our storms, our own miners made **50–63% of TN10 blocks** while they ran (storm 2 public report, `block_share_legs.csv`). The numbers describe **TN10 with our miners on it**, through one node on one small box. Every number names the file it came from. The CSVs in [`data/`](data/) are small extracts of our raw logs. The scripts in [`scripts/`](scripts/) rebuild those CSVs and every chart. Where something was **not logged**, the text says so.
 
+## The notes
+
+Each note keeps the disclaimer at the top. They are not one repo.
+
+| Open this | What it is |
+|---|---|
+| [plan/GROK-BUILD-PROMPT.md](plan/GROK-BUILD-PROMPT.md) | Paste-in for Grok Build on 9 or 13 Oct. Ready. It does not start the storm. |
+| [plan/TESTDAY.md](plan/TESTDAY.md) | The run, after the storm GO and `steps-utc.json`. |
+| [plan/DESK-SHAPE-9-OCT.md](plan/DESK-SHAPE-9-OCT.md) | The shape that held. |
+| [plan/NEXT-STORM-PLAN.md](plan/NEXT-STORM-PLAN.md) | The measurement plan. If the prompt, the test day, or the shape disagree with it, the plan wins. Not locked. |
+| [tn10-build-desk-tps](https://github.com/STP-KAS/tn10-build-desk-tps) | Desk runs, oldest first. The six-hour 2,207 is here. |
+| [tn10-build-desk-tps-3500](https://github.com/STP-KAS/tn10-build-desk-tps-3500) | 7 Oct included-rate tries, oldest first. 3,500 was not read. |
+| [what-limits-tx-rate](https://github.com/STP-KAS/what-limits-tx-rate) | Why a signed payment stops near 3,080. Not a run log. |
+| [tn10-storm-build-bot-challenge](https://github.com/STP-KAS/tn10-storm-build-bot-challenge) | Empty until after the storm. |
+
+This page is the questions, the method, and the empty result sections. The runs below are oldest first.
+
 ## Contents
 
+- [The notes](#the-notes)
 - [What](#what)
 - [Why](#why)
 - [How](#how)
@@ -44,7 +62,7 @@ The early run is **no earlier than Fri 9 Oct 2026, 18:00 UTC**. If Build's dry r
 
 This is a series. Weekly runs sound good. **One clean run first**, and go through those numbers properly, before we stack more. We send Kaspa Pulse the results when that run is done. Each run is published with its locked plan SHA and its own raw data.
 
-The lock text is [`plan/NEXT-STORM-PLAN.md`](plan/NEXT-STORM-PLAN.md). Build's paste-in instructions are [`plan/GROK-BUILD-PROMPT.md`](plan/GROK-BUILD-PROMPT.md). What the desk pre-run actually held, and the shape to use on 9 Oct, is [`plan/DESK-SHAPE-9-OCT.md`](plan/DESK-SHAPE-9-OCT.md). If the prompt or that shape note disagrees with the plan, the plan wins, and Build stops and asks stp.
+The lock text is [`plan/NEXT-STORM-PLAN.md`](plan/NEXT-STORM-PLAN.md). Build's paste-in is [`plan/GROK-BUILD-PROMPT.md`](plan/GROK-BUILD-PROMPT.md). It is ready for 9 or 13 Oct. It does not start the storm. The run, once GO and `steps-utc.json` exist, is [`plan/TESTDAY.md`](plan/TESTDAY.md). The shape is [`plan/DESK-SHAPE-9-OCT.md`](plan/DESK-SHAPE-9-OCT.md). If the prompt, the test day, or the shape disagrees with the plan, the plan wins, and Build stops and asks stp.
 
 ## Why
 
@@ -115,8 +133,8 @@ Two senders. Each one writes its own result. Same questions, same UTC timetable,
 | | Grok Bot — TN10 ops | Grok Build |
 |---|---|---|
 | Where it runs | stp's box | stp's desk PC |
-| Where it sends | Its own node, n0 (kaspad 2.1.0, `--ram-scale=0.1`, mempool cap about 100,000) | Public TN10 nodes. On 6 Oct those were vector-10, proton-10, electron-10 and muon-10. The desk's own node was still syncing and took no traffic. |
-| This storm | The rest of each step, after Build's share | A fixed share of the added load. Default 25%. **4** sender processes for the whole run, plus one ordered-stream process. |
+| Where it sends | Its own node, n0 (kaspad 2.1.0, `--ram-scale=0.1`, mempool cap about 100,000) | Paced steps: public TN10 nodes. The long hold and the uncapped max also use the synced desk node, on coins the public signers are not using. On 7 Oct 2026 the six public hostnames were three machines. Recheck before counting them. Never n0. Never bore.pub. |
+| This storm | The rest of each step, after Build's share | Paced steps: **4** sender processes plus one ordered stream. Default share 25%. Long hold and uncapped max: two signers on each physical machine, plus the desk node. |
 | Coins | Its own | Its own. A separate set for each process. |
 | Fee | 1× and 1.5× of n0's normal estimate, frozen for the step | The same two tiers on the node it asks, frozen for the step. 1.5× stays under the 600 sompi/gram cap. |
 | What it logs | Per second and per transaction, on the box | Per second and per transaction, on the desk. Inclusion is the txid match on n0. |
@@ -149,13 +167,21 @@ The [monitored hold of 6 Oct, 20:57 UTC](#monitored-hold-6-oct-2026-2057-utc) is
 
 ## History of the storms
 
+Oldest first. The short bursts stay above the long holds. The 9 or 13 Oct row is last because it has not been run.
+
 | Run | When | Who | What we can already say |
 |---|---|---|---|
 | Storm 1 | 25–26 Sep 2026 | TN10 ops on the box, with fee-tier probes | Confirmation time by fee tier, and a coarse order check. No 1.5× tier. |
 | Storm 2 | 1–3 Oct 2026, legs L1–L4 | TN10 ops through n0. Build on the desk over the same days. | Box submitted vs accepted, indexer freezes, mempool depth. Build logged submit-OK. Order was not logged. |
-| Desk dry run | 6 Oct 2026 | Build. Four processes for the planned share. Public nodes. | Four processes cleared 95% of 750 on the mean (734 tx/s, 97.9%). The txid match against n0 is still open. A later ceiling run reached about 9,100 submit-OK tx/s, with orphan rejects. This was not the storm. |
+| Desk dry run | 6 Oct 2026, about 20:07–20:29 UTC | Build. Four processes for the planned share. Public nodes. | Four processes cleared 95% of 750 on the mean (734 tx/s, 97.9%). The txid match against n0 is still open. This was not the storm. |
+| Ceiling bursts | 6 Oct 2026, after that dry run and before 20:57 UTC | Build. Public nodes. | 6,321 submit-OK for 20 s, seen accepted about 1,900 in that window. 9,100 submit-OK for 12 s, with 28,617 orphans. Not holds. |
 | Monitored hold | 6 Oct 2026, 20:57 UTC | Build. Six processes. | A 45-second rehearsal of the five questions. Mean submit-OK 6,281 tx/s. This was not the storm. |
-| Next storm | Fri 9 Oct 2026, 18:00 UTC at the earliest. Otherwise 13 Oct, from 18:00 UTC. | The bot and Build, on one timetable | The five questions, both senders, and the miners-off control. The result sections stay empty until then. |
+| Depth 8 hold | 2026-10-06 21:22–22:53 UTC | Build. Six public nodes. | 539 tx/s submit, 521 tx/s seen accepted. Most seconds were zero. [Desk note](https://github.com/STP-KAS/tn10-build-desk-tps#long-holds-6-7-oct-2026). |
+| Depth 2, five nodes | 2026-10-06 23:12–23:52 UTC | Build. | 1,655 tx/s submit, 1,641 tx/s seen accepted. |
+| Two signers, fee 200 and 300 | 2026-10-06 23:53 UTC to 2026-10-07 05:54 UTC | Build. Two signers on each public node. | **2,210 tx/s submit, 2,207 tx/s seen accepted.** The long number. |
+| Fee 400 and 600 | 2026-10-07 06:39–16:38 UTC | Build. Twelve public lane signers. | **668 tx/s submit, 273 tx/s seen accepted.** Seen accepted is 0 after 08:05 UTC. Does not replace 2,207. |
+| Included-rate tries | 2026-10-07 14:26–16:27 UTC | Build. Desk node. Lighter hop. | Best minute 2,951. Best socket 1,636. 3,500 was not read. [3500 note](https://github.com/STP-KAS/tn10-build-desk-tps-3500). |
+| Next storm | Fri 9 Oct 2026, 18:00 UTC at the earliest. Otherwise 13 Oct, from 18:00 UTC. | The bot and Build, on one timetable | The five questions, both senders, and the miners-off control. When GO is given, 2 h 55 min from T0. The result sections stay empty until then. |
 
 While the box miners ran in storm 2 they made 50–63% of TN10 blocks. When they stopped on Thu 1 Oct at 23:31:50 UTC, our inclusion fell to about 300 tx/s.
 
