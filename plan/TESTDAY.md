@@ -1,6 +1,6 @@
 # Test day: start this, and the desk run starts
 
-For Grok Build on stp's desk. Fri 9 Oct 2026, 18:00 UTC, or 13 Oct from 18:00 UTC if that is the date. This is the run. Do not ask stp to paste commands.
+For Grok Build on stp's desk. Fri 9 Oct 2026, 18:00 UTC, or 13 Oct from 18:00 UTC if that is the date. When the storm GO is given, the run takes 2 h 55 min from T0. The plan puts T0 at about 18:15 UTC and the last baseline at about 21:10 UTC. The UTC times come from `steps-utc.json`. This is the run. Do not ask stp to paste commands.
 
 The shape is [`DESK-SHAPE-9-OCT.md`](DESK-SHAPE-9-OCT.md). The measurement rules are [`NEXT-STORM-PLAN.md`](NEXT-STORM-PLAN.md) and [`GROK-BUILD-PROMPT.md`](GROK-BUILD-PROMPT.md). If this file and the plan disagree, the plan wins. Stop and ask stp.
 
@@ -8,7 +8,7 @@ The shape is [`DESK-SHAPE-9-OCT.md`](DESK-SHAPE-9-OCT.md). The measurement rules
 
 1. Confirm stp has given the **storm GO**, separate from the dry-run GO, and has given `steps-utc.json` with the UTC start and end of every step. If either is missing, stop and ask for that one thing. Do not invent the timetable.
 2. Confirm the day is the storm day and the clock is at or after the first time in `steps-utc.json`.
-3. Use the same measurement sender that produced the 6–7 Oct holds. TN10 only. Public nodes only. The Build wallet only. Do not spend the Bot wallet.
+3. Use the same measurement sender that produced the 6–7 Oct holds. TN10 only. The Build wallet only. Do not spend the Bot wallet. Paced steps use public nodes. The long hold and the uncapped max also use the synced desk node. Never send to n0 or to bore.pub.
 4. One sender family. If a Build spender is already running, stop and ask. Do not start a second one on the same coins.
 5. Leave the 3 Oct halt on the older fleet in place. Do not clear it.
 6. The sender arms only when its own GO file is present, and halts when its own STOP file is present. A STOP from stp stops every process.

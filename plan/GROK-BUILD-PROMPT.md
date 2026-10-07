@@ -2,7 +2,9 @@
 
 *Paste-in prompt for Grok Build on stp's desk PC. It follows [`plan/NEXT-STORM-PLAN.md`](https://github.com/STP-KAS/tn10-storm-throughput-questions/blob/main/plan/NEXT-STORM-PLAN.md) (§3a, §4, §4a, §5). If this prompt and the plan disagree, the plan wins. Stop and ask stp.*
 
-**Storm date:** early run no earlier than **Fri 9 Oct 2026, 18:00 UTC**. If the 9th isn't ready, **13 Oct, from 18:00 UTC**. Exact step times come from stp at T0.
+**Storm date:** early run no earlier than **Fri 9 Oct 2026, 18:00 UTC**. If the 9th isn't ready, **13 Oct, from 18:00 UTC**.
+
+**When the storm GO is given:** the run takes **2 h 55 min** from T0. The plan puts T0 at about **18:15 UTC** and the last baseline at about **21:10 UTC**. stp gives `steps-utc.json` at T0 with each step's UTC start and end. Use that file. If it is missing, stop and ask. Do not invent the timetable, and do not start on the date line alone.
 
 **Hard gate: no storm until your dry run passes** (see "Dry run" below). If it hasn't passed in time for the 9th, the storm waits for the 13th.
 
@@ -21,7 +23,7 @@ So we could not say how much of your load actually landed, or how fast. This tim
 ## Hard rules
 
 1. **TN10 only.** Use only `kaspatest:` addresses and network `testnet-10`. If a node reports any other network, stop.
-2. **Public TN10 nodes only.** Never send to stp's node n0 (or `bore.pub`, `127.0.0.1`, `localhost`).
+2. **Not n0.** Never send to stp's node n0 or to `bore.pub`. Paced steps use public TN10 nodes only. The long hold and the uncapped max step also use this desk's synced TN10 node, with coins the public signers are not using. Do not start a second local node.
 3. **Keys stay on the desk.** Never print, paste, log, upload or commit a key, seed or wallet file. Don't open the key file. Pass only its path to the script.
 4. **No public posting.** Don't post or publish anything (X, GitHub, chats). Logs go to stp only.
 5. **One sender setup.** Run only the N sender processes and the ordered stream process from this prompt. No other sender from the same wallet. Stop an old one only if stp says so.

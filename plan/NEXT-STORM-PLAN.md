@@ -83,7 +83,7 @@ The sections below are the **Method**: Kaspa Pulse's six process points (§1–�
 | 10 | **max** | 7 runners, uncapped | on | 15 + 10 drain | T0+165 |
 | 11 | B1 after-load baseline | senders off | on | 10 min | T0+175 |
 
-  Total **2 h 55 min**. Start no earlier than 18:00 UTC; T0 ≈ 18:15 UTC (after the 17:05–18:10 UTC pruning-window slowdown), so it ends ≈ 21:10 UTC, well before 23:00 UTC. Probes, the box ordered stream and all samplers run through every phase.
+  Total **2 h 55 min**. Start no earlier than 18:00 UTC; T0 ≈ 18:15 UTC (after the 17:05–18:10 UTC pruning-window slowdown), so it ends ≈ 21:10 UTC, well before 23:00 UTC. When the storm GO is given, Build and the box run this table, and the run takes 2 h 55 min. Probes, the box ordered stream and all samplers run through every phase.
 - Workers: 6 runners × 4 wRPC connections, a 7th only for the max step. Never 8; it collapsed throughput on 2 Oct.
 - **Box and Build follow the same UTC timetable.** Step start times are fixed in UTC at T0 and given to both.
 

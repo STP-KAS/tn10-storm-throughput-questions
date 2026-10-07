@@ -1,10 +1,10 @@
 # Desk shape for the 9 Oct test
 
-What worked on the Grok Build desk during the 6–7 Oct 2026 TN10 pre-run. Use this on the real test, **Fri 9 Oct 2026, 18:00 UTC**, or **13 Oct** if that is the date.
+What worked on the Grok Build desk during the 6–7 Oct 2026 TN10 pre-run. Use this on the real test, **Fri 9 Oct 2026, 18:00 UTC**, or **13 Oct** if that is the date. When the storm GO is given, the run takes 2 h 55 min from T0. The plan puts T0 at about 18:15 UTC and the last baseline at about 21:10 UTC.
 
 This file does not start the storm, does not lock the plan, and does not fill the result sections. The lock text is still [`NEXT-STORM-PLAN.md`](NEXT-STORM-PLAN.md). If this note and that plan disagree, the plan wins and Build stops and asks stp. The numbers below are the pre-run. The 10-hour total is reported in [tn10-build-desk-tps](https://github.com/STP-KAS/tn10-build-desk-tps) when that clock ends. It is not this file.
 
-TN10 only. Public nodes only. The Build wallet only. The Bot wallet is not spent. One sender family. The fee cap stays **600** sompi/gram.
+TN10 only. The Build wallet only. The Bot wallet is not spent. One sender family. The fee cap stays **600** sompi/gram. Paced steps use public nodes. The long hold and the uncapped max also use the synced desk node. Never send to n0 or to bore.pub.
 
 ## Paced steps, the 25% share
 

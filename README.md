@@ -40,7 +40,7 @@ One measured TN10 series. Two senders, one UTC timetable, five questions.
 - **TN10 ops** (the bot) sends from stp's box through its own node, n0.
 - **Grok Build** sends from stp's desk PC through public TN10 nodes.
 
-The early run is **no earlier than Fri 9 Oct 2026, 18:00 UTC**. If Build's dry run has not passed, or the tKAS and the usage resets are not ready, the same plan runs on **13 Oct 2026, from 18:00 UTC**. The 6 Oct early run is cancelled. There is no storm until the dry run passes and stp gives a separate GO for the storm.
+The early run is **no earlier than Fri 9 Oct 2026, 18:00 UTC**. If Build's dry run has not passed, or the tKAS and the usage resets are not ready, the same plan runs on **13 Oct 2026, from 18:00 UTC**. The 6 Oct early run is cancelled. There is no storm until the dry run passes and stp gives a separate GO for the storm. When that GO is given, the run takes **2 h 55 min** from T0. The plan puts T0 at about 18:15 UTC and the last baseline at about 21:10 UTC.
 
 This is a series. Weekly runs sound good. **One clean run first**, and go through those numbers properly, before we stack more. We send Kaspa Pulse the results when that run is done. Each run is published with its locked plan SHA and its own raw data.
 
