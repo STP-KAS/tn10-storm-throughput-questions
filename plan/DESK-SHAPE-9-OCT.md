@@ -29,7 +29,7 @@ This is the shape that held the highest rate for minutes, with seen-accepted mat
 - Fee frozen at **200 and 300** sompi/gram. The cap stays 600.
 - Ordered stream stays a separate process.
 
-At 23:57 UTC on 6 Oct, mempools already full, last 20 seconds: about **2,420 tx/s** submit and **2,450 tx/s** seen accepted, **0 rejects**. The first minute of that same leg was about **2,530** submit and **2,500** seen accepted, also with 0 rejects.
+The whole leg, 2026-10-06T23:53:27.326Z to 2026-10-07T05:54:53.185Z (6 h 1 m 26 s, stopped on request): **2,210 tx/s** submit and **2,207 tx/s** seen accepted, 47,922,856 submits, 47,863,985 seen accepted, 35,639 rejects. The first minute was about **2,530** submit and **2,500** seen accepted. The rate then settled at the six-hour figure. Use the six-hour figure on 9 Oct.
 
 The one-signer leg before it, depth 2 and in-flight 48, frozen at 100 and 150 (vector-10 at 136 and 204), ran about 39 minutes and closed at about **2,050 tx/s** included, with 0 rejects in the last 3 minutes. Moving to two signers and to 200 and 300 gained about **400 tx/s**. The gain was on proton-10, electron-10, quark-10, neutrino-10 and muon-10. Vector-10 came down.
 

@@ -20,7 +20,7 @@ In our storms, our own miners made **50–63% of TN10 blocks** while they ran (s
 - [Build and the bot](#build-and-the-bot)
 - [Monitoring](#monitoring)
 - [History of the storms](#history-of-the-storms)
-- [Tasks for stp](#tasks-for-stp-before-the-storm), including the [dry run](#desk-dry-run-6-oct-2026) and the [9 Oct shape](plan/DESK-SHAPE-9-OCT.md)
+- [Tasks for stp](#tasks-for-stp-before-the-storm), the [dry run](#desk-dry-run-6-oct-2026), the [9 Oct shape](plan/DESK-SHAPE-9-OCT.md), the [test-day run](plan/TESTDAY.md), and [advice for the bot](plan/BOT-TPS.md)
 - [Results after the storm](#results-after-the-storm): [Build](#build-result), [bot](#bot-result), [Leg 3](#leg-3-merged-challenge)
 - [Open builder leg](#open-builder-leg), a separate idea
 - [Measured data](#measured-data): charts and tables from the past storms
@@ -155,21 +155,29 @@ Charts and per-minute files: [Measured data](#measured-data). Earlier write-ups,
 
 ## Tasks for stp (before the storm)
 
-1. **Hard go/no-go gate: the Grok Build dry run must pass. No storm until it does.** If it hasn't passed in time for Fri 9 Oct, the storm waits for 13 Oct.
-   - **Settle Build's process setup first:** how many sender processes / PowerShell windows it runs **during the storm**. The count is fixed for the whole run (no auto-scaling), each process has its own coins, the miner count is fixed, and Build's runners hold 100% of target.
-   - **Dry run from the desk:** Build sends a small ordered, fee-split stream (1× and 1.5×), compares 1 vs 2 vs 4 processes at its top planned share, then runs short steps at its planned targets with the chosen count. It passes when:
-     - **at every step, achieved is ≥ 95% of target** (default margin; agree it before the plan lock). Last storm Build's runners did not run at 100% (stp's observation). Build logs achieved vs target every second, so any shortfall is visible;
-     - its per-transaction logs are complete;
-     - its txids match what n0 sees accepted;
-     - it follows the UTC timetable.
-   - Prompt: [`plan/GROK-BUILD-PROMPT.md`](plan/GROK-BUILD-PROMPT.md).
-   - **Desk status:** the four-process gate passed on the mean. The n0 txid match is still open. Detail is in the dry run below.
-2. **Enough tKAS** in Build's wallet and on the box for the full schedule. **OK for both wallets.** [Grok Build](https://github.com/STP-KAS/groks-wallet#grok-build) ([TN10 page](https://tn10.kaspa.stream/addresses/kaspatest:qp4jge54eztxewf8r53rtjdvxakmatsu6tjd0nn9sjhgvzxknsfvjvmwurqhd)) and [Grok Bot](https://github.com/STP-KAS/groks-wallet#grok-bot) ([TN10 page](https://tn10.kaspa.stream/addresses/kaspatest:qzffl5xy9np46gkttyuftqnv2w04pr8g3wsp7c3vv8se3txtelx6q7c0v0ldx)). The desk read the Build wallet at 23:00 UTC on 6 Oct: 3,612,867 tKAS and 15,944 coins of at least 2 tKAS. The Bot wallet is OK on stp's word. The box balance was not read from this desk.
-3. **Usage resets** for the bots and Build before the run. **OK**, per stp on 7 Oct 2026.
-4. **Box dry run passes** (plan checklist), and **≥ 35 GB free disk** at T0. **Not done.** Not measured from this desk.
-5. **Set Build's share** (default 25%, capped at what it held in its dry run), then **lock the plan by commit SHA** before T0. The 25% share still fits the dry run (734 tx/s, 97.9% of 750). **The plan is not locked.**
-6. **Desk clock and desk miners:** the desk clock is synced by NTP (offset logged at start and end), and stp switches the desk miners off and back on at the UTC times of the miners-off control step. Start offsets are logged: +35 ms to +50 ms during the dry run, and +73 ms at 23:00 UTC on 6 Oct for the long pre-run. Desk miners during that pre-run: 0. The end offset waits until 09:02 UTC on 7 Oct. The miner switch is the storm control step and has not been run.
-7. **Final OK on the start time:** Fri 9 Oct, 20:00 CEST at the earliest, otherwise 13 Oct. **Not a start-now.**
+Status at the close of the desk pre-run, 2026-10-07T05:55:18Z. The long holds, with the exact window of every run, are in [tn10-build-desk-tps](https://github.com/STP-KAS/tn10-build-desk-tps#long-holds-6-7-oct-2026).
+
+| # | Task | Status |
+|---|---|---|
+| 1 | Dry-run gate. No storm until it passes. | **Passed on the desk.** 4 processes, 734 tx/s, 97.9% of 750, 0 rejects. The n0 txid match is still open. Detail below. |
+| 2 | Enough tKAS for the full schedule. | **OK for both wallets.** [Grok Build](https://github.com/STP-KAS/groks-wallet#grok-build) ([TN10 page](https://tn10.kaspa.stream/addresses/kaspatest:qp4jge54eztxewf8r53rtjdvxakmatsu6tjd0nn9sjhgvzxknsfvjvmwurqhd)) and [Grok Bot](https://github.com/STP-KAS/groks-wallet#grok-bot) ([TN10 page](https://tn10.kaspa.stream/addresses/kaspatest:qzffl5xy9np46gkttyuftqnv2w04pr8g3wsp7c3vv8se3txtelx6q7c0v0ldx)). Desk reading of Build at 23:00 UTC on 6 Oct: 3,612,867 tKAS, 15,944 coins of at least 2 tKAS. The Bot wallet is OK on stp's word. The box balance was not read from this desk. |
+| 3 | Usage resets for the bots and Build. | **OK**, per stp on 7 Oct 2026. |
+| 4 | Box dry run, and at least 35 GB free at T0. | **Not done.** Not measured from this desk. |
+| 5 | Set Build's share, then lock the plan by commit SHA. | **Not locked.** The 25% share still fits the dry run. The shape to use is saved. Lock stays with stp before T0. |
+| 6 | Desk clock, and the miner switch. | **Start logged, switch not run.** +73 ms at 2026-10-06T23:00:16Z. At 2026-10-07T05:55:18Z the desk was inside one second of a whole-second Date header. Miners during the pre-run: 0. |
+| 7 | Final OK on the start time. | **Not given.** Earliest start remains Fri 9 Oct 2026, 20:00 CEST, otherwise 13 Oct. |
+
+### On test day
+
+Start [`plan/TESTDAY.md`](plan/TESTDAY.md). That is the run. It uses [`plan/DESK-SHAPE-9-OCT.md`](plan/DESK-SHAPE-9-OCT.md) and the paste-in prompt [`plan/GROK-BUILD-PROMPT.md`](plan/GROK-BUILD-PROMPT.md). No command list to copy. It sends only after the storm GO and `steps-utc.json`. If it disagrees with [`plan/NEXT-STORM-PLAN.md`](plan/NEXT-STORM-PLAN.md), the plan wins.
+
+Paced steps: 4 processes, depth 2, in-flight 48. The long hold and the uncapped max step: two signers on each public node, depth 2, in-flight 64, fee 200 and 300, cap 600. That shape held 2,207 tx/s seen accepted from 2026-10-06T23:53:27.326Z to 2026-10-07T05:54:53.185Z.
+
+### For the Grok bot
+
+[`plan/BOT-TPS.md`](plan/BOT-TPS.md) is the high-TPS advice from this pre-run. The bot keeps its own wallet and its own sender. Depth 2, a fee near the loaded quote, and disjoint coins are what turned a 521 tx/s long run into a 2,207 tx/s long run. Depth 8, a fee of 2,000, and a few seconds above 6,000 submit-OK did not hold.
+
+The gate itself is unchanged. Build's process count is fixed for the whole storm. No auto-scale. Each process has its own coins. A step passes when achieved stays at or above 95% of target, the per-transaction logs are complete, the txids match what n0 sees accepted, and the run follows the UTC timetable. The prompt is [`plan/GROK-BUILD-PROMPT.md`](plan/GROK-BUILD-PROMPT.md).
 
 ### Desk dry run, 6 Oct 2026
 
@@ -222,7 +230,7 @@ Muon-10 held about 290 tx/s in the six-process run, so the ten-process run left 
 
 Past about 9,000 tx/s the public nodes are the limit. The desk still had free CPU and free RAM. This ceiling is not a new storm rate. The storm still uses 4 fixed processes for the planned share.
 
-Tasks 2 and 3 are marked in the list above. Tasks 4, 5, and 7 are still open. The end-of-run clock offset in task 6 is still open. Earliest start remains Fri 9 Oct 2026, 20:00 CEST, otherwise 13 Oct. This note does not start the storm. The 10-hour desk pre-run was still inside its window when this list was scored (armed through 09:02 UTC on 7 Oct). Its total is not in this file.
+Tasks 1, 2, and 3 are marked in the table above. Tasks 4, 5, and 7 are still open. Task 6 has its start and its pre-run end offset. The miner switch waits for the storm. Earliest start remains Fri 9 Oct 2026, 20:00 CEST, otherwise 13 Oct. This note does not start the storm. The long-hold totals are in [tn10-build-desk-tps](https://github.com/STP-KAS/tn10-build-desk-tps#long-holds-6-7-oct-2026).
 
 ### Monitored hold, 6 Oct 2026, 22:57 CEST
 

@@ -30,7 +30,9 @@ So we could not say how much of your load actually landed, or how fast. This tim
 
 ## Shape that held, for 9 Oct
 
-The 6–7 Oct desk pre-run is written in [`DESK-SHAPE-9-OCT.md`](DESK-SHAPE-9-OCT.md). Use that shape on 9 Oct.
+On test day, start with [`TESTDAY.md`](TESTDAY.md). That file is the run. Do not ask stp to paste commands.
+
+The 6–7 Oct desk pre-run is written in [`DESK-SHAPE-9-OCT.md`](DESK-SHAPE-9-OCT.md). Use that shape on 9 Oct. The six-hour hold, 2026-10-06T23:53:27.326Z to 2026-10-07T05:54:53.185Z, is the rate that survived: **2,207 tx/s seen accepted**.
 
 - Paced steps, the 25% share: **4** fixed processes, depth **2**, in-flight **48**, the dry-run gate that held **734 tx/s**.
 - The long hold and the uncapped max step: **two signers on each public node**, depth **2**, in-flight **64**, fee frozen at **200 and 300** sompi/gram. That held about **2,420–2,450 tx/s** seen accepted, with 0 rejects, after the mempool was full.
