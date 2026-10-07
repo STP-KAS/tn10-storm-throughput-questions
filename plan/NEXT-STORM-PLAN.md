@@ -173,6 +173,7 @@ The sections below are the **Method**: Kaspa Pulse's six process points (§1–�
 ## 5. Fee tiers (the 1× vs 1.5× question)
 
 - At each step start we read n0's normal fee estimate → **F1** (floor 100 sompi/gram) and set **F1.5 = 1.5 × F1**. Both are frozen for the step. Build applies the same rule with its public node's estimate, and that value is logged.
+- The desk repo's 6,321 tx/s is submit-OK over 20 seconds at 100 and 150. The seen-accepted count in that same window is 38,822. The long number is 2,207 seen accepted over six hours at 200 and 300. On 7 Oct 2026 at 13:57Z a 200/300 pair on the desk node saw about 1,539 accepted while the block was full. Moving part of the lanes to 1,018/1,527, under a priority quote that then read 2,447, brought the combined rate to about 1,403. That reading does not move this fee.
 - In every runner, even lanes pay F1 and odd lanes pay F1.5: same runner, connections, transaction shape (643-gram hops) and moment. A lane keeps its tier for the whole step.
 - **Probes:** a separate process sends one small, non-chained, signed self-transfer per tier (**1×, 1.2×, 1.5×, 2×** of F1) **every 2 s** (was every 10 s), from its own wallets. That's 2 tx/s in total, from a pre-split pool of 600 coins per tier; a coin is reused only after its previous probe was accepted. 1.2× and 2× link back to the 25 Sep probes.
 - **Probe n and what it buys (tightening 4).** We raise the rate, not the step length: longer steps would cost disk and time, while 2 tx/s of probes costs almost nothing.
