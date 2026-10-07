@@ -27,12 +27,12 @@ Follow `steps-utc.json`. Send nothing in B0, B1, and the settle phases.
 - Half the lanes at each tier, and a lane keeps its tier for the step.
 - Hold the step target. A step is sender-limited if submit-OK stays under 95% of target. Report that.
 
-**Uncapped max step, and any long hold.** Twelve lane signers, two on each of the six public nodes. This is the shape that held **2,210 tx/s submit and 2,207 tx/s seen accepted** from 2026-10-06T23:53:27.326Z to 2026-10-07T05:54:53.185Z.
+**Uncapped max step, and any long hold.** Two lane signers on each physical machine, plus the desk node when `measure.mjs --mode check --via own` succeeds. On 7 Oct 2026 the six hostnames were three machines: vector-10, muon-10, and one server for proton-10, electron-10, quark-10 and neutrino-10. Recheck that morning. The public-only shape held **2,210 tx/s submit and 2,207 tx/s seen accepted** from 2026-10-06T23:53:27.326Z to 2026-10-07T05:54:53.185Z. The desk node, added at 2026-10-07T07:57:46Z, saw **1,538 tx/s** accepted on its own feed, and the blocks then sat at about **305 transactions** and **498,000 / 500,000** compute mass.
 
 - Split each node's coins by line into two files. Do not use `part i/2` on a host file.
 - Depth **2**. In-flight **64**. **4** connections.
 - Fee frozen at **200 and 300**, unless the step-start quote is already above 200. Same 600 cap. A 400 and 600 trial started at 2026-10-07T06:38:59Z and runs until 2026-10-07T16:38:59Z. It is a pre-run, not the storm fee, until its seen-accepted rate over that long window is written into this file.
-- The pipes filled at about one core. Keep two signers per node. Add a third on one node only when that node's lanes are not already two deep. Do not add signers to chase idle CPU.
+- The pipes filled at about one core. Keep two signers per physical machine. Add a third on one machine only when that machine's lanes are not already two deep. Do not add signers to chase idle CPU. The desk node uses its own coin files and is not a third signer on a public machine.
 
 **Ordered stream.** Its own process, its own coins, 4 tx/s, both tiers, depth 1, on proton-10. It counts inside the share.
 
