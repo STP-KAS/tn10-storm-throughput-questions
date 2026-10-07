@@ -4,6 +4,8 @@
 >
 > [Disclaimer](../DISCLAIMER.md)
 
+Wording, Kaspa Pulse (@gokugalax), 7 Oct 2026: sign-and-send processes are senders; runner is the setup; bot is reserved for the operator.
+
 # Test day: start this, and the desk run starts
 
 Credit Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)). The section below is a pending dry run. It is not the storm.

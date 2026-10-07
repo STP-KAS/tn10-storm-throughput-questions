@@ -4,6 +4,8 @@
 >
 > [Disclaimer](../DISCLAIMER.md)
 
+Wording, Kaspa Pulse (@gokugalax), 7 Oct 2026: sign-and-send processes are senders; runner is the setup; bot is reserved for the operator.
+
 # Pulse window, 7 Oct 2026
 
 Kaspa Testnet-10 only. Every clock on this page is UTC. This note does not start the 9 Oct or 13 Oct storm. It does not mine. It does not touch mainnet.
