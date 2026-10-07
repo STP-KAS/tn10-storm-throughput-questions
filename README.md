@@ -155,7 +155,7 @@ Charts and per-minute files: [Measured data](#measured-data). Earlier write-ups,
 
 ## Tasks for stp (before the storm)
 
-Status at the close of the desk pre-run, 2026-10-07T05:55:18Z. The long holds, with the exact window of every run, are in [tn10-build-desk-tps](https://github.com/STP-KAS/tn10-build-desk-tps#long-holds-6-7-oct-2026).
+Status at the close of the desk pre-run, 2026-10-07T05:55:18Z. The long holds, with the exact window of every run, are in [tn10-build-desk-tps](https://github.com/STP-KAS/tn10-build-desk-tps#long-holds-6-7-oct-2026). The senders stopped at 2026-10-07T05:54:55Z. Covenant activity on TN10 is gaining traction again after that stop. The slices and the reason are in [point 9](#early-recommendations-for-builders) and on the [desk page](https://github.com/STP-KAS/tn10-build-desk-tps#after-the-stop).
 
 | # | Task | Status |
 |---|---|---|
@@ -191,7 +191,7 @@ The one request behind the plan: a flow that is hurt by sitting in the mempool s
 
 **3. Count accepts, and treat a silent feed as a fault.** Submit-OK of about 6,300 tx/s for 20 seconds, and about 9,100 tx/s for 12 seconds, did not last. The number to publish is seen accepted over the whole window. At 2026-10-07T03:39:25Z this desk's observer stopped reporting new blocks. The signers' own feeds kept counting accepts until the stop at 05:54:53Z. A builder who only watches one subscription can mistake a dead feed for an idle network. Reconnect, and check a second node, before you drop the fee or add more transactions.
 
-**4. One spender per coin, and do not reshuffle coins while the mempool is full.** Two processes on one coin spend the same output. A new split while the old transactions are still in the mempool spends outputs that already have a child in flight. At 2026-10-07T06:09Z, about 15 minutes after this desk stopped, vector-10 still reported about 50,900 in the mempool, and the count was falling by only a few per second, while the virtual DAA score was still advancing at about 10 per second. Wait for that backlog to clear before the next split.
+**4. One spender per coin, and do not reshuffle coins while the mempool is full.** Two processes on one coin spend the same output. A new split while the old transactions are still in the mempool spends outputs that already have a child in flight. At 2026-10-07T06:09Z, about 15 minutes after this desk stopped, vector-10 still reported about 50,900 in the mempool, and the count was falling by only a few per second, while the virtual DAA score was still advancing at about 10 per second. At 2026-10-07T06:27:46Z the highest of the six public mempools was still 49,141. Wait for that count to clear before the next split. The count is a warning about coins. It is a poor signal that the next block is full: the 06:09Z slice in point 9 was about 1.5 user transactions per block.
 
 **5. When every lane is already waiting, more CPU does not raise the rate.** The twelve signers used about one core, and the machine was near 5% CPU, with every lane two deep. A signed one-input one-output is about 1,624 grams. At 500,000 grams and 10 blocks per second that is about 3,080 tx/s. This hold was 2,207. The gap is block space, not idle cores. The change this desk would test next is a higher fee still under the 600 ceiling, not a thirteenth signer. A lighter transaction is the change to test only after that, and it is untested here.
 
@@ -199,7 +199,25 @@ The one request behind the plan: a flow that is hurt by sitting in the mempool s
 
 **7. Do not read inclusion only from the indexer.** On 2 Oct, api-tn10 froze for 86 minutes, lag up to 4,311 seconds, while the box was still sending. A dapp that decides "included" from the indexer should also have a node feed. The indexer can lag, or stop, while the chain is still accepting.
 
-**8. Mainnet gets the same shape of plan, not these TN10 numbers.** A sensitive mainnet flow should watch the mainnet estimate, raise and lower its fee inside a ceiling chosen for mainnet, keep a short unconfirmed chain, and count accepts. It should not copy 200, 300, or 2,207 tx/s onto mainnet. Those numbers are this TN10 pre-run. Mainnet that night was not under this load.
+**8. Mainnet gets the same shape of plan, not these TN10 numbers.** A sensitive mainnet flow should watch the mainnet estimate, raise and lower its fee inside a ceiling chosen for mainnet, keep a short unconfirmed chain, and count accepts. It should not copy 200, 300, or 2,207 tx/s onto mainnet. Those numbers are this TN10 pre-run. Mainnet that night was quiet, about 11 tx/s with mempool 1.
+
+**9. After a plain flood stops, covenant activity comes back because the block opened.** The senders stopped at 2026-10-07T05:54:55Z. Covenant flows on TN10 are gaining traction again. This desk's view: the apps did not change. The plain transfers stopped taking the block, a waiting covenant step can be accepted, and the app can post the next step.
+
+Three slices from api-tn10, 40 selected-chain blocks each, coinbase left out. A covenant transaction is one with a covenant on an output. The times are the two ends of the walk. These are a few seconds each, so they are not an hour rate. The same table is on the [desk page](https://github.com/STP-KAS/tn10-build-desk-tps#after-the-stop).
+
+| When | Span | User txs | Covenant txs | Per block |
+|---|---|---:|---:|---:|
+| During the hold | 2026-10-07T02:59:49Z to 02:59:58Z | 12,218 | 3 | about 305 |
+| 15 min after the stop | 2026-10-07T06:09:38Z to 06:09:43Z | 61 | 3 | about 1.5 |
+| 22 min after the stop | 2026-10-07T06:17:11Z to 06:17:19Z | 279 | 7 | about 7 |
+
+During the hold that slice was 12,218 user transactions and 3 covenant transactions. After the stop the plain flood is gone, and covenant transactions are in the open blocks (3, then 7, with 8 and then 26 covenant outputs). A render of the TN10 homepage at this desk left the last-hour Covenants card empty, so this is the block sample, not that card.
+
+The six-hour hold included 2,207 plain transfers per second. Each is about 1,624 grams, at 200 and 300 sompi per gram. About 3,080 of them fill a 500,000-gram block at 10 blocks per second, so the hold was most of the mass. Miners take a higher fee per gram first. A covenant step often weighs more, so the same fee per gram costs more, and a step that stays near the quiet floor waits behind the plain transfers. A covenant app is a sequence. The next step is built from the output of the previous one, so one waiting step holds the whole flow. The explorer then shows a quiet covenant lane. When the plain flood stops, the next blocks have room. The waiting step is included, the app posts the next one, and the lane looks busy again. That is the traction.
+
+The mempool count can stay large while this happens. At 2026-10-07T06:27:46Z the highest public mempool was 49,141. A vector-10 fee read at 2026-10-07T06:28Z was about 162 and 131 sompi per gram in the normal buckets, and about 243 in the priority bucket. During the hold the normal quote was about 186–194 and the priority quote was about 876. Watch the blocks. A high mempool count alone will keep calling the network packed after the blocks have opened.
+
+The mainnet hour the same night, Covenants 44 and mempool 1, is the other network. It is not this TN10 recovery.
 
 This plan does not start the 9 Oct storm. The storm's own fee rule is still the one in [`plan/NEXT-STORM-PLAN.md`](plan/NEXT-STORM-PLAN.md). If they disagree, the plan wins.
 
