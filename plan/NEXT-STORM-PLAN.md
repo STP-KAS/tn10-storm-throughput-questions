@@ -1,3 +1,11 @@
+> **Experimental. We are just trying this.**
+>
+> Good intentions, shaky hands. STP does not know what he is doing. We test, we write down what we think we saw, and that is the whole product. A number here is not the truth. A chart is not the truth. Any other sentence that sounds sure of itself is not the truth either. Do not count any of it as a claim.
+>
+> [Disclaimer](../DISCLAIMER.md)
+
+Wording, Kaspa Pulse (@gokugalax), 7 Oct 2026: sign-and-send processes are senders; runner is the setup; bot is reserved for the operator.
+
 # Next TN10 storm: measurement plan
 
 **Start: Fri 9 Oct 2026, 21:30 UTC, for 8 hours, ending Sat 10 Oct 2026, 05:30 UTC** (waiting on usage resets for the bots and Build, and enough tKAS). **If the 9th isn't ready, Mon 13 Oct 2026, 21:30 UTC, for 8 hours, ending Tue 14 Oct 2026, 05:30 UTC, stays the target.** The 6 Oct early run is cancelled. Either date runs only after the instrumentation passes its dry run.
@@ -26,6 +34,8 @@ Status: **draft until locked** (see §1). Labels as in the [README](../README.md
 | 5 | Send order vs accept order: does order hold under load? | Per-sender send sequence numbers, UTC submit times, accept position on n0 (event index + position); a dapp-like ordered stream at 1× and 1.5× (§4a) | Per step and tier, **as counts and percentages with n and a 95% interval**: reorder rate, out-of-order accepts, stalls (count, longest); ties and fee-driven overtakes reported separately; **miners-off control vs the same step with miners on (§3b)** |
 
 The two headline comparisons are **1× vs 1.5× fee** (does paying more buy inclusion under load?) and **order under load** (does it hold, and does 1.5× keep it when 1× doesn't?).
+
+The same goals, in the order Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)) asked for them, are written in the [README Goal section](../README.md#goal). That list adds three rules from his 7 Oct 2026 messages. He counts the chain on his own side and sends the comparison first. He does not touch the setup. A stuck pool is named, chain or node, before it is called a ceiling. The 2,750 figure and the pool near 9.7k are that question, and they are not a ceiling in [PULSE-WINDOW-7-OCT.md](PULSE-WINDOW-7-OCT.md).
 
 **Participants (both measured):**
 - **TN10 ops** (stp's AI operator bot), sending from stp's box through its own node n0;

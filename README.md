@@ -4,6 +4,8 @@
 >
 > [Disclaimer](DISCLAIMER.md)
 
+Wording, Kaspa Pulse (@gokugalax), 7 Oct 2026: sign-and-send processes are senders; runner is the setup; bot is reserved for the operator.
+
 # TN10 storms: throughput, confirmation time, order, indexer and mempool
 
 > **Experimental. Not advice.** [Disclaimer](DISCLAIMER.md).
@@ -42,7 +44,7 @@ This page is the questions, the method, and the empty result sections. The runs 
 - [Why](#why)
 - [How](#how)
 - [Goal](#goal)
-- [Questions from @gokugalax](#questions-from-gokugalax)
+- [Questions from Kaspa Pulse (@gokugalax)](#questions-from-kaspa-pulse-gokugalax)
 - [Build and the bot](#build-and-the-bot)
 - [Monitoring](#monitoring)
 - [History of the storms](#history-of-the-storms)
@@ -108,13 +110,46 @@ Box side: 6 runners × 4 connections, a 7th only at the max step. Go only with a
 
 ## Goal
 
-The headline is whether **order holds under load**, and whether **paying 1.5×** buys inclusion when 1× is waiting.
+Goals from Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)). Thank you. The screen of the X chat on 8 Oct 2026 is the source for this list. The measurement plan is [plan/NEXT-STORM-PLAN.md](plan/NEXT-STORM-PLAN.md). If this list and that plan disagree, the plan wins.
 
-A number is ready for the merged result when both senders are in the run, the transaction can be matched by txid on n0, and the file behind the number is in this repo. Build's reading and the bot's reading each stay in their own section. The figure both sides reproduce is written in the [challenge repo](https://github.com/STP-KAS/tn10-storm-build-bot-challenge).
+Two headlines. Order under load, because a reorder or a stall is what a dapp would feel. And whether paying 1.5× buys inclusion while 1× is waiting.
 
-## Questions from @gokugalax
+**What the storm measures.** Asked 4 Oct 2026, for the TN10 run.
 
-These five are the measured goals. Thank you for them, and for making order its own question. The right-hand column is the short reading of data we already had. The next run is what is supposed to close the gaps.
+1. Accepted transactions per second against submitted, over the whole storm, and where acceptance flattens.
+2. Confirmation time at each load step, median and worst, normal fee against 1.5×.
+3. Whether the indexer freezes, at what sustained rate, and for how long.
+4. Mempool depth over time, so the backlog is visible and the rate is not the only number.
+5. Send order against accept order. He named this the real question on 5 Oct 2026: the metric is whether order holds under load, not the raw throughput.
+
+**How the run is judged.** Asked 5 Oct 2026, before the lock.
+
+1. The plan is written down before the run and published with the results. The window was not picked after the fact.
+2. A short baseline first, so the storm has something to sit next to.
+3. Fixed steps, not one blast. His example was 1×, 2×, 5×, and 10× of normal load, each held long enough to see where it bends. The step table in the plan is the one the run uses.
+4. Submitted and accepted, per second, UTC. For order: the order sent, and the order accepted.
+5. Mining share stated up front. He put our share near 60% of TN10 hashrate. The storm 2 report measured 50–63% of blocks. The result says which figure it is using. It describes TN10 with our miners, not mainnet.
+6. Raw data next to the summary.
+7. One miners-off step in the main run, at a load the other miners can absorb, matched to the same step with our miners on. A high load with our miners off only measures backlog. The low matched step is the control.
+8. The box is not the chain. Log the box limits on their own, and label each plateau box-bound or network-bound.
+9. Both clocks checked against NTP at the start and at the end.
+10. Saturation defined before the start: accepted below 95% of submitted for 60 seconds. Reorder rates as counts and percentages, with n and an interval.
+
+**What this series is.** Asked 7 Oct 2026.
+
+- One clean run first. Go through those numbers properly. Send Kaspa Pulse the results when that run is done. Weekly repeats wait until that pass.
+- He counts the chain on his own side: accepted per second, confirmation times, and fees. He does not touch the setup. After the run the two counts go side by side, and he sends the comparison first.
+- The same window on both clocks. A chain-accepted count and a submit count are not one number.
+- A stuck pool is named, chain or node, before anyone calls it a ceiling. The 2,750 figure and the pool near 9.7k are that question. The reading is [plan/PULSE-WINDOW-7-OCT.md](plan/PULSE-WINDOW-7-OCT.md). On 7 Oct those two were not the same minute, and his 18:52–19:23 UTC window is not in our log.
+- A process that signs and sends is a sender. The runner is the whole setup. TN10 ops stays the operator.
+
+Mainnet congestion costing is out. He passed on it. Deliberate load stays on TN10.
+
+A number is ready for the merged result when both senders are in the run, the transaction can be matched by txid on n0, and the file behind the number is in this repo. TN10 ops writes its own result. Grok Build writes its own result. The figure both sides reproduce is written in the [challenge repo](https://github.com/STP-KAS/tn10-storm-build-bot-challenge).
+
+## Questions from Kaspa Pulse (@gokugalax)
+
+These five are the measured goals. Thank you, Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)), for them, and for making order its own question. The right-hand column is the short reading of data we already had. The next run is what is supposed to close the gaps.
 
 | # | Question | What we will log | Past storms |
 |---|---|---|---|
