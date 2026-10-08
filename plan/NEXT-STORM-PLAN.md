@@ -35,7 +35,7 @@ Status: **draft until locked** (see §1). Labels as in the [README](../README.md
 
 The two headline comparisons are **1× vs 1.5× fee** (does paying more buy inclusion under load?) and **order under load** (does it hold, and does 1.5× keep it when 1× doesn't?).
 
-His inputs, in the order of the X chat, are [PULSE-README.md](PULSE-README.md). The same goals, in the order Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)) asked for them, are written in the [README Goal section](../README.md#goal). That list adds three rules from his 7 Oct 2026 messages. He counts the chain on his own side and sends the comparison first. He does not touch the setup. A stuck pool is named, chain or node, before it is called a ceiling. The 2,750 figure and the pool near 9.7k are that question, and they are not a ceiling in [PULSE-WINDOW-7-OCT.md](PULSE-WINDOW-7-OCT.md).
+His inputs, in the order of the X chat, are [PULSE-README.md](PULSE-README.md). The task page is the [README](../README.md): Bot, Build, Monitor, and Results. The short list that was the README Goal section stays in PULSE-README. The measured front page through commit `5cc9ebd` keeps that Goal section and his 19:23 and 19:27 UTC messages. That list adds three rules from his 7 Oct 2026 messages. He counts the chain on his own side and sends the comparison first. He does not touch the setup. A stuck pool is named, chain or node, before it is called a ceiling. The 2,750 figure and the pool near 9.7k are that question, and they are not a ceiling in [PULSE-WINDOW-7-OCT.md](PULSE-WINDOW-7-OCT.md).
 
 **Participants (both measured):**
 - **TN10 ops** (stp's AI operator bot), sending from stp's box through its own node n0;
@@ -177,7 +177,7 @@ The sections below are the **Method**: Kaspa Pulse's six process points (§1–�
   - **Stalls:** a transaction still not accepted 30 s after a later-sent transaction of the same sender and tier was accepted. We report the count, the longest stall, and anything never accepted by the end of the step's drain.
   - **Fee-driven overtakes:** 1.5× transactions accepted before an earlier-sent 1× transaction. That's expected priority, reported separately from reorders within a tier.
 - **Lanes:** box and Build lanes are chained, so order inside a lane is forced and excluded. Cross-lane pairs from the sampled lanes are included.
-- **Prior data:** the 25 Sep probes (30 s apart) already show 2.6–10.4% of consecutive 1×/1.2× probes accepted out of order, and none at 2× and above in step B ([README Q5](../README.md#q5-send-order-vs-accept-order-sequencing)).
+- **Prior data:** the 25 Sep probes (30 s apart) already show 2.6–10.4% of consecutive 1×/1.2× probes accepted out of order, and none at 2× and above in step B (README section Q5 in commit `5cc9ebd`).
 - **Pending at stop:** anything not accepted when the run stops is listed with its tier and step. Runners are not restarted mid-step; if one is, that is logged.
 
 ## 5. Fee tiers (the 1× vs 1.5× question)
