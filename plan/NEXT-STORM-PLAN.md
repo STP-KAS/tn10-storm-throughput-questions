@@ -44,7 +44,7 @@ The bot does not send to the desk. Build does not send to n0. A short box disk s
 6. Label a flat combined accept rate sender-limited, node-bound, or network-bound, or leave it unclear. n0's 100,000 mempool cap does not apply to the desk node.
 7. Indexer health every 30 seconds. Mining share per node, per step. NTP at the start and at the end on both machines.
 
-The longer sheet is the private repo `STP-KAS/tn10-locus`, file `plan/MONITOR.md`. This plan still does not give the storm GO.
+The longer sheet is the private repo `STP-KAS/tn10-locus`, file `plan/MONITOR.md`. The next run's checklist is that repo's `plan/NEXT-RUN-MONITOR.md`. It lists the lines the 8 Oct checkout left unread: the bot block, n0, box disk, box NTP, usage, the per-minute five ids, indexer every 30 seconds, n0 mempool every second, confirmation times, the ordered stream, saturation on n0, mining share, the miners-off control, and the combined accepted rate. The next run covers every monitoring task in this section and every line of that checklist. A missing reading stays **not measured** and fails the pass. That checklist does not add a demand. This plan still does not give the storm GO.
 
 ## What: Kaspa Pulse's four questions + sequencing are the measured goals
 
