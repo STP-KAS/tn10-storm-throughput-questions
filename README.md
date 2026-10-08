@@ -24,6 +24,8 @@ His questions, method, tightenings, 7 Oct compare, and cadence are [plan/PULSE-R
 
 This page does not start the 9 Oct storm or the 13 Oct storm. There is no storm GO here.
 
+Forward routing, 8 Oct 2026, is in the plan: the bot uses n0 when it is synced, Build uses its own desk node, and the score is the combined included rate. The monitoring tasks are in that same section. Where this README still says Build posts to public nodes, the plan's forward section wins.
+
 ## 1. Bot
 
 TN10 ops, the operator, on the box. It sends the box share through its own node, n0. The box share is the added load that remains after Build's share in section 2.
