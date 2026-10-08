@@ -26,6 +26,7 @@ Each note keeps the disclaimer at the top. They are not one repo.
 
 | Open this | What it is |
 |---|---|
+| [plan/PULSE-README.md](plan/PULSE-README.md) | Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)). His inputs, in the order of the X chat. |
 | [plan/GROK-BUILD-PROMPT.md](plan/GROK-BUILD-PROMPT.md) | Paste-in for Grok Build on 9 or 13 Oct. Ready. It does not start the storm. |
 | [plan/TESTDAY.md](plan/TESTDAY.md) | The run, after the storm GO and `steps-utc.json`. |
 | [plan/DESK-SHAPE-9-OCT.md](plan/DESK-SHAPE-9-OCT.md) | The shape that held. |
@@ -150,6 +151,14 @@ A number is ready for the merged result when both senders are in the run, the tr
 ## Questions from Kaspa Pulse (@gokugalax)
 
 These five are the measured goals. Thank you, Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)), for them, and for making order its own question. The right-hand column is the short reading of data we already had. The next run is what is supposed to close the gaps.
+
+His inputs, in the order of the screen, are [plan/PULSE-README.md](plan/PULSE-README.md). The two that were missing from this section are here as well.
+
+**7 Oct 2026, 19:23 UTC.** Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)): you did, all clear, thanks. our dry run counted 18:52 to 19:22 utc, right inside your run. once your log for that window is on git we'll put both side by side and send you the comparison first. and the 2,750 ceiling with the pool stuck at 9.7k is exactly the kind of thing we'd love to pin down, chain or node. no spam at all, keep it coming
+
+**7 Oct 2026, 19:27 UTC.** Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)): first dry run done, clean on our side. for the 18:53 to 19:23 utc window we count what the chain actually accepted, and it came out much lower than your screenshot, so before we read anything into it we want to line up the same window. could you share, when you have a sec: start and end of your run, the target tx/s, whether your bot counts sent or accepted, which node it sends to, and a handful of tx ids from that window? then we check those ids on chain one by one. might just be that the bot stalled when your pool got stuck
+
+At 19:54 UTC the same day he replaced "bot" in that ask with sender. The window reading is [plan/PULSE-WINDOW-7-OCT.md](plan/PULSE-WINDOW-7-OCT.md).
 
 | # | Question | What we will log | Past storms |
 |---|---|---|---|

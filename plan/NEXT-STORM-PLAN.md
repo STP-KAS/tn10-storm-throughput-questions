@@ -35,7 +35,7 @@ Status: **draft until locked** (see §1). Labels as in the [README](../README.md
 
 The two headline comparisons are **1× vs 1.5× fee** (does paying more buy inclusion under load?) and **order under load** (does it hold, and does 1.5× keep it when 1× doesn't?).
 
-The same goals, in the order Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)) asked for them, are written in the [README Goal section](../README.md#goal). That list adds three rules from his 7 Oct 2026 messages. He counts the chain on his own side and sends the comparison first. He does not touch the setup. A stuck pool is named, chain or node, before it is called a ceiling. The 2,750 figure and the pool near 9.7k are that question, and they are not a ceiling in [PULSE-WINDOW-7-OCT.md](PULSE-WINDOW-7-OCT.md).
+His inputs, in the order of the X chat, are [PULSE-README.md](PULSE-README.md). The same goals, in the order Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)) asked for them, are written in the [README Goal section](../README.md#goal). That list adds three rules from his 7 Oct 2026 messages. He counts the chain on his own side and sends the comparison first. He does not touch the setup. A stuck pool is named, chain or node, before it is called a ceiling. The 2,750 figure and the pool near 9.7k are that question, and they are not a ceiling in [PULSE-WINDOW-7-OCT.md](PULSE-WINDOW-7-OCT.md).
 
 **Participants (both measured):**
 - **TN10 ops** (stp's AI operator bot), sending from stp's box through its own node n0;
