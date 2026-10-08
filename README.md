@@ -127,7 +127,7 @@ Two headlines. Order under load, because a reorder or a stall is what a dapp wou
 
 1. The plan is written down before the run and published with the results. The window was not picked after the fact.
 2. A short baseline first, so the storm has something to sit next to.
-3. Fixed steps, not one blast. His example was 1×, 2×, 5×, and 10× of normal load, each held long enough to see where it bends. The step table in the plan is the one the run uses.
+3. Fixed steps, not one blast. His example was 1×, 2×, 5×, and 10× of normal load, each held long enough to see where it bends. The plan uses 2×, 5×, 10×, 20×, 30×, then max.
 4. Submitted and accepted, per second, UTC. For order: the order sent, and the order accepted.
 5. Mining share stated up front. He put our share near 60% of TN10 hashrate. The storm 2 report measured 50–63% of blocks. The result says which figure it is using. It describes TN10 with our miners, not mainnet.
 6. Raw data next to the summary.
@@ -152,7 +152,7 @@ A number is ready for the merged result when both senders are in the run, the tr
 
 These five are the measured goals. Thank you, Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)), for them, and for making order its own question. The right-hand column is the short reading of data we already had. The next run is what is supposed to close the gaps.
 
-His inputs, in the order of the screen, are [plan/PULSE-README.md](plan/PULSE-README.md). The two that were missing from this section are here as well.
+The short list of his questions, the method, the four tightenings, the 7 Oct compare, the wording, and the cadence is [plan/PULSE-README.md](plan/PULSE-README.md). The two 7 Oct messages are here as well.
 
 **7 Oct 2026, 19:23 UTC.** Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)): you did, all clear, thanks. our dry run counted 18:52 to 19:22 utc, right inside your run. once your log for that window is on git we'll put both side by side and send you the comparison first. and the 2,750 ceiling with the pool stuck at 9.7k is exactly the kind of thing we'd love to pin down, chain or node. no spam at all, keep it coming
 
