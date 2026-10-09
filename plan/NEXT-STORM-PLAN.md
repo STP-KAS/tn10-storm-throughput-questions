@@ -38,6 +38,7 @@ keel was still in block download at 2026-10-09T07:59:26Z, 69%, last block 2026-1
 
 **Monitoring tasks.** One owner each. A missing read is **not measured**. No key, seed, address, or txid in git.
 
+0. While keel is not synced, the desk watches the block download and leaves the tunnel closed. When keel is synced, the desk opens the tunnel and writes both addresses in the handoff before the bot starts. Saying those addresses is not the storm GO. Until then the row says waiting and keel adds 0.
 1. Before the bot sends, and every 10 minutes: keel synced, lag seconds, mempool, tunnel in hand, box disk. Unsynced, no tunnel, or lag over 300 seconds means waiting, not a failover. Do not read n0.
 2. Before Build sends: locus synced, UTXO index, mempool, normal fee, free RAM, desk disk. Free RAM under 1 GB stops Build.
 3. Every 10 minutes, one combined row: each side's submitted tx/s and accepted tx/s, then the two sums. The desk writes the sheet. The box prints its block. Do not invent the other side.
