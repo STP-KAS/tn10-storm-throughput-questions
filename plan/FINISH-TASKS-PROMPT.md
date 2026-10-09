@@ -1,5 +1,7 @@
 # Prompt for Grok Build: finish the pre-storm tasks
 
+9 Oct 2026. n0 will not run. Do not start it to close a task. The forward node rule is [NEXT-STORM-PLAN.md](NEXT-STORM-PLAN.md), section "Forward routing, 9 Oct 2026". Build uses locus. The bot uses the tunnel to keel.
+
 *Paste this into Grok Build on stp's desk. It closes the desk side of the seven tasks in the README section "Tasks for stp (before the storm)". It does not start the storm.*
 
 If this prompt disagrees with [`NEXT-STORM-PLAN.md`](NEXT-STORM-PLAN.md), the plan wins. Stop and ask stp.
@@ -36,11 +38,11 @@ Do them in this order. Update the README task table only with a figure this pass
 
 Already passed on the desk: 4 processes, 734 tx/s, 97.9% of 750, 3 minutes, 0 rejects, 0 seconds at 0. The steps at 25, 100, 225, and 475 tx/s each hit the target on every second. Do not repeat the dry run.
 
-The open part is the **n0 txid match**. This desk is not n0.
+The n0 txid match is not a gate. n0 will not run. Do not start it to close this task.
 
 - Confirm the per-transaction logs for that run are still on the desk.
 - Write a private manifest next to those logs: path, byte size, SHA-256, UTC window, submit-OK count, reject count. No txids in the manifest. No copy of the logs in the git repo.
-- Leave the task open with the line: logs ready for the box, n0 match not done.
+- Leave the task open with the line: logs ready on the desk. The n0 match is closed because n0 will not run.
 - Do not mark task 1 closed.
 
 ### 2. Enough tKAS

@@ -24,15 +24,15 @@ His questions, method, tightenings, 7 Oct compare, and cadence are [plan/PULSE-R
 
 This page does not start the 9 Oct storm or the 13 Oct storm. There is no storm GO here.
 
-Forward routing, 8 Oct 2026, is in the plan: the bot uses n0 when it is synced, Build uses its own desk node, and the score is the combined included rate. The monitoring tasks are in that same section. Where this README still says Build posts to public nodes, the plan's forward section wins.
+Forward routing, 9 Oct 2026, is in the plan. The desk runs two kaspad processes. locus is the first. keel is the second. Build uses locus. The bot's runner and the bot's miners use the tunnel to keel. n0 will not run. keel stays in the score while it syncs. Those minutes add 0 and the row says waiting. The monitoring tasks are in that same section. Where this README still says the box sends through n0, or Build posts to public nodes, the plan's forward section wins.
 
 ## 1. Bot
 
-TN10 ops, the operator, on the box. It sends the box share through its own node, n0. The box share is the added load that remains after Build's share in section 2.
+TN10 ops, the operator, on the box. It sends the box share through the tunnel to keel, the second desk kaspad, and only while keel is synced and the handoff lists that tunnel. The box share is the added load that remains after Build's share in section 2. n0 will not run. While keel is still syncing, this side waits and that minute's score is Build on locus alone.
 
 **Sent and accepted stay separate counters.** Kaspa Pulse counts what the chain accepted. A submit acknowledgement is the other counter. The log writes both.
 
-**What the box logs.** His request, and the plan's §6a and §7. n0 CPU, mempool-cap hits, and reject reasons, so a later flat accepted rate can be labelled. Mining share on every step, including the miners-off step. He had put the share near 60% of TN10 hashrate. Storm 2 measured 50–63% of TN10 blocks (`block_share_legs.csv`). **Claim (measured on TN10).** The result says which figure it uses. The figure is TN10 with our miners on.
+**What the box logs.** His request, and the plan's §6a and §7. CPU, mempool-cap hits, and reject reasons on the node this side posts to, so a later flat accepted rate can be labelled. On this run that node is keel. The plan's older n0 wording stays in the plan as the record. Mining share on every step, including the miners-off step. He had put the share near 60% of TN10 hashrate. Storm 2 measured 50–63% of TN10 blocks (`block_share_legs.csv`). **Claim (measured on TN10).** The result says which figure it uses. The figure is TN10 with our miners on.
 
 **Miners-off control.** His tightening: in the main run, at low load, matched to a miners-on step at the same load. A high load with our miners off measures backlog. The plan's matched step is the 2× step (§3b). If 2× of baseline B would pass 250 tx/s total, both halves run at 250 tx/s total, and that is recorded. The control is imperfect. Other miners still change templates. When our miners stop, TN10's block rate moves until difficulty adjusts. A difference between the two halves is evidence. The plan marks this **Not sure / open for debate.**
 
@@ -54,7 +54,7 @@ Grok Build, on the desk PC. The wallet processes here are senders.
 
 **Timetable.** The same UTC timetable as TN10 ops. T0 and the step ends are the plan's table.
 
-**Gate.** The plan's go/no-go, written before the lock. At every step, the mean achieved send rate is at least 95% of the target, with no zero seconds. The per-transaction logs are complete. The transaction ids match what n0 sees accepted. Starts and stops follow the UTC timetable. Miss the gate, and the storm waits for 13 Oct. Build's storm cap is the rate it held.
+**Gate.** The plan's go/no-go, written before the lock. At every step, the mean achieved send rate is at least 95% of the target, with no zero seconds. The per-transaction logs are complete. The transaction ids match what that side's own node sees accepted: locus for Build, keel for the bot. The older match on n0 is not a gate. n0 will not run. Starts and stops follow the UTC timetable. Miss the gate, and the storm waits for 13 Oct. Build's storm cap is the rate it held.
 
 This gate is 95% of the target. Saturation, in section 3, is a different rule.
 
@@ -66,7 +66,7 @@ The 6 Oct desk mean for four senders is on the measured front page in commit `5c
 
 **NTP.** His tightening, and the plan's §4. Log the NTP offset on the box and on the desk at the start and at the end. Cross-machine confirmation times are corrected for the offset, or flagged, by the plan's rule.
 
-**Each second, UTC.** Submitted, and accepted, as two fields. Mempool depth: the plan samples n0's mempool every 1 second (§6). Indexer freeze is his question. The plan's sample is api-tn10 health every 30 seconds, and one visibility check a minute (§6). Mining share is logged per second and published per step (§7).
+**Each second, UTC.** Submitted, and accepted, as two fields. Mempool depth: keel for the bot and locus for Build, every 1 second. The plan's older §6 sample of n0 stays in the plan as the record. Indexer freeze is his question. The plan's sample is api-tn10 health every 30 seconds, and one visibility check a minute (§6). Mining share is logged per second and published per step (§7).
 
 **Each transaction.** Send sequence, submit time, accept time, and fee tier. His logging point, and the plan's §4. The 7 Oct transaction log has submit times. Accept time on that log is MISSING. The storm log records accept time.
 
@@ -90,7 +90,7 @@ Empty until the run.
 
 **Raw CSV next to the summary.** His publication point, and the plan's §8. The file list is in the plan. The files sit next to the summary in this repo.
 
-TN10 ops writes its reading in the subsection below, from the box logs. Build writes its reading in the subsection below, from the desk logs, with acceptance matched on n0. Both stay empty until that run. The check of one reading against the other stays in [tn10-storm-build-bot-challenge](https://github.com/STP-KAS/tn10-storm-build-bot-challenge). That page stays empty until both readings are filled.
+TN10 ops writes its reading in the subsection below, from the box logs, with acceptance matched on keel. Build writes its reading in the subsection below, from the desk logs, with acceptance matched on locus. A waiting keel minute adds 0. Both stay empty until that run. The check of one reading against the other stays in [tn10-storm-build-bot-challenge](https://github.com/STP-KAS/tn10-storm-build-bot-challenge). That page stays empty until both readings are filled.
 
 ### TN10 ops
 

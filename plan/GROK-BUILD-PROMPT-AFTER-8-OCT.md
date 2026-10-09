@@ -32,9 +32,9 @@ Keep the storm shape already written in [`GROK-BUILD-PROMPT.md`](GROK-BUILD-PROM
 - The long hold and the uncapped max stay on the six-hour figure, **2,210** submit and **2,207** seen accepted. Do not replace that figure with the 8 Oct locus means.
 - The 8 Oct desk held about **2,191** submit tx/s with 6 locus senders, and about **1,850–2,100** with 10, both under the plan's mass cap of about **3,024** included tx/s. Ten was also the load that faulted the desk process twice. Eleven or more exhausted RAM. Those facts stay in the checkout note. They do not raise N and they do not change the fee pair.
 
-**Node.** Build sends on locus, the desk kaspad, loopback Borsh, on every paced step, the long hold, and the max step, while that node is synced and the UTXO index is on. The bot does not send to the desk. Build does not send to n0. Never `bore.pub`. Never `159.223.110.159`. Older lines in `GROK-BUILD-PROMPT.md` that send the paced steps through public nodes disagree with the plan's forward section. The plan wins.
+**Node.** Build sends on locus, the first desk kaspad, loopback Borsh, on every paced step, the long hold, and the max step, while that node is synced and the UTXO index is on. keel is the second desk kaspad. The bot's runner and the bot's miners use the tunnel to keel, and only while keel is synced. n0 will not run. Build does not send to n0 or to keel. Never `bore.pub`. Never `159.223.110.159`. The plan body still has the older public-node sentences. The forward section wins on the node.
 
-Free RAM under 1 GB stops Build. A dead locus process stops Build. Do not move the senders to n0.
+Free RAM under 1 GB stops Build. A dead locus process stops Build. Do not move the senders to n0 or to keel. Leave the desk miners on locus while keel is syncing.
 
 ## Logs
 
@@ -44,6 +44,6 @@ The evening locus rounds on 8 Oct turned per-transaction logging off. The real t
 
 ## Still open
 
-The bot side of the checkout is **not measured**. n0's txid match, the box dry run, and the plan lock stay with stp. Do not mark them done. Leave the older fleet halt file in place. Do not clear it.
+The bot side of the checkout is **not measured**. The box dry run and the plan lock stay with stp. n0 will not run, so the old n0 txid match is not a gate. Do not mark the dry run or the lock done. Leave the older fleet halt file in place. Do not clear it.
 
 Intentions are good; thought process is questionable. STP remains delusional. Si vis pacem, para bellum.

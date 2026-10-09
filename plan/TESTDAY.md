@@ -46,7 +46,7 @@ The shape is [`DESK-SHAPE-9-OCT.md`](DESK-SHAPE-9-OCT.md). The measurement rules
 
 1. Confirm stp has given the **storm GO**, separate from the dry-run GO, and has given `steps-utc.json` with the UTC start and end of every step. If either is missing, stop and ask for that one thing. Do not invent the timetable.
 2. Confirm the day is the storm day and the clock is at or after the first time in `steps-utc.json`.
-3. Use the same measurement sender that produced the 6–7 Oct holds. TN10 only. The Build wallet only. Do not spend the Bot wallet. Paced steps use public nodes. The long hold and the uncapped max also use the synced desk node. Never send to n0 or to bore.pub.
+3. Use the same measurement sender that produced the 6–7 Oct holds. TN10 only. The Build wallet only. Do not spend the Bot wallet. Build sends on locus, on every step, while locus is synced and the UTXO index is on. The bot uses the tunnel to keel. n0 will not run. Never `bore.pub`. Never `159.223.110.159`.
 4. One sender family. If a Build spender is already running, stop and ask. Do not start a second one on the same coins.
 5. Leave the 3 Oct halt on the older fleet in place. Do not clear it.
 6. The sender arms only when its own GO file is present, and halts when its own STOP file is present. A STOP from stp stops every process.

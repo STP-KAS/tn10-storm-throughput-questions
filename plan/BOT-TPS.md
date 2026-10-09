@@ -1,6 +1,6 @@
 # For the Grok bot: holding a high rate
 
-Advice from the Build desk pre-run of 6–7 Oct 2026. The bot keeps its own wallet, its own node, and its own sender. Nothing here spends the Build wallet, and the bot does not copy Build's coins.
+Advice from the Build desk pre-run of 6–7 Oct 2026. The bot keeps its own wallet and its own sender. Its node is keel, through the tunnel. n0 will not run. Nothing here spends the Build wallet, and the bot does not copy Build's coins.
 
 The number that matters is transactions **seen accepted** over a long step, not the first second of submit-OK.
 
@@ -27,4 +27,4 @@ A signed one-input one-output is about 1,624 grams. At 500,000 grams and 10 bloc
 5. Drop a lane that orphans. An orphan is a child submitted before that node will take the parent. Cooling the lane, and dropping it after repeated orphans, kept the six-hour rejects at 0.07%.
 6. Do not change the process count, the depth, or the fee inside a step.
 
-The bot's path is its own node, not the public nodes this desk used. The same depth, fee, and coin rules are what turned a 540 tx/s long run into a 2,207 tx/s long run on the public side. The bot can apply those rules on its own sender and measure seen-accepted over the whole step.
+The bot's path is the tunnel to keel, the second desk kaspad. It is not the public nodes this desk used, and it is not n0. n0 will not run. The runner and the miners use that tunnel only while keel is synced. The same depth, fee, and coin rules are what turned a 540 tx/s long run into a 2,207 tx/s long run on the public side. The bot can apply those rules on its own sender and measure seen-accepted over the whole step.

@@ -21,30 +21,32 @@ Kaspa Testnet-10 (TN10) only. Deliberate load stays on TN10 by design; mainnet c
 
 Status: **draft until locked** (see §1). Labels as in the [README](../README.md#labels-used-in-this-readme): **Claim (measured on TN10)**, **Not sure / open for debate**, **Needs more testing**.
 
-## Forward routing, 8 Oct 2026
+## Forward routing, 9 Oct 2026
 
-This section replaces the node each side uses. The clocks, the fee pair, the questions, and "never eight box runners" stay as written below. Older sentences that send Build through public nodes, or that send the bot only after a different gate, stay in the file as the record. For a later send, this section wins on the node.
+This section replaces the node each side uses. The clocks, the fee pair, the questions, and "never eight box runners" stay as written below. Older sentences that send the box through n0, or Build through public nodes, stay in the file as the record. For a later send, this section wins on the node.
 
-**Goal.** The highest included tx/s the two sides can hold at the same time. The score is the sum of the two accepted rates. Submitted stays the other number. Two nodes share one chain and do not double the mass cap of about 3,024 included tx/s.
+The desk runs two kaspad processes. **locus** is the first. **keel** is the second. n0, the box kaspad, will not run. Do not start it and do not resync it.
+
+**Goal.** The highest included tx/s the two sides can hold at the same time. The score is accepted on locus plus accepted on keel. Submitted stays the other number. Two nodes share one chain and do not double the mass cap of about 3,024 included tx/s.
 
 | Side | Node | When |
 |---|---|---|
-| TN10 ops | n0 | Only while n0 is synced and tip lag is at or under 300 seconds. Otherwise sender count is 0 and the row says waiting. |
-| Grok Build | its own desk kaspad, called locus in the logs | Every paced step, the long hold, and the max step, on loopback Borsh, while that node is synced and the UTXO index is on. |
+| The bot's runner, and the bot's miners | keel, through the tunnel stp provides | The runner only during the storm, and only while keel is synced and tip lag is at or under 300 seconds. The miners only while keel is synced and the handoff lists the tunnel. Otherwise sender count is 0 and the row says waiting. keel still adds 0 to that minute. |
+| Grok Build | locus | Every paced step, the long hold, and the max step, on loopback Borsh, while locus is synced and the UTXO index is on. |
 
-The bot does not send to the desk. Build does not send to n0. A short box disk stops the bot and does not stop Build. Never `bore.pub`. Never `159.223.110.159`.
+keel was still in block download at 2026-10-09T07:59:26Z, 69%, last block 2026-10-08T17:03:33Z, not synced. It is already in the score. Until it is synced, the combined rate is locus alone, and the desk miners stay on locus. The old n0 transaction-id match is not a gate for this run. A short box disk stops the bot and does not stop Build. Never `bore.pub`. Never `159.223.110.159`. Do not invent a tunnel host.
 
 **Monitoring tasks.** One owner each. A missing read is **not measured**. No key, seed, address, or txid in git.
 
-1. Before the bot sends, and every 10 minutes: n0 synced, lag seconds, mempool, box disk. Unsynced or lag over 300 seconds means waiting, not a failover.
-2. Before Build sends: desk node synced, UTXO index, mempool, normal fee, free RAM, desk disk. Free RAM under 1 GB stops Build.
+1. Before the bot sends, and every 10 minutes: keel synced, lag seconds, mempool, tunnel in hand, box disk. Unsynced, no tunnel, or lag over 300 seconds means waiting, not a failover. Do not read n0.
+2. Before Build sends: locus synced, UTXO index, mempool, normal fee, free RAM, desk disk. Free RAM under 1 GB stops Build.
 3. Every 10 minutes, one combined row: each side's submitted tx/s and accepted tx/s, then the two sums. The desk writes the sheet. The box prints its block. Do not invent the other side.
-4. Every UTC second, per sender: sender id, target, submitted, accepted, endpoint `n0` or `locus`, that node's mempool.
+4. Every UTC second, per sender: sender id, target, submitted, accepted, endpoint `keel` or `locus`, that node's mempool.
 5. Every UTC minute, per sender: minute, sender id, node name, tx_sent, five tx ids spread across the minute. The ids stay local. One combined line for the same minute.
-6. Label a flat combined accept rate sender-limited, node-bound, or network-bound, or leave it unclear. n0's 100,000 mempool cap does not apply to the desk node.
+6. Label a flat combined accept rate sender-limited, node-bound, or network-bound, or leave it unclear. The old n0 mempool cap does not apply to locus or to keel.
 7. Indexer health every 30 seconds. Mining share per node, per step. NTP at the start and at the end on both machines.
 
-The longer sheet is the private repo `STP-KAS/tn10-locus`, file `plan/MONITOR.md`. The next run's checklist is that repo's `plan/NEXT-RUN-MONITOR.md`. It lists the lines the 8 Oct checkout left unread: the bot block, n0, box disk, box NTP, usage, the per-minute five ids, indexer every 30 seconds, n0 mempool every second, confirmation times, the ordered stream, saturation on n0, mining share, the miners-off control, and the combined accepted rate. The next run covers every monitoring task in this section and every line of that checklist. A missing reading stays **not measured** and fails the pass. That checklist does not add a demand. This plan still does not give the storm GO.
+The longer sheet is the private repo `STP-KAS/tn10-locus`, file `plan/MONITOR.md`. The next run's checklist is that repo's `plan/NEXT-RUN-MONITOR.md`. The 8 Oct unread n0 lines are closed because n0 will not run. The next run covers keel in their place, plus the bot block, box disk, box NTP, usage, the per-minute five ids, indexer every 30 seconds, keel mempool every second, confirmation times, the ordered stream, saturation on each side's own node, mining share, the miners-off control, and the combined accepted rate. A missing reading on a line this section still requires stays **not measured** and fails the pass. That checklist does not add a demand. This plan still does not give the storm GO.
 
 ## What: Kaspa Pulse's four questions + sequencing are the measured goals
 

@@ -1,5 +1,7 @@
 # Prompt for Grok Build: 9 or 13 Oct TN10 storm
 
+9 Oct 2026. The forward node rule is [NEXT-STORM-PLAN.md](NEXT-STORM-PLAN.md), section "Forward routing, 9 Oct 2026". n0 will not run. The two desk nodes are locus and keel. Build stays on locus. The bot's runner and the bot's miners use the tunnel to keel. The plan body still keeps the older public-node sentences as the record. For a later send, the forward section wins on the node. The numbered rules in this prompt follow that section.
+
 *Paste this into Grok Build on stp's desk. It is the go document. It does not start the storm, does not lock the plan, and does not fill a result section.*
 
 If this prompt, [`TESTDAY.md`](TESTDAY.md), or [`DESK-SHAPE-9-OCT.md`](DESK-SHAPE-9-OCT.md) disagrees with [`NEXT-STORM-PLAN.md`](NEXT-STORM-PLAN.md), the plan wins. Stop and ask stp.
@@ -29,12 +31,12 @@ Do not invent the timetable. Do not start on the date line alone. If `steps-utc.
 - `steps-utc.json` is in hand.
 - The day is 9 or 13 Oct, and the clock is at or after the first time in that file.
 
-The n0 txid match, the box dry run, and 35 GB free at T0 are still open. The storm GO has to name any of those stp is leaving open. If it does not, stop and ask. Do not mark them done. Do not treat the desk's 734 tx/s as the n0 match. The plan lock stays with stp. This file does not lock it.
+The old n0 txid match is not a gate. n0 will not run. The box dry run and 35 GB free at T0 are still open. The storm GO has to name any of those stp is leaving open. If it does not, stop and ask. Do not mark them done. Do not treat the desk's 734 tx/s as that dry run. The plan lock stays with stp. This file does not lock it.
 
 ## Hard rules
 
 1. **TN10 only.** `kaspatest:` addresses and network `testnet-10`. If a node reports any other network, stop.
-2. **Not n0.** Never send to stp's node n0, to `bore.pub`, or to `159.223.110.159`. Paced steps use public TN10 nodes. The long hold and the uncapped max also use this desk's synced TN10 node, with coins the public signers are not using. Do not start a second local node.
+2. **locus and keel.** Build sends on locus, loopback Borsh, on every step, while locus is synced and the UTXO index is on. keel is the second desk kaspad. Do not send Build to keel, to n0, to `bore.pub`, or to `159.223.110.159`. Do not start n0. Do not start another kaspad. Desk miners stay on locus until keel is synced.
 3. **Keys stay on the desk.** Never print, paste, log, upload, or commit a key, seed, or wallet file. Do not open the key file. Pass only its path to the script.
 4. **No public posting during the run.** Logs go to stp only.
 5. **One sender setup.** Only the processes named below, from the Build wallet. Do not spend the Bot wallet. If a Build spender is already running, stop and ask.
