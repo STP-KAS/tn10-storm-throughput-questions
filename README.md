@@ -10,11 +10,11 @@ Wording, Kaspa Pulse (@gokugalax), 7 Oct 2026: sign-and-send processes are sende
 
 Source: Kaspa Pulse ([@gokugalax](https://x.com/gokugalax)), X DM, 4–7 Oct 2026.
 
-Kaspa Testnet-10 only. Every clock on this page is UTC. Deliberate load stays on TN10. This page states no mainnet storm and no mainnet cost numbers.
+Kaspa Testnet-10 only. Every clock time in this repo is UTC. A clock is not written in local time. Deliberate load stays on TN10. This page states no mainnet storm and no mainnet cost numbers.
 
 Method points below are his. Where a number comes from the measurement plan, the sentence says so.
 
-On the 8 Oct 2026 screen of that X chat, the Monday 5 Oct 2026 17:01 local message (15:01 UTC) opens his four tightenings and stops at "Show more". The lines under that control were not copied from the screen. The working copy is the plan's table, [Kaspa Pulse's four tightenings](plan/NEXT-STORM-PLAN.md#kaspa-pulses-four-tightenings-review-of-5-oct-before-the-lock). His example steps, on the Monday 5 Oct 2026 14:38 local frame (12:38 UTC), were 1×, 2×, 5×, and 10×. The plan's table is a 10-minute baseline, then 2×, 5×, 10×, 20×, 30×, then max. This page follows the plan's table.
+On the 8 Oct 2026 screen of that X chat, the Monday 5 Oct 2026 15:01 UTC message opens his four tightenings and stops at "Show more". The lines under that control were not copied from the screen. The working copy is the plan's table, [Kaspa Pulse's four tightenings](plan/NEXT-STORM-PLAN.md#kaspa-pulses-four-tightenings-review-of-5-oct-before-the-lock). His example steps, on the Monday 5 Oct 2026 12:38 UTC frame, were 1×, 2×, 5×, and 10×. The plan's table is a 10-minute baseline, then 2×, 5×, 10×, 20×, 30×, then max. This page follows the plan's table.
 
 The measurement plan is [plan/NEXT-STORM-PLAN.md](plan/NEXT-STORM-PLAN.md). If this README and the plan disagree, the plan wins.
 
